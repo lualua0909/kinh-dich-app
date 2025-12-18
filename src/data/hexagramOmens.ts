@@ -1,5 +1,4 @@
 const HEXAGRAM_OMENS: Record<string, string> = {
-  // Nhóm Thuần Ly (Thượng Ly = 3)
   "3-3": "Thiên quan tứ phước", // BÁT THUẦN LY
   "3-7": "Tức điều phán sào", // HỎA SƠN LỮ
   "3-5": "Ngư ông đắc lợi", // HỎA PHONG ĐỈNH
@@ -8,8 +7,6 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "5-6": "Cách hà vọng kim", // PHONG THỦY HOÁN
   "1-6": "Nhị nhân tranh lộ", // THIÊN THỦY TỤNG
   "1-3": "Tiên nhân chỉ lộ", // THIÊN HỎA ĐỒNG NHÂN
-
-  // Nhóm tượng Khôn - Ngũ hành Thổ (Thượng Khôn = 0)
   "0-0": "Nga hồ đắc thục", // BÁT THUẦN KHÔN
   "0-4": "Phu thê phản mục", // ĐỊA LÔI PHỤC
   "0-2": "Phát chính thi nhân", // ĐỊA TRẠCH LÂM
@@ -17,11 +14,7 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "4-1": "Cộng sự đắc mộc", // LÔI THIÊN ĐẠI TRÁNG
   "2-1": "Du phong thoát vong", // TRẠCH THIÊN QUẢI
   "6-1": "Minh châu xuất thổ", // THỦY THIÊN NHU
-
-  // Thủy Địa Tỷ
   "6-0": "Thuyền đắc thuận phong", // THỦY ĐỊA TỶ
-
-  // Nhóm Cấn (CẤN VI SƠN và các quẻ liên quan, Thượng Cấn = 7)
   "7-7": "Sơn trạch trùng điệp", // BÁT THUẦN CẤN
   "7-3": "Trần thế đắc khai", // SƠN HỎA BÍ
   "7-1": "Hỉ khí doanh môn", // SƠN THIÊN ĐẠI SÚC
@@ -30,8 +23,6 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "1-2": "Phượng minh Kỳ Sơn", // THIÊN TRẠCH LÝ
   "5-2": "Hành tẩu bạc bằng", // PHONG TRẠCH TRUNG PHU
   "5-7": "Hồng nhạn cao phi", // PHONG SƠN TIỆM
-
-  // Các quẻ khác
   "1-1": "Khốn Long đắc thủy", // BÁT THUẦN CÀN
   "2-2": "Lưỡng trạch tương tư", // BÁT THUẦN ĐOÀI
   "5-5": "Cô chu đắc thủy", // BÁT THUẦN TỐN
@@ -43,7 +34,7 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "5-0": "Hạn Bồng Phùng Hà", // PHONG ĐỊA QUAN
   "7-0": "Ứng thuộc đông lâm", // SƠN ĐỊA BÁC
   "3-0": "Sử địa đắc kim", // HỎA ĐỊA TẤN
-  "3-1": "Nhuỵễn mộc nộ tước", // HỎA THIÊN ĐẠI HỮU
+  "3-1": "Nhuyển mộc nộ tước", // HỎA THIÊN ĐẠI HỮU
   "2-6": "Loát hãn du thê", // TRẠCH THỦY KHỐN
   "2-0": "Ngự hóa vi Long", // TRẠCH ĐỊA TUỴ
   "2-7": "Nanh Nha xuất thổ", // TRẠCH SƠN HÀM
@@ -71,7 +62,7 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "1-4": "Điểu bị lũng lao", // THIÊN LÔI VÔ VỌNG
   "3-4": "Cô nhân ngộ thực", // HỎA LÔI PHỆ HẠP
   "7-4": "Vị thủy phong hiền", // SƠN LÔI DI
-  "7-5": "Súy ma phân dao" // SƠN PHONG CỔ
+  "7-5": "Súy ma phân dao", // SƠN PHONG CỔ
 };
 
 export function getHexagramOmen(key: string): string | null {

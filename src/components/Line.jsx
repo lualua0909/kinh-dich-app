@@ -23,12 +23,12 @@ export default function Line({
   const tooltipContent = lineData ? (
     <div className="text-left">
       <div className="font-bold mb-1">Hào {lineData.hao}</div>
-      <div className="text-xs">Thế ứng: {lineData.theUng || "-"}</div>
+      <div className="text-xs">Thế ứng: {lineData.theUng || ""}</div>
       <div className="text-xs">Lục Thân: {lineData.lucThan}</div>
       <div className="text-xs">Can Chi: {lineData.canChi}</div>
-      <div className="text-xs">Lục Thú: {lineData.lucTu || "-"}</div>
-      <div className="text-xs">Phục thần: {lineData.phucThan || "-"}</div>
-      <div className="text-xs">Tuần không: {lineData.tuanKhong || "-"}</div>
+      <div className="text-xs">Lục Thú: {lineData.lucTu || ""}</div>
+      <div className="text-xs">Phục thần: {lineData.phucThan || ""}</div>
+      <div className="text-xs">Tuần không: {lineData.tuanKhong || ""}</div>
     </div>
   ) : (
     <div>

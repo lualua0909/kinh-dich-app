@@ -22,29 +22,6 @@ export interface LineData {
 export function generateLineData(hexagramId: number): LineData[] {
   const lines: LineData[] = [];
 
-  const lucThanOptions = [
-    "Phụ Mẫu",
-    "Huynh Đệ",
-    "Tử Tôn",
-    "Thê Tài",
-    "Quan Quỷ",
-  ];
-  const canChiOptions = [
-    "Giáp Tý",
-    "Ất Sửu",
-    "Bính Dần",
-    "Đinh Mão",
-    "Mậu Thìn",
-    "Kỷ Tỵ",
-  ];
-  const lucTuOptions = [
-    "Thanh Long",
-    "Chu Tước",
-    "Câu Trần",
-    "Đằng Xà",
-    "Bạch Hổ",
-    "Huyền Vũ",
-  ];
   // Phục thần và Tuần không - cần logic phức tạp hơn, tạm thời để placeholder
   const phucThanOptions = ["", "", "", "", "", ""];
   const tuanKhongOptions = ["", "", "", "", "", ""];
@@ -62,14 +39,7 @@ export function generateLineData(hexagramId: number): LineData[] {
     }
   > = {
     "0-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -80,24 +50,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -108,24 +64,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -136,24 +78,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -164,24 +92,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -192,24 +106,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -220,24 +120,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -248,24 +134,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "0-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -276,24 +148,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -304,24 +162,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -332,24 +176,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -360,24 +190,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -388,24 +204,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -416,24 +218,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -444,24 +232,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -472,24 +246,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "1-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -500,24 +260,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -528,24 +274,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -556,24 +288,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -584,24 +302,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -612,24 +316,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -640,24 +330,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -668,24 +344,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -696,24 +358,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "2-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -724,24 +372,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -752,24 +386,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -780,24 +400,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -808,24 +414,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -836,24 +428,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -864,24 +442,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -892,24 +456,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -920,24 +470,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "3-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -948,24 +484,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -976,24 +498,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1004,24 +512,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1032,24 +526,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1060,24 +540,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1088,24 +554,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1116,24 +568,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1144,24 +582,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "4-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1172,24 +596,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1200,24 +610,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1228,24 +624,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1256,24 +638,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1284,24 +652,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1312,24 +666,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1340,24 +680,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1368,24 +694,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "5-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1396,24 +708,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1424,24 +722,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1452,24 +736,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1480,24 +750,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1508,24 +764,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1536,24 +778,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1564,24 +792,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1592,24 +806,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "6-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1620,24 +820,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-0": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1648,24 +834,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-1": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1676,24 +848,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-2": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1704,24 +862,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-3": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1732,24 +876,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-4": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1760,24 +890,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-5": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1788,24 +904,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-6": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1816,24 +918,10 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
     "7-7": {
-      lucThan: [
-        "Phụ Mẫu",
-        "Huynh Đệ",
-        "Quan Quỷ",
-        "Phụ Mẫu",
-        "Thê Tài",
-        "Tử Tôn",
-      ],
+      lucThan: ["PM", "HD", "QQ", "PM", "TTi", "TT"],
       canChi: [
         "Nhâm Tuất",
         "Nhâm Thân",
@@ -1844,14 +932,7 @@ export function generateLineData(hexagramId: number): LineData[] {
       ],
       phucThan: ["", "", "", "", "", ""],
       tuanKhong: ["", "", "", "", "", "K"],
-      lucTu: [
-        "Bạch Hổ",
-        "Đằng Xà",
-        "Câu Trần",
-        "Chu Tước",
-        "Thanh Long",
-        "Huyền Vũ",
-      ],
+      lucTu: ["BH", "DX", "CTr", "CT", "TL", "HV"],
     },
   };
 
@@ -1979,30 +1060,24 @@ export function generateLineData(hexagramId: number): LineData[] {
     const index = (hexagramId + i - 1) % 6;
 
     // Sử dụng dữ liệu cụ thể nếu có, nếu không thì dùng dữ liệu mặc định
-    const lucThan = specificData?.lucThan
-      ? specificData.lucThan[i - 1]
-      : lucThanOptions[index];
-    const canChi = specificData?.canChi
-      ? specificData.canChi[i - 1]
-      : canChiOptions[index];
+    const lucThan = specificData?.lucThan ? specificData.lucThan[i - 1] : [];
+    const canChi = specificData?.canChi ? specificData.canChi[i - 1] : [];
     const phucThan = specificData?.phucThan
       ? specificData.phucThan[i - 1] || ""
       : phucThanOptions[index] || "";
     const tuanKhong = specificData?.tuanKhong
       ? specificData.tuanKhong[i - 1] || ""
       : tuanKhongOptions[index] || "";
-    const lucTu = specificData?.lucTu
-      ? specificData.lucTu[i - 1]
-      : lucTuOptions[index];
+    const lucTu = specificData?.lucTu ? specificData.lucTu[i - 1] : [];
 
     lines.push({
       hao: i,
       theUng: theUngMapForHexagram[i]?.toString() || "",
-      lucThan: lucThan,
-      canChi: canChi,
-      lucTu: lucTu,
-      phucThan: phucThan,
-      tuanKhong: tuanKhong,
+      lucThan: Array.isArray(lucThan) ? lucThan.join(" ") : lucThan,
+      canChi: Array.isArray(canChi) ? canChi.join(" ") : canChi,
+      lucTu: Array.isArray(lucTu) ? lucTu.join(" ") : lucTu,
+      phucThan,
+      tuanKhong,
     });
   }
 

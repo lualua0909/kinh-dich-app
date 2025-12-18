@@ -355,7 +355,7 @@ export default function InterpretationTables({
       align: "center",
       render: (theUng) => {
         const value = Number(theUng);
-        let label = "-";
+        let label = "";
         if (value === 1) label = "Thế";
         else if (value === 2) label = "Ứng";
 
@@ -398,7 +398,7 @@ export default function InterpretationTables({
       key: "phucThan",
       width: 100,
       align: "center",
-      render: (phucThan) => <span>{phucThan || "-"}</span>,
+      render: (phucThan) => <span>{phucThan || ""}</span>,
     },
     {
       title: "Tuần không",
@@ -406,7 +406,7 @@ export default function InterpretationTables({
       key: "tuanKhong",
       width: 100,
       align: "center",
-      render: (tuanKhong) => <span>{tuanKhong || "-"}</span>,
+      render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
     },
   ];
 
@@ -469,7 +469,7 @@ export default function InterpretationTables({
       key: "tuanKhong",
       width: 100,
       align: "center",
-      render: (tuanKhong) => <span>{tuanKhong || "-"}</span>,
+      render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
     },
   ];
 
