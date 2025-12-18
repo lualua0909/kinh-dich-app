@@ -28,7 +28,6 @@ export function generateLineData(hexagramId: number): LineData[] {
     "Tử Tôn",
     "Thê Tài",
     "Quan Quỷ",
-    "Thế"
   ];
   const canChiOptions = [
     "Giáp Tý",
@@ -36,7 +35,7 @@ export function generateLineData(hexagramId: number): LineData[] {
     "Bính Dần",
     "Đinh Mão",
     "Mậu Thìn",
-    "Kỷ Tỵ"
+    "Kỷ Tỵ",
   ];
   const lucTuOptions = [
     "Thanh Long",
@@ -44,7 +43,7 @@ export function generateLineData(hexagramId: number): LineData[] {
     "Câu Trần",
     "Đằng Xà",
     "Bạch Hổ",
-    "Huyền Vũ"
+    "Huyền Vũ",
   ];
   // Phục thần và Tuần không - cần logic phức tạp hơn, tạm thời để placeholder
   const phucThanOptions = ["", "", "", "", "", ""];
@@ -142,7 +141,7 @@ export function generateLineData(hexagramId: number): LineData[] {
     "THỦY PHONG TỈNH": { the: 5, ung: 2 },
     "THỦY TRẠCH TIẾT": { the: 1, ung: 4 },
     "THỦY LÔI TRUÂN": { the: 2, ung: 5 },
-    "THỦY HỎA KÝ TẾ": { the: 3, ung: 6 }
+    "THỦY HỎA KÝ TẾ": { the: 3, ung: 6 },
   };
 
   // Bước 2: chuyển sang map dùng key "upper-lower" (giống HEXAGRAMS)
@@ -193,7 +192,7 @@ export function generateLineData(hexagramId: number): LineData[] {
       canChi: canChiOptions[index],
       lucTu: lucTuOptions[index],
       phucThan: phucThanOptions[index] || "",
-      tuanKhong: tuanKhongOptions[index] || ""
+      tuanKhong: tuanKhongOptions[index] || "",
     });
   }
 
