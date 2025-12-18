@@ -1,73 +1,79 @@
-/**
- * Điềm báo ngắn cho một số quẻ (có thể mở rộng thêm sau)
- * Key: tên quẻ tiếng Việt (vietnameseName trong hexagrams.ts)
- */
-
 const HEXAGRAM_OMENS: Record<string, string> = {
-  // Nhóm Thuần Ly
-  "BÁT THUẦN LY": "Thiên quan tứ phước",
-  "HỎA SƠN LỮ": "Tức điều phán sào",
-  "HỎA PHONG ĐỈNH": "Ngư ông đắc lợi",
-  "HỎA THỦY VỊ TẾ": "Tiêu hồ ngật tế",
-  "SƠN THỦY MÔNG": "Tiêu quỷ thần tiên",
-  "PHONG THỦY HOÁN": "Cách hà vọng kim",
-  "THIÊN THỦY TỤNG": "Nhị nhân tranh lộ",
-  "THIÊN HỎA ĐỒNG NHÂN": "Tiên nhân chỉ lộ",
+  // Nhóm Thuần Ly (Thượng Ly = 3)
+  "3-3": "Thiên quan tứ phước", // BÁT THUẦN LY
+  "3-7": "Tức điều phán sào", // HỎA SƠN LỮ
+  "3-5": "Ngư ông đắc lợi", // HỎA PHONG ĐỈNH
+  "3-6": "Tiêu hồ ngật tế", // HỎA THỦY VỊ TẾ
+  "7-6": "Tiêu quỷ thần tiên", // SƠN THỦY MÔNG
+  "5-6": "Cách hà vọng kim", // PHONG THỦY HOÁN
+  "1-6": "Nhị nhân tranh lộ", // THIÊN THỦY TỤNG
+  "1-3": "Tiên nhân chỉ lộ", // THIÊN HỎA ĐỒNG NHÂN
 
-  // Một số quẻ thuộc Nhóm tượng Khôn - Ngũ hành Thổ
-  "BÁT THUẦN KHÔN": "Nga hồ đắc thục",
-  "ĐỊA LÔI PHỤC": "Phu thê phản mục",
-  "ĐỊA TRẠCH LÂM": "Phát chính thi nhân",
-  "ĐỊA THIÊN THÁI": "Hỉ báo tam nguyên",
-  "LÔI THIÊN ĐẠI TRÁNG": "Cộng sự đắc mộc",
-  "TRẠCH THIÊN QUẢI": "Du phong thoát vong",
-  "THỦY THIÊN NHU": "Minh châu xuất thổ",
+  // Nhóm tượng Khôn - Ngũ hành Thổ (Thượng Khôn = 0)
+  "0-0": "Nga hồ đắc thục", // BÁT THUẦN KHÔN
+  "0-4": "Phu thê phản mục", // ĐỊA LÔI PHỤC
+  "0-2": "Phát chính thi nhân", // ĐỊA TRẠCH LÂM
+  "0-1": "Hỉ báo tam nguyên", // ĐỊA THIÊN THÁI
+  "4-1": "Cộng sự đắc mộc", // LÔI THIÊN ĐẠI TRÁNG
+  "2-1": "Du phong thoát vong", // TRẠCH THIÊN QUẢI
+  "6-1": "Minh châu xuất thổ", // THỦY THIÊN NHU
 
-  // Thủy Địa Tỷ (hình dưới)
-  "THỦY ĐỊA TỶ": "Thuyền đắc thuận phong",
+  // Thủy Địa Tỷ
+  "6-0": "Thuyền đắc thuận phong", // THỦY ĐỊA TỶ
 
-  "BÁT THUẦN CÀN": "Khốn Long đắc thủy",
-  "BÁT THUẦN ĐOÀI": "Lưỡng trạch tương tư",
-  "BÁT THUẦN TỐN": "Cô chu đắc thủy",
-  "BÁT THUẦN KHẢM": "Khảm vi thủy",
-  "BÁT THUẦN CHẤN": "Thiên hạ dương danh",
-  "THIÊN PHONG CẤU": "Tha hưởng ngộ hữu",
-  "THIÊN SƠN ĐỘN": "Nùng vân tế nhật",
-  "THIÊN ĐỊA BỈ": "Hổ lạc hàm khanh",
-  "PHONG ĐỊA QUAN": "Hạn Bồng Phùng Hà",
-  "SƠN ĐỊA BÁC": "Ứng thuộc đông lâm",
-  "HỎA ĐỊA TẤN": "Sử địa đắc kim",
-  "HỎA THIÊN ĐẠI HỮU": "Nhuỵễn mộc nộ tước",
-  "TRẠCH THỦY KHỐN": "Loát hãn du thê",
-  "TRẠCH ĐỊA TUỴ": "Ngự hóa vi Long",
-  "TRẠCH SƠN HÀM": "Nanh Nha xuất thổ",
-  "THỦY SƠN KIỂN": "Vũ tuyết tài đổ",
-  "ĐỊA SƠN KHIÊM": "Nhị nhân phân kim",
-  "LÔI SƠN TIỂU QUÁ": "Phi điểu di âm",
-  "LÔI TRẠCH QUY MUỘI": "Duyên Mộc câu ngư",
-  "LÔI ĐỊA DỰ": "Thanh Long đắc vị",
-  "LÔI THỦY GIẢI": "Ngũ quan thoát nạn",
-  "LÔI PHONG HẰNG": "Ngư lai chòng võng",
-  "ĐỊA PHONG THĂNG": "Chỉ nhật cao thăng",
-  "THỦY PHONG TỈNH": "Khê tĩnh sinh tuyền",
-  "TRẠCH PHONG ĐẠI QUÁ": "Dạ mộng kim ngân",
-  "TRẠCH LÔI TÙY": "Suy xa khảo nha",
-  "THỦY TRẠCH TIẾT": "Hải đề lao nguyệt",
-  "THỦY LÔI TRUÂN": "Trảm tướng phong thần",
-  "THỦY HỎA KÝ TẾ": "Loạn tu vô đầu",
-  "TRẠCH HỎA CÁCH": "Kim bảng đề danh",
-  "LÔI HỎA PHONG": "Hạn miêu đắc vũ",
-  "ĐỊA HỎA MINH DI": "Cổ kính trùng minh",
-  "ĐỊA THỦY SƯ": "Mã đáo thành công",
-  "PHONG THIÊN TIỂU SÚC": "Mạt vân bất vũ",
-  "PHONG HỎA GIA NHÂN": "Quan Thủ lân chi",
-  "PHONG LÔI ÍCH": "Khô mộc khai hoa",
-  "THIÊN LÔI VÔ VỌNG": "Điểu bị lũng lao",
-  "HỎA LÔI PHỆ HẠP": "Cô nhân ngộ thực",
-  "SƠN LÔI DI": "Vị thủy phong hiền",
-  "SƠN PHONG CỔ": "Súy ma phân dao"
+  // Nhóm Cấn (CẤN VI SƠN và các quẻ liên quan, Thượng Cấn = 7)
+  "7-7": "Sơn trạch trùng điệp", // BÁT THUẦN CẤN
+  "7-3": "Trần thế đắc khai", // SƠN HỎA BÍ
+  "7-1": "Hỉ khí doanh môn", // SƠN THIÊN ĐẠI SÚC
+  "7-2": "Tổn kỷ lợi nhân", // SƠN TRẠCH TỔN
+  "3-2": "Thái công bất ngộ", // HỎA TRẠCH KHUÊ
+  "1-2": "Phượng minh Kỳ Sơn", // THIÊN TRẠCH LÝ
+  "5-2": "Hành tẩu bạc bằng", // PHONG TRẠCH TRUNG PHU
+  "5-7": "Hồng nhạn cao phi", // PHONG SƠN TIỆM
+
+  // Các quẻ khác
+  "1-1": "Khốn Long đắc thủy", // BÁT THUẦN CÀN
+  "2-2": "Lưỡng trạch tương tư", // BÁT THUẦN ĐOÀI
+  "5-5": "Cô chu đắc thủy", // BÁT THUẦN TỐN
+  "6-6": "Khảm vi thủy", // BÁT THUẦN KHẢM
+  "4-4": "Thiên hạ dương danh", // BÁT THUẦN CHẤN
+  "1-5": "Tha hưởng ngộ hữu", // THIÊN PHONG CẤU
+  "1-7": "Nùng vân tế nhật", // THIÊN SƠN ĐỘN
+  "1-0": "Hổ lạc hàm khanh", // THIÊN ĐỊA BỈ
+  "5-0": "Hạn Bồng Phùng Hà", // PHONG ĐỊA QUAN
+  "7-0": "Ứng thuộc đông lâm", // SƠN ĐỊA BÁC
+  "3-0": "Sử địa đắc kim", // HỎA ĐỊA TẤN
+  "3-1": "Nhuỵễn mộc nộ tước", // HỎA THIÊN ĐẠI HỮU
+  "2-6": "Loát hãn du thê", // TRẠCH THỦY KHỐN
+  "2-0": "Ngự hóa vi Long", // TRẠCH ĐỊA TUỴ
+  "2-7": "Nanh Nha xuất thổ", // TRẠCH SƠN HÀM
+  "6-7": "Vũ tuyết tài đổ", // THỦY SƠN KIỂN
+  "0-7": "Nhị nhân phân kim", // ĐỊA SƠN KHIÊM
+  "4-7": "Phi điểu di âm", // LÔI SƠN TIỂU QUÁ
+  "4-2": "Duyên Mộc câu ngư", // LÔI TRẠCH QUY MUỘI
+  "4-0": "Thanh Long đắc vị", // LÔI ĐỊA DỰ
+  "4-6": "Ngũ quan thoát nạn", // LÔI THỦY GIẢI
+  "4-5": "Ngư lai chòng võng", // LÔI PHONG HẰNG
+  "0-5": "Chỉ nhật cao thăng", // ĐỊA PHONG THĂNG
+  "6-5": "Khê tĩnh sinh tuyền", // THỦY PHONG TỈNH
+  "2-5": "Dạ mộng kim ngân", // TRẠCH PHONG ĐẠI QUÁ
+  "2-4": "Suy xa khảo nha", // TRẠCH LÔI TÙY
+  "6-2": "Hải đề lao nguyệt", // THỦY TRẠCH TIẾT
+  "6-4": "Trảm tướng phong thần", // THỦY LÔI TRUÂN
+  "6-3": "Loạn tu vô đầu", // THỦY HỎA KÝ TẾ
+  "2-3": "Kim bảng đề danh", // TRẠCH HỎA CÁCH
+  "4-3": "Hạn miêu đắc vũ", // LÔI HỎA PHONG
+  "0-3": "Cổ kính trùng minh", // ĐỊA HỎA MINH DI
+  "0-6": "Mã đáo thành công", // ĐỊA THỦY SƯ
+  "5-1": "Mạt vân bất vũ", // PHONG THIÊN TIỂU SÚC
+  "5-3": "Quan Thủ lân chi", // PHONG HỎA GIA NHÂN
+  "5-4": "Khô mộc khai hoa", // PHONG LÔI ÍCH
+  "1-4": "Điểu bị lũng lao", // THIÊN LÔI VÔ VỌNG
+  "3-4": "Cô nhân ngộ thực", // HỎA LÔI PHỆ HẠP
+  "7-4": "Vị thủy phong hiền", // SƠN LÔI DI
+  "7-5": "Súy ma phân dao" // SƠN PHONG CỔ
 };
 
-export function getHexagramOmen(vietnameseName: string): string | null {
-  return HEXAGRAM_OMENS[vietnameseName] || null;
+export function getHexagramOmen(key: string): string | null {
+  return HEXAGRAM_OMENS[key] || null;
 }

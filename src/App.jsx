@@ -287,7 +287,7 @@ function App() {
         )}
 
         {/* Ngũ Hành Table */}
-        <NguHanhTable />
+        {/* <NguHanhTable /> */}
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import {
   chuTuocDiaChiInfo,
   cauTranDiaChiInfo
 } from "../data/lucThuInfo";
+import { getHexagramOmen } from "../data/hexagramOmens";
 /**
  * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
  * TỨC ĐIỀU PHÁN SÀO: uses original hexagram
@@ -494,12 +495,6 @@ export default function InterpretationTables({
       <div className="space-y-4 text-sm">
         {info && (
           <>
-            <div className="text-center">
-              <div className="text-lg font-bold mb-2">{info.title}</div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">
-                LỤC THÚ CHI TIẾT
-              </div>
-            </div>
             <div className="leading-relaxed whitespace-pre-line text-gray-800">
               {info.content}
             </div>
@@ -510,14 +505,8 @@ export default function InterpretationTables({
           <div className="pt-4 border-t border-gray-300 space-y-3">
             {clsThan && (
               <div>
-                <div className="font-semibold text-gray-800 mb-1">
-                  Lục Thú - Lục Thân
-                </div>
                 <div className="flex items-center justify-between gap-2">
                   <span>{clsThan.label}</span>
-                  <span className="font-mono font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded border border-gray-300">
-                    {clsThan.code}
-                  </span>
                 </div>
                 {lucThan &&
                   lucTu === "Thanh Long" &&
@@ -566,14 +555,8 @@ export default function InterpretationTables({
 
             {clsDiaChi && (
               <div>
-                <div className="font-semibold text-gray-800 mb-1">
-                  Lục Thú - Địa Chi
-                </div>
                 <div className="flex items-center justify-between gap-2">
                   <span>{clsDiaChi.label}</span>
-                  <span className="font-mono font-bold text-gray-900 bg-gray-100 px-2 py-1 rounded border border-gray-300">
-                    {clsDiaChi.code}
-                  </span>
                 </div>
                 {diaChiExtraText && (
                   <div className="mt-2 text-xs leading-relaxed whitespace-pre-line text-gray-700">
@@ -607,9 +590,14 @@ export default function InterpretationTables({
         {/* TỨC ĐIỀU PHÁN SÀO */}
         <Card
           title={
-            <div className="text-center font-bold text-lg text-gray-800">
-              ???
-            </div>
+            <p
+              className="text-center font-bold text-lg text-gray-800 m-0"
+              style={{ textTransform: "uppercase" }}
+            >
+              {getHexagramOmen(
+                `${originalHexagram.upperTrigram}-${originalHexagram.lowerTrigram}`
+              )}
+            </p>
           }
           className="bg-parchment-50 border-2 border-parchment-300"
         >
@@ -632,9 +620,15 @@ export default function InterpretationTables({
         {/* NHÂN ĐOÁN TÁO CAO */}
         <Card
           title={
-            <div className="text-center font-bold text-lg text-gray-800">
-              ???
-            </div>
+            <p
+              className="text-center font-bold text-lg text-gray-800 m-0"
+              style={{ textTransform: "uppercase" }}
+            >
+              {changedHexagram &&
+                getHexagramOmen(
+                  `${changedHexagram.upperTrigram}-${changedHexagram.lowerTrigram}`
+                )}
+            </p>
           }
           className="bg-parchment-50 border-2 border-parchment-300"
         >

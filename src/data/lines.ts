@@ -51,7 +51,10 @@ export function generateLineData(hexagramId: number): LineData[] {
   const tuanKhongOptions = ["", "", "", "", "", ""];
 
   // Vị trí Thế / Ứng cho từng quẻ (có thể mở rộng thêm)
-  // Key: tên quẻ tiếng Việt (vietnameseName trong hexagrams.ts)
+  // Bước 1: khai báo theo tên quẻ cho dễ nhìn
+  // Sắp xếp lại thứ tự, nhóm theo quẻ Thượng (Thuần Càn, Thuần Khảm, ...), rồi đến những quẻ hỗn hợp cùng Thượng và các nhóm chính khác.
+  // Các nhóm tham khảo: BÁT THUẦN CÀN, BÁT THUẦN ĐOÀI, BÁT THUẦN LY, BÁT THUẦN CHẤN, BÁT THUẦN TỐN, BÁT THUẦN KHẢM, BÁT THUẦN CẤN, BÁT THUẦN KHÔN
+  // Tiếp sau là các quẻ có Thượng là các quái còn lại (theo hệ thống 64 quẻ).
   const hexagramTheUngByName: Record<
     string,
     {
@@ -59,69 +62,105 @@ export function generateLineData(hexagramId: number): LineData[] {
       ung: number;
     }
   > = {
-    // Nhóm Thuần Ly (hình trên)
+    // Bát Thuần Quẻ (8 pure hexagrams)
+    "BÁT THUẦN CÀN": { the: 6, ung: 3 },
+    "BÁT THUẦN ĐOÀI": { the: 6, ung: 3 },
     "BÁT THUẦN LY": { the: 6, ung: 3 },
+    "BÁT THUẦN CHẤN": { the: 6, ung: 3 },
+    "BÁT THUẦN TỐN": { the: 6, ung: 5 },
+    "BÁT THUẦN KHẢM": { the: 6, ung: 3 },
+    "BÁT THUẦN CẤN": { the: 6, ung: 3 },
+    "BÁT THUẦN KHÔN": { the: 6, ung: 3 },
+
+    // Hỏa Thượng
     "HỎA SƠN LỮ": { the: 6, ung: 3 },
     "HỎA PHONG ĐỈNH": { the: 6, ung: 5 },
     "HỎA THỦY VỊ TẾ": { the: 4, ung: 3 },
+    "HỎA ĐỊA TẤN": { the: 4, ung: 1 },
+    "HỎA THIÊN ĐẠI HỮU": { the: 3, ung: 6 },
+    "HỎA LÔI PHỆ HẠP": { the: 5, ung: 2 },
+    "HỎA TRẠCH KHUÊ": { the: 4, ung: 1 },
+
+    // Sơn Thượng
     "SƠN THỦY MÔNG": { the: 4, ung: 2 },
+    "SƠN ĐỊA BÁC": { the: 5, ung: 2 },
+    "SƠN LÔI DI": { the: 4, ung: 1 },
+    "SƠN PHONG CỔ": { the: 3, ung: 6 },
+    "SƠN HỎA BÍ": { the: 2, ung: 5 },
+    "SƠN THIÊN ĐẠI SÚC": { the: 1, ung: 4 },
+    "SƠN TRẠCH TỔN": { the: 3, ung: 6 },
+
+    // Phong Thượng
     "PHONG THỦY HOÁN": { the: 5, ung: 1 },
+    "PHONG ĐỊA QUAN": { the: 4, ung: 1 },
+    "PHONG HỎA GIA NHÂN": { the: 2, ung: 5 },
+    "PHONG LÔI ÍCH": { the: 3, ung: 6 },
+    "PHONG TRẠCH TRUNG PHU": { the: 4, ung: 1 },
+    "PHONG SƠN TIỆM": { the: 3, ung: 6 },
+    "PHONG THIÊN TIỂU SÚC": { the: 1, ung: 4 },
+
+    // Thiên Thượng
     "THIÊN THỦY TỤNG": { the: 2, ung: 5 },
     "THIÊN HỎA ĐỒNG NHÂN": { the: 3, ung: 6 },
-
-    // Nhóm tượng Khôn - Ngũ hành Thổ (hình giữa)
-    "BÁT THUẦN KHÔN": { the: 6, ung: 3 },
-    "ĐỊA LÔI PHỤC": { the: 1, ung: 4 },
-    "ĐỊA TRẠCH LÂM": { the: 1, ung: 4 },
-    "ĐỊA THIÊN THÁI": { the: 4, ung: 3 },
-    "LÔI THIÊN ĐẠI TRÁNG": { the: 4, ung: 2 },
-    "TRẠCH THIÊN QUẢI": { the: 5, ung: 1 },
-    "THỦY THIÊN NHU": { the: 4, ung: 1 },
-
-    // Hình dưới
-    "THỦY ĐỊA TỶ": { the: 3, ung: 6 },
-
-    "BÁT THUẦN CÀN": { the: 6, ung: 3 },
-    "BÁT THUẦN ĐOÀI": { the: 6, ung: 3 },
-    "BÁT THUẦN TỐN": { the: 6, ung: 5 },
-    "BÁT THUẦN CHẤN": { the: 6, ung: 3 },
     "THIÊN PHONG CẤU": { the: 1, ung: 4 },
     "THIÊN SƠN ĐỘN": { the: 2, ung: 5 },
     "THIÊN ĐỊA BỈ": { the: 3, ung: 6 },
-    "PHONG ĐỊA QUAN": { the: 4, ung: 1 },
-    "SƠN ĐỊA BÁC": { the: 5, ung: 2 },
-    "HỎA ĐỊA TẤN": { the: 4, ung: 1 },
-    "HỎA THIÊN ĐẠI HỮU": { the: 3, ung: 6 },
-    "TRẠCH THỦY KHỐN": { the: 1, ung: 4 },
-    "TRẠCH ĐỊA TUỴ": { the: 2, ung: 5 },
-    "TRẠCH SƠN HÀM": { the: 3, ung: 6 },
-    "THỦY SƠN KIỂN": { the: 4, ung: 1 },
+    "THIÊN LÔI VÔ VỌNG": { the: 4, ung: 1 },
+    "THIÊN TRẠCH LÝ": { the: 5, ung: 2 },
+
+    // Địa Thượng
+    "ĐỊA LÔI PHỤC": { the: 1, ung: 4 },
+    "ĐỊA TRẠCH LÂM": { the: 1, ung: 4 },
+    "ĐỊA THIÊN THÁI": { the: 4, ung: 3 },
+    "ĐỊA PHONG THĂNG": { the: 4, ung: 1 },
     "ĐỊA SƠN KHIÊM": { the: 5, ung: 2 },
+    "ĐỊA HỎA MINH DI": { the: 4, ung: 1 },
+    "ĐỊA THỦY SƯ": { the: 3, ung: 6 },
+
+    // Lôi Thượng
+    "LÔI THIÊN ĐẠI TRÁNG": { the: 4, ung: 2 },
     "LÔI SƠN TIỂU QUÁ": { the: 4, ung: 1 },
     "LÔI TRẠCH QUY MUỘI": { the: 3, ung: 6 },
     "LÔI ĐỊA DỰ": { the: 1, ung: 4 },
     "LÔI THỦY GIẢI": { the: 2, ung: 5 },
     "LÔI PHONG HẰNG": { the: 3, ung: 6 },
-    "ĐỊA PHONG THĂNG": { the: 4, ung: 1 },
-    "THỦY PHONG TỈNH": { the: 5, ung: 2 },
+    "LÔI HỎA PHONG": { the: 5, ung: 2 },
+
+    // Trạch Thượng
+    "TRẠCH THIÊN QUẢI": { the: 5, ung: 1 },
+    "TRẠCH THỦY KHỐN": { the: 1, ung: 4 },
+    "TRẠCH ĐỊA TUỴ": { the: 2, ung: 5 },
+    "TRẠCH SƠN HÀM": { the: 3, ung: 6 },
     "TRẠCH PHONG ĐẠI QUÁ": { the: 4, ung: 1 },
     "TRẠCH LÔI TÙY": { the: 3, ung: 6 },
-    "PHONG THIÊN TIỂU SÚC": { the: 1, ung: 4 },
-    "PHONG HỎA GIA NHÂN": { the: 2, ung: 5 },
-    "PHONG LÔI ÍCH": { the: 3, ung: 6 },
-    "THIÊN LÔI VÔ VỌNG": { the: 4, ung: 1 },
-    "HỎA LÔI PHỆ HẠP": { the: 5, ung: 2 },
-    "SƠN LÔI DI": { the: 4, ung: 1 },
-    "SƠN PHONG CỔ": { the: 3, ung: 6 },
-    "BÁT THUẦN KHẢM": { the: 6, ung: 3 },
+    "TRẠCH HỎA CÁCH": { the: 4, ung: 1 },
+
+    // Thủy Thượng
+    "THỦY THIÊN NHU": { the: 4, ung: 1 },
+    "THỦY ĐỊA TỶ": { the: 3, ung: 6 },
+    "THỦY SƠN KIỂN": { the: 4, ung: 1 },
+    "THỦY PHONG TỈNH": { the: 5, ung: 2 },
     "THỦY TRẠCH TIẾT": { the: 1, ung: 4 },
     "THỦY LÔI TRUÂN": { the: 2, ung: 5 },
-    "THỦY HỎA KÝ TẾ": { the: 3, ung: 6 },
-    "TRẠCH HỎA CÁCH": { the: 4, ung: 1 },
-    "LÔI HỎA PHONG": { the: 5, ung: 2 },
-    "ĐỊA HỎA MINH DI": { the: 4, ung: 1 },
-    "ĐỊA THỦY SƯ": { the: 3, ung: 6 }
+    "THỦY HỎA KÝ TẾ": { the: 3, ung: 6 }
   };
+
+  // Bước 2: chuyển sang map dùng key "upper-lower" (giống HEXAGRAMS)
+  const hexagramTheUngByKey: Record<
+    string,
+    {
+      the: number;
+      ung: number;
+    }
+  > = {};
+
+  Object.entries(hexagramTheUngByName).forEach(([name, cfg]) => {
+    const hex = Object.values(HEXAGRAMS).find((h) => h.vietnameseName === name);
+    if (hex) {
+      const key = `${hex.upperTrigram}-${hex.lowerTrigram}`;
+      hexagramTheUngByKey[key] = cfg;
+    }
+  });
 
   // Tìm quẻ theo id để áp dụng vị trí Thế / Ứng
   const hexagram =
@@ -130,8 +169,12 @@ export function generateLineData(hexagramId: number): LineData[] {
   const defaultThe = 6;
   const defaultUng = 3;
 
-  const config =
-    (hexagram && hexagramTheUngByName[hexagram.vietnameseName]) || null;
+  const key =
+    hexagram != null
+      ? `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`
+      : null;
+
+  const config = (key && hexagramTheUngByKey[key]) || null;
 
   const theHao = config?.the || defaultThe;
   const ungHao = config?.ung || defaultUng;

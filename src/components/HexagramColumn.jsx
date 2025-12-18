@@ -39,9 +39,11 @@ export default function HexagramColumn({
   // But we display from top to bottom, so reverse the array
   const lines = [...hexagram.lines].reverse();
 
-  // Generate line data for tooltips
+  // Generate line data cho tooltip
   const lineDataArray = generateLineData(hexagram.id, movingLine).reverse();
-  const omen = getHexagramOmen(hexagram.vietnameseName);
+  // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
+  const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
+  const omen = getHexagramOmen(hexagramKey);
 
   return (
     <motion.div
@@ -65,7 +67,7 @@ export default function HexagramColumn({
                 </div>
                 <div className="text-sm leading-relaxed space-y-2">
                   <div>
-                    {getHexagramMeaning(hexagram.vietnameseName) ||
+                    {getHexagramMeaning(hexagramKey) ||
                       "Ý nghĩa quẻ này đang được cập nhật..."}
                   </div>
                   {omen && (
