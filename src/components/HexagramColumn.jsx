@@ -5,6 +5,7 @@ import Line from "./Line";
 import { generateLineData } from "../data/lines";
 import { getHexagramMeaning } from "../data/hexagramMeanings";
 import { getHexagramOmen } from "../data/hexagramOmens";
+import { getLucThanName } from "../data/lucThuInfo";
 
 /**
  * HexagramColumn component - displays a hexagram in a vertical column
@@ -110,7 +111,9 @@ export default function HexagramColumn({
               const lineData = lineDataArray[index];
               // Check if this line's Lục Thân matches the selected dụng thần
               const isDungThan =
-                dungThan && lineData && lineData.lucThan === dungThan;
+                dungThan && 
+                lineData && 
+                getLucThanName(lineData.lucThan) === getLucThanName(dungThan);
 
               return (
                 <motion.div

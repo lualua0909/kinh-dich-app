@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
     "@dqcai/vn-lunar": "^1.0.1",
     "antd": "^5.12.8",
     "framer-motion": "^12.23.26",

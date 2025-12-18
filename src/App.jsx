@@ -131,7 +131,12 @@ function App() {
       const divinationResult =
         input.type === "serial"
           ? performDivination(input.serial)
-          : performDivination(undefined, input.lines, input.movingLine);
+          : performDivination(
+              undefined,
+              input.lines,
+              input.movingLine,
+              input.datetime
+            );
       setResult(divinationResult);
       setDungThan(dungThanValue || null);
     } catch (error) {

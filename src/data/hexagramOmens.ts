@@ -1,5 +1,5 @@
 const HEXAGRAM_OMENS: Record<string, string> = {
-  "3-3": "Thiên quan tứ phước", // BÁT THUẦN LY
+  "3-3": "Thiên quan tứ phúc", // BÁT THUẦN LY
   "3-7": "Tức điều phán sào", // HỎA SƠN LỮ
   "3-5": "Ngư ông đắc lợi", // HỎA PHONG ĐỈNH
   "3-6": "Tiêu hồ ngật tế", // HỎA THỦY VỊ TẾ
@@ -48,15 +48,15 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "0-5": "Chỉ nhật cao thăng", // ĐỊA PHONG THĂNG
   "6-5": "Khê tĩnh sinh tuyền", // THỦY PHONG TỈNH
   "2-5": "Dạ mộng kim ngân", // TRẠCH PHONG ĐẠI QUÁ
-  "2-4": "Suy xa khảo nha", // TRẠCH LÔI TÙY
+  "2-4": "Bộ bộ đăng cao", // TRẠCH LÔI TÙY
   "6-2": "Hải đề lao nguyệt", // THỦY TRẠCH TIẾT
-  "6-4": "Trảm tướng phong thần", // THỦY LÔI TRUÂN
+  "6-4": "Loạn ti vô đầu", // THỦY LÔI TRUÂN
   "6-3": "Loạn tu vô đầu", // THỦY HỎA KÝ TẾ
   "2-3": "Kim bảng đề danh", // TRẠCH HỎA CÁCH
-  "4-3": "Hạn miêu đắc vũ", // LÔI HỎA PHONG
+  "4-3": "Cổ kính trùng minh", // LÔI HỎA PHONG
   "0-3": "Cổ kính trùng minh", // ĐỊA HỎA MINH DI
   "0-6": "Mã đáo thành công", // ĐỊA THỦY SƯ
-  "5-1": "Mạt vân bất vũ", // PHONG THIÊN TIỂU SÚC
+  "5-1": "Mật vân bất vũ", // PHONG THIÊN TIỂU SÚC
   "5-3": "Quan Thủ lân chi", // PHONG HỎA GIA NHÂN
   "5-4": "Khô mộc khai hoa", // PHONG LÔI ÍCH
   "1-4": "Điểu bị lũng lao", // THIÊN LÔI VÔ VỌNG

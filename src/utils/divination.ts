@@ -185,8 +185,8 @@ function createChangedHexagram(
 /**
  * Get current date/time metadata
  */
-function getMetadata(): DivinationResult["metadata"] {
-  const now = new Date();
+function getMetadata(date?: Date): DivinationResult["metadata"] {
+  const now = date || new Date();
   const dateStr = now.toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "long",
@@ -223,7 +223,8 @@ function getMetadata(): DivinationResult["metadata"] {
 export function performDivination(
   serial?: string,
   manualLines?: [number, number, number, number, number, number],
-  manualMovingLine?: number | null
+  manualMovingLine?: number | null,
+  datetime?: Date
 ): DivinationResult {
   let originalHexagram: Hexagram | null = null;
   let mutualHexagram: Hexagram | null = null;
@@ -256,16 +257,16 @@ export function performDivination(
     movingLine = manualMovingLine ?? 0;
   } else {
     if (!serial) {
-      throw new Error("Serial cannot be empty");
+      throw new Error("Không tìm được quẻ");
     }
 
     // Validate: only numeric
     if (!/^\d+$/.test(serial)) {
-      throw new Error("Serial must contain only digits");
+      throw new Error("Chỉ được chứa số");
     }
 
     if (serial.length === 0) {
-      throw new Error("Serial cannot be empty");
+      throw new Error("Không tìm được quẻ");
     }
 
     // Step 1: Normalize
@@ -311,7 +312,7 @@ export function performDivination(
   }
 
   // Get metadata
-  const metadata = getMetadata();
+  const metadata = getMetadata(datetime);
 
   return {
     originalHexagram,

@@ -1,4 +1,3 @@
-// Diễn giải riêng cho Thanh Long lâm Lục Thân
 export const thanhLongLucThanInfo = {
   "Quan Quỷ":
     "Đại biểu pháp luật, chánh nghĩa, quản thúc, pháp luật, quan cấp, giấy chứng nhận danh dự. Đại biểu trị an, điều lệ pháp luật. Nữ nhân xem hôn nhân thì Quan Quỷ lâm Thanh Long là trượng phu, cảnh sát, quan toà, công an, công–kiểm–pháp; cũng chủ tửu sắc. Xem gia đình thì là bài vị, tiên vị; lâm Kim hào Quan Quỷ là Phật đường, biểu tượng tôn giáo; lâm quỷ là tổ tiên bài vị.",
@@ -175,4 +174,52 @@ export const cauTranDiaChiInfo = {
   Dậu: `Cung Dậu là cửa hình trách, Câu Trần lâm Dậu ứng điềm bị tra hình, xét hỏi, khiển trách. Có mâu thuẫn bất hòa, sự việc rất khó có thể tiến lên. Cũng gọi là quẻ chứa mầm bệnh ở chân.`,
   Tuất: `Tuất là chốn lao ngục tối tăm, gọi là Câu Trần bị nhập ngục, ứng điềm tù tội mà chẳng thể phân trần, thanh minh được. Cũng là điềm lui tới kiện thưa, ra vào cửa quan.`,
   Hợi: `Câu Trần khắc Hợi Thủy, nhưng Hợi là nguồn gốc sinh ra Mộc khắc lại Câu Trần Thổ, ấy là Câu Trần bị phản khắc, ứng điềm phản phúc không thôi, sự việc luôn bị bất trắc không ngừng, chẳng lường trước được. Lại cũng là điềm dời quan đổi chức, bất lợi.`
+};
+
+// Mapping Lục Thú Code <-> Tên
+export const LUC_TU_CODES: Record<string, string> = {
+  "Thanh Long": "TL",
+  "Chu Tước": "CT",
+  "Câu Trần": "CTr",
+  "Đằng Xà": "DX",
+  "Bạch Hổ": "BH",
+  "Huyền Vũ": "HV",
+};
+
+export const LUC_TU_NAMES: Record<string, string> = {
+  "TL": "Thanh Long",
+  "CT": "Chu Tước",
+  "CTr": "Câu Trần",
+  "DX": "Đằng Xà",
+  "ĐX": "Đằng Xà", // Map both
+  "DH": "Đằng Xà", // Just in case
+  "BH": "Bạch Hổ",
+  "HV": "Huyền Vũ",
+};
+
+// Mapping Lục Thân Code <-> Tên
+export const LUC_THAN_CODES: Record<string, string> = {
+  "Phụ Mẫu": "PM",
+  "Huynh Đệ": "HD",
+  "Tử Tôn": "TT",
+  "Thê Tài": "TTi",
+  "Quan Quỷ": "QQ",
+};
+
+export const LUC_THAN_NAMES: Record<string, string> = {
+  "PM": "Phụ Mẫu",
+  "HD": "Huynh Đệ",
+  "TT": "Tử Tôn",
+  "TTi": "Thê Tài",
+  "QQ": "Quan Quỷ",
+};
+
+export const getLucTuName = (codeOrName: string): string => {
+  if (!codeOrName) return "";
+  return LUC_TU_NAMES[codeOrName] || codeOrName;
+};
+
+export const getLucThanName = (codeOrName: string): string => {
+  if (!codeOrName) return "";
+  return LUC_THAN_NAMES[codeOrName] || codeOrName;
 };

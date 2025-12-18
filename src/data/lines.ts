@@ -993,7 +993,7 @@ export function generateLineData(hexagramId: number): LineData[] {
     // Địa Thượng
     "0-4": { the: 1, ung: 4 }, // ĐỊA LÔI PHỤC
     "0-2": { the: 1, ung: 4 }, // ĐỊA TRẠCH LÂM
-    "0-1": { the: 4, ung: 3 }, // ĐỊA THIÊN THÁI
+    "0-1": { the: 4, ung: 6 }, // ĐỊA THIÊN THÁI
     "0-5": { the: 4, ung: 1 }, // ĐỊA PHONG THĂNG
     "0-7": { the: 5, ung: 2 }, // ĐỊA SƠN KHIÊM
     "0-3": { the: 4, ung: 1 }, // ĐỊA HỎA MINH DI
