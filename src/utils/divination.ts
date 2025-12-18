@@ -44,14 +44,14 @@ function normalizeSerial(serial: string): string {
 
 /**
  * Step 2: Split serial into upper and lower halves
- * - Lower trigram (Hạ quái): first half (2 số đầu)
- * - Upper trigram (Thượng quái): second half (2 số sau)
+ * - Upper trigram (Thượng quái): first half (nửa đầu dãy số)
+ * - Lower trigram (Hạ quái): second half (nửa sau dãy số)
  */
 function splitSerial(serial: string): { upper: string; lower: string } {
   const mid = serial.length / 2;
   return {
-    lower: serial.slice(0, mid), // 2 số đầu → Hạ quái
-    upper: serial.slice(mid) // 2 số sau → Thượng quái
+    upper: serial.slice(0, mid), // Nửa đầu → Thượng quái
+    lower: serial.slice(mid) // Nửa sau → Hạ quái
   };
 }
 
