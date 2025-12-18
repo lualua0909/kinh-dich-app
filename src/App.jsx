@@ -14,32 +14,32 @@ const nguHanhRelations = {
     sinh: "Hỏa",
     duocSinh: "Thủy",
     khac: "Thổ",
-    biKhac: "Kim"
+    biKhac: "Kim",
   },
   Hỏa: {
     sinh: "Thổ",
     duocSinh: "Mộc",
     khac: "Kim",
-    biKhac: "Thủy"
+    biKhac: "Thủy",
   },
   Thổ: {
     sinh: "Kim",
     duocSinh: "Hỏa",
     khac: "Thủy",
-    biKhac: "Mộc"
+    biKhac: "Mộc",
   },
   Kim: {
     sinh: "Thủy",
     duocSinh: "Thổ",
     khac: "Mộc",
-    biKhac: "Hỏa"
+    biKhac: "Hỏa",
   },
   Thủy: {
     sinh: "Mộc",
     duocSinh: "Kim",
     khac: "Hỏa",
-    biKhac: "Thổ"
-  }
+    biKhac: "Thổ",
+  },
 };
 
 const nguHanhFromDiaChi = {
@@ -54,7 +54,7 @@ const nguHanhFromDiaChi = {
   Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
+  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
 };
 
 const renderNguHanhTooltip = (nguHanhName) => {
@@ -254,7 +254,13 @@ function App() {
         {/* Main Hexagram Display - 3 Columns */}
         {result && (
           <div className="mb-8">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div
+              className={`grid gap-6 ${
+                result.movingLine
+                  ? "grid-cols-1 sm:grid-cols-3"
+                  : "grid-cols-1 sm:grid-cols-2"
+              }`}
+            >
               {/* Quẻ Gốc (Original Hexagram) */}
               <HexagramColumn
                 hexagram={result.originalHexagram}
@@ -263,15 +269,19 @@ function App() {
                 dungThan={dungThan}
               />
 
-              {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) */}
-              <HexagramColumn
-                hexagram={result.mutualHexagram}
-                title=""
-                scale={0.8}
-              />
+              {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) - chỉ hiển thị khi có hào động */}
+              {result.movingLine > 0 ? (
+                <HexagramColumn
+                  hexagram={result.mutualHexagram}
+                  title=""
+                  scale={0.8}
+                />
+              ) : null}
 
               {/* Quẻ Biến (Changed Hexagram) */}
-              <HexagramColumn hexagram={result.changedHexagram} title="" />
+              {result.changedHexagram && (
+                <HexagramColumn hexagram={result.changedHexagram} title="" />
+              )}
             </div>
           </div>
         )}

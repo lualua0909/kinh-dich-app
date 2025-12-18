@@ -51,7 +51,7 @@ function splitSerial(serial: string): { upper: string; lower: string } {
   const mid = serial.length / 2;
   return {
     upper: serial.slice(0, mid), // Nửa đầu → Thượng quái
-    lower: serial.slice(mid) // Nửa sau → Hạ quái
+    lower: serial.slice(mid), // Nửa sau → Hạ quái
   };
 }
 
@@ -87,10 +87,18 @@ function createMutualHexagram(originalHexagram: Hexagram): Hexagram | null {
   const lines = originalHexagram.lines;
 
   // Lower trigram: lines 2, 3, 4 (indices 1, 2, 3)
-  const lowerTrigramLines = [lines[1], lines[2], lines[3]];
+  const lowerTrigramLines: [number, number, number] = [
+    lines[1],
+    lines[2],
+    lines[3],
+  ];
 
   // Upper trigram: lines 3, 4, 5 (indices 2, 3, 4)
-  const upperTrigramLines = [lines[2], lines[3], lines[4]];
+  const upperTrigramLines: [number, number, number] = [
+    lines[2],
+    lines[3],
+    lines[4],
+  ];
 
   // Find matching trigrams
   const lowerTrigram = findTrigramByLines(lowerTrigramLines);
@@ -154,12 +162,12 @@ function createChangedHexagram(
   const lowerTrigramLines: [number, number, number] = [
     lines[0],
     lines[1],
-    lines[2]
+    lines[2],
   ];
   const upperTrigramLines: [number, number, number] = [
     lines[3],
     lines[4],
-    lines[5]
+    lines[5],
   ];
 
   // Find matching trigrams by comparing lines
@@ -184,7 +192,7 @@ function getMetadata(): DivinationResult["metadata"] {
     month: "long",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
   });
 
   // Convert to Vietnamese lunar calendar using @dqcai/vn-lunar
@@ -204,7 +212,7 @@ function getMetadata(): DivinationResult["metadata"] {
     monthCanChi: lunar.monthCanChi,
     dayCanChi: lunar.dayCanChi,
     tietKhi,
-    nhatThan
+    nhatThan,
   };
 }
 
@@ -229,12 +237,12 @@ export function performDivination(
     const lowerTrigramLines: [number, number, number] = [
       manualLines[0],
       manualLines[1],
-      manualLines[2]
+      manualLines[2],
     ];
     const upperTrigramLines: [number, number, number] = [
       manualLines[3],
       manualLines[4],
-      manualLines[5]
+      manualLines[5],
     ];
 
     const lowerTrigram = findTrigramByLines(lowerTrigramLines);
@@ -281,16 +289,26 @@ export function performDivination(
     usedSerial = serial;
   }
 
-  // Step 6: Get mutual hexagram
-  mutualHexagram = originalHexagram
-    ? createMutualHexagram(originalHexagram)
-    : null;
+  // Step 6: Get mutual hexagram (chỉ khi có hào động, movingLine > 0)
+  mutualHexagram =
+    originalHexagram && movingLine > 0
+      ? createMutualHexagram(originalHexagram)
+      : null;
 
   // Step 7: Get changed hexagram
-  changedHexagram =
-    originalHexagram && movingLine
-      ? createChangedHexagram(originalHexagram, movingLine)
-      : null;
+  // Nếu không có hào động (movingLine = 0 hoặc null), quẻ biến giống quẻ chính
+  if (originalHexagram) {
+    if (movingLine > 0) {
+      const changed = createChangedHexagram(originalHexagram, movingLine);
+      // Nếu tạo quẻ biến thành công, dùng nó; nếu không, dùng quẻ chính
+      changedHexagram = changed || originalHexagram;
+    } else {
+      // Không có hào động, quẻ biến = quẻ chính
+      changedHexagram = originalHexagram;
+    }
+  } else {
+    changedHexagram = null;
+  }
 
   // Get metadata
   const metadata = getMetadata();
@@ -302,6 +320,6 @@ export function performDivination(
     movingLine,
     serial: usedSerial,
     normalizedSerial,
-    metadata
+    metadata,
   };
 }
