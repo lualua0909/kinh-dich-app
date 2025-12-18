@@ -8,7 +8,7 @@ import {
   Tooltip,
   Card,
   Radio,
-  Switch
+  Switch,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { getDungThanInfo } from "../data/dungThan";
@@ -29,7 +29,7 @@ export default function DivinationForm({ onDivinate }) {
     { value: "Huynh Đệ", label: "Huynh Đệ" },
     { value: "Tử Tôn", label: "Tử Tôn" },
     { value: "Thê Tài", label: "Thê Tài" },
-    { value: "Quan Quỷ", label: "Quan Quỷ" }
+    { value: "Quan Quỷ", label: "Quan Quỷ" },
   ];
 
   const handleDungThanChange = (value) => {
@@ -86,7 +86,7 @@ export default function DivinationForm({ onDivinate }) {
           {
             type: "manual",
             lines,
-            movingLine: movingLine === "none" ? null : Number(movingLine)
+            movingLine: movingLine === "none" ? null : Number(movingLine),
           },
           values.dungThan
         );
@@ -111,7 +111,19 @@ export default function DivinationForm({ onDivinate }) {
           <Radio.Button value="manual">Lập quẻ Lục hào thủ công</Radio.Button>
         </Radio.Group>
       </div>
-      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        initialValues={{
+          line1: 1,
+          line2: 1,
+          line3: 1,
+          line4: 1,
+          line5: 1,
+          line6: 1,
+        }}
+      >
         {mode === "serial" && (
           <div className="flex flex-wrap items-end gap-4">
             <Form.Item
@@ -123,7 +135,7 @@ export default function DivinationForm({ onDivinate }) {
               }
               rules={[
                 { required: true, message: "Vui lòng nhập Serial" },
-                { pattern: /^\d+$/, message: "Chỉ được nhập số" }
+                { pattern: /^\d+$/, message: "Chỉ được nhập số" },
               ]}
               className="flex-1 min-w-[200px]"
             >
@@ -278,6 +290,7 @@ export default function DivinationForm({ onDivinate }) {
                       name={`line${hao}`}
                       className="mb-0"
                       rules={[{ required: true, message: "Chọn Âm/Dương" }]}
+                      initialValue={1}
                     >
                       <Select
                         size="small"

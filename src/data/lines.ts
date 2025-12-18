@@ -49,6 +49,70 @@ export function generateLineData(hexagramId: number): LineData[] {
   const phucThanOptions = ["", "", "", "", "", ""];
   const tuanKhongOptions = ["", "", "", "", "", ""];
 
+  // Dữ liệu cụ thể cho từng quẻ (key: "upper-lower")
+  // Nếu có dữ liệu cụ thể, sẽ override dữ liệu mặc định
+  const hexagramSpecificData: Record<
+    string,
+    {
+      lucThan?: string[];
+      canChi?: string[];
+      phucThan?: string[];
+      tuanKhong?: string[];
+      lucTu?: string[];
+    }
+  > = {
+    // BÁT THUẦN CÀN (1-1)
+    "1-1": {
+      lucThan: [
+        "Phụ Mẫu",
+        "Huynh Đệ",
+        "Quan Quỷ",
+        "Phụ Mẫu",
+        "Thê Tài",
+        "Tử Tôn",
+      ],
+      canChi: [
+        "Tuất-Thổ",
+        "Thân-Kim",
+        "Ngọ-Hỏa",
+        "Thìn-Thổ",
+        "Dần-Mộc",
+        "Tý-Thủy",
+      ],
+      phucThan: ["", "", "", "", "", ""],
+      tuanKhong: ["", "", "", "", "", "K"],
+      lucTu: [
+        "Huyền Vũ",
+        "Thanh Long",
+        "Chu Tước",
+        "Câu Trần",
+        "Đằng Xà",
+        "Bạch Hổ",
+      ],
+    },
+    // LÔI THỦY GIẢI (4-6)
+    "4-6": {
+      lucThan: [
+        "Thê Tài",
+        "Quan Quỷ",
+        "Tử Tôn",
+        "Tử Tôn",
+        "Thê Tài",
+        "Huynh Đệ",
+      ],
+      canChi: [
+        "Tuất-Thổ",
+        "Thân-Kim",
+        "Ngọ-Hỏa",
+        "Ngọ-Hỏa",
+        "Thìn-Thổ",
+        "Dần-Mộc",
+      ],
+      phucThan: ["", "", "", "", "", "Phụ-Tý"],
+      tuanKhong: ["", "", "", "", "", ""],
+    },
+  };
+
   // Vị trí Thế / Ứng cho từng quẻ (có thể mở rộng thêm)
   // Bước 1: khai báo theo tên quẻ cho dễ nhìn
   // Sắp xếp lại thứ tự, nhóm theo quẻ Thượng (Thuần Càn, Thuần Khảm, ...), rồi đến những quẻ hỗn hợp cùng Thượng và các nhóm chính khác.
@@ -175,24 +239,49 @@ export function generateLineData(hexagramId: number): LineData[] {
 
   const config = (key && hexagramTheUngByKey[key]) || null;
 
-  const theHao = config?.the || defaultThe;
-  const ungHao = config?.ung || defaultUng;
+  const theHaoFromTop = config?.the || defaultThe;
+  const ungHaoFromTop = config?.ung || defaultUng;
+
+  // Chuyển đổi từ số hào đếm từ trên xuống sang số hào đếm từ dưới lên
+  // Công thức: hào_từ_dưới_lên = 7 - hào_từ_trên_xuống
+  const theHao = 7 - theHaoFromTop;
+  const ungHao = 7 - ungHaoFromTop;
 
   const theUngMapForHexagram: Record<number, number> = {};
   if (theHao) theUngMapForHexagram[theHao] = 1;
   if (ungHao) theUngMapForHexagram[ungHao] = 2;
 
+  // Kiểm tra xem có dữ liệu cụ thể cho quẻ này không
+  const specificData = key ? hexagramSpecificData[key] : null;
+
   for (let i = 1; i <= 6; i++) {
     const index = (hexagramId + i - 1) % 6;
+
+    // Sử dụng dữ liệu cụ thể nếu có, nếu không thì dùng dữ liệu mặc định
+    const lucThan = specificData?.lucThan
+      ? specificData.lucThan[i - 1]
+      : lucThanOptions[index];
+    const canChi = specificData?.canChi
+      ? specificData.canChi[i - 1]
+      : canChiOptions[index];
+    const phucThan = specificData?.phucThan
+      ? specificData.phucThan[i - 1] || ""
+      : phucThanOptions[index] || "";
+    const tuanKhong = specificData?.tuanKhong
+      ? specificData.tuanKhong[i - 1] || ""
+      : tuanKhongOptions[index] || "";
+    const lucTu = specificData?.lucTu
+      ? specificData.lucTu[i - 1]
+      : lucTuOptions[index];
 
     lines.push({
       hao: i,
       theUng: theUngMapForHexagram[i]?.toString() || "",
-      lucThan: lucThanOptions[index],
-      canChi: canChiOptions[index],
-      lucTu: lucTuOptions[index],
-      phucThan: phucThanOptions[index] || "",
-      tuanKhong: tuanKhongOptions[index] || "",
+      lucThan: lucThan,
+      canChi: canChi,
+      lucTu: lucTu,
+      phucThan: phucThan,
+      tuanKhong: tuanKhong,
     });
   }
 

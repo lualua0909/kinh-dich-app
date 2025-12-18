@@ -33,14 +33,16 @@ export default function InterpretationTables({
   }
 
   // Line data for TỨC ĐIỀU PHÁN SÀO (from original hexagram)
-  const lineData1 = generateLineData(originalHexagram.id, movingLine).reverse();
-  const lines1 = [...originalHexagram.lines].reverse(); // Now lines[0] = hào 6, lines[5] = hào 1
+  // Display from hào 1 (bottom) to hào 6 (top), so no reverse needed
+  const lineData1 = generateLineData(originalHexagram.id, movingLine);
+  const lines1 = [...originalHexagram.lines]; // lines[0] = hào 1, lines[5] = hào 6
 
   // Line data for NHÂN ĐOÁN TÁO CAO (from changed hexagram)
+  // Display from hào 1 (bottom) to hào 6 (top), so no reverse needed
   const lineData2 = changedHexagram
-    ? generateLineData(changedHexagram.id, null).reverse()
+    ? generateLineData(changedHexagram.id, null)
     : [];
-  const lines2 = changedHexagram ? [...changedHexagram.lines].reverse() : [];
+  const lines2 = changedHexagram ? [...changedHexagram.lines] : [];
 
   // Component to render hào line
   const renderHaoLine = (hao, lineType, isMoving) => {
@@ -227,9 +229,18 @@ export default function InterpretationTables({
   const renderCanChi = (canChi) => {
     if (!canChi) return "-";
 
-    // Extract Địa Chi (part after space)
-    const parts = canChi.split(" ");
-    const diaChi = parts[parts.length - 1];
+    // Extract Địa Chi
+    // Support both formats: "Giáp Tý" (Địa Chi is last part) and "Tuất-Thổ" (Địa Chi is first part)
+    let diaChi;
+    if (canChi.includes("-")) {
+      // Format "Tuất-Thổ": Địa Chi is the first part
+      const parts = canChi.split("-");
+      diaChi = parts[0];
+    } else {
+      // Format "Giáp Tý": Địa Chi is the last part
+      const parts = canChi.split(" ");
+      diaChi = parts[parts.length - 1];
+    }
     const nguHanh = getNguHanhFromDiaChi(diaChi);
 
     return (
@@ -330,7 +341,7 @@ export default function InterpretationTables({
       width: 80,
       align: "center",
       render: (hao, record, index) => {
-        // index 0 = hào 6, index 5 = hào 1
+        // index 0 = hào 1, index 5 = hào 6
         const lineType = lines1[index];
         const isMoving = movingLine === hao;
         return renderHaoLine(hao, lineType, isMoving);
@@ -408,7 +419,7 @@ export default function InterpretationTables({
       width: 80,
       align: "center",
       render: (hao, record, index) => {
-        // index 0 = hào 6, index 5 = hào 1
+        // index 0 = hào 1, index 5 = hào 6
         const lineType = lines2[index];
         const isMoving = false; // Quẻ biến không có hào động
         return renderHaoLine(hao, lineType, isMoving);
