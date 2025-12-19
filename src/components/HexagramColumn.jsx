@@ -2,10 +2,9 @@ import React from "react";
 import { Card, Tooltip } from "antd";
 import { motion } from "framer-motion";
 import Line from "./Line";
-import { generateLineData } from "../data/lines";
 import { getHexagramMeaning } from "../data/hexagramMeanings";
 import { getHexagramOmen } from "../data/hexagramOmens";
-import { getLucThanName } from "../data/lucThuInfo";
+import { useHexagramLines } from "../hooks/useHexagramLines";
 
 /**
  * HexagramColumn component - displays a hexagram in a vertical column
@@ -36,12 +35,8 @@ export default function HexagramColumn({
     );
   }
 
-  // Lines are stored from bottom to top (hào 1 to hào 6)
-  // But we display from top to bottom, so reverse the array
-  const lines = [...hexagram.lines].reverse();
-
-  // Generate line data cho tooltip
-  const lineDataArray = generateLineData(hexagram.id, movingLine).reverse();
+  // Chuẩn hoá dữ liệu hào: mảng từ trên xuống (hào 6 → hào 1)
+  const normalizedLines = useHexagramLines(hexagram, movingLine, dungThan);
   // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
   const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
   const omen = getHexagramOmen(hexagramKey);
@@ -104,16 +99,8 @@ export default function HexagramColumn({
 
           {/* Lines - display from top (hào 6) to bottom (hào 1) */}
           <div className="space-y-2 py-4">
-            {lines.map((lineType, index) => {
-              // index 0 = hào 6, index 5 = hào 1
-              const haoNumber = 6 - index;
-              const isMoving = movingLine === haoNumber;
-              const lineData = lineDataArray[index];
-              // Check if this line's Lục Thân matches the selected dụng thần
-              const isDungThan =
-                dungThan && 
-                lineData && 
-                getLucThanName(lineData.lucThan) === getLucThanName(dungThan);
+            {normalizedLines.map((info, index) => {
+              const { hao, lineType, lineData, isMoving, isDungThan } = info;
 
               return (
                 <motion.div
@@ -125,7 +112,7 @@ export default function HexagramColumn({
                   <Line
                     type={lineType}
                     isMoving={isMoving}
-                    haoNumber={haoNumber}
+                    haoNumber={hao}
                     lineData={lineData}
                     isDungThan={isDungThan}
                   />

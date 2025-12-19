@@ -7,6 +7,7 @@ import HexagramColumn from "./components/HexagramColumn";
 import InterpretationTables from "./components/InterpretationTables";
 import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
+import { LUC_THAN_CODES } from "./data/lucThuInfo";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 const nguHanhRelations = {
@@ -14,32 +15,32 @@ const nguHanhRelations = {
     sinh: "Hỏa",
     duocSinh: "Thủy",
     khac: "Thổ",
-    biKhac: "Kim",
+    biKhac: "Kim"
   },
   Hỏa: {
     sinh: "Thổ",
     duocSinh: "Mộc",
     khac: "Kim",
-    biKhac: "Thủy",
+    biKhac: "Thủy"
   },
   Thổ: {
     sinh: "Kim",
     duocSinh: "Hỏa",
     khac: "Thủy",
-    biKhac: "Mộc",
+    biKhac: "Mộc"
   },
   Kim: {
     sinh: "Thủy",
     duocSinh: "Thổ",
     khac: "Mộc",
-    biKhac: "Hỏa",
+    biKhac: "Hỏa"
   },
   Thủy: {
     sinh: "Mộc",
     duocSinh: "Kim",
     khac: "Hỏa",
-    biKhac: "Thổ",
-  },
+    biKhac: "Thổ"
+  }
 };
 
 const nguHanhFromDiaChi = {
@@ -54,7 +55,7 @@ const nguHanhFromDiaChi = {
   Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
 };
 
 const renderNguHanhTooltip = (nguHanhName) => {
@@ -119,7 +120,8 @@ const renderCanChiWithNguHanh = (canChi) => {
 const getDiaChiFromCanChi = (canChi) => {
   if (!canChi) return null;
   const parts = canChi.split(" ");
-  return parts[parts.length - 1] || null;
+  console.log("p parts", parts[1]);
+  return parts[1];
 };
 
 function App() {
@@ -189,12 +191,11 @@ function App() {
                     result.movingLine
                   );
                   const dungThanLine = lineData.find(
-                    (line) => line.lucThan === dungThan
+                    (line) => line.lucThan === LUC_THAN_CODES[dungThan]
                   );
                   const dungThanDiaChi = dungThanLine
                     ? getDiaChiFromCanChi(dungThanLine.canChi)
                     : null;
-
                   const yearDiaChi = getDiaChiFromCanChi(
                     result.metadata.yearCanChi
                   );
@@ -215,7 +216,6 @@ function App() {
                     dungThanDiaChi === monthDiaChi;
                   const isNhatLenh =
                     dungThanDiaChi && dayDiaChi && dungThanDiaChi === dayDiaChi;
-
                   if (
                     !dungThanDiaChi ||
                     (!isThaiTue && !isNguyetLenh && !isNhatLenh)

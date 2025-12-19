@@ -183,18 +183,18 @@ export const LUC_TU_CODES: Record<string, string> = {
   "Câu Trần": "CTr",
   "Đằng Xà": "DX",
   "Bạch Hổ": "BH",
-  "Huyền Vũ": "HV",
+  "Huyền Vũ": "HV"
 };
 
 export const LUC_TU_NAMES: Record<string, string> = {
-  "TL": "Thanh Long",
-  "CT": "Chu Tước",
-  "CTr": "Câu Trần",
-  "DX": "Đằng Xà",
-  "ĐX": "Đằng Xà", // Map both
-  "DH": "Đằng Xà", // Just in case
-  "BH": "Bạch Hổ",
-  "HV": "Huyền Vũ",
+  TL: "Thanh Long",
+  CT: "Chu Tước",
+  CTr: "Câu Trần",
+  DX: "Đằng Xà",
+  ĐX: "Đằng Xà", // Map both
+  DH: "Đằng Xà", // Just in case
+  BH: "Bạch Hổ",
+  HV: "Huyền Vũ"
 };
 
 // Mapping Lục Thân Code <-> Tên
@@ -203,15 +203,15 @@ export const LUC_THAN_CODES: Record<string, string> = {
   "Huynh Đệ": "HD",
   "Tử Tôn": "TT",
   "Thê Tài": "TTi",
-  "Quan Quỷ": "QQ",
+  "Quan Quỷ": "QQ"
 };
 
 export const LUC_THAN_NAMES: Record<string, string> = {
-  "PM": "Phụ Mẫu",
-  "HD": "Huynh Đệ",
-  "TT": "Tử Tôn",
-  "TTi": "Thê Tài",
-  "QQ": "Quan Quỷ",
+  PM: "Phụ Mẫu",
+  HD: "Huynh Đệ",
+  TT: "Tử Tôn",
+  TTi: "Thê Tài",
+  QQ: "Quan Quỷ"
 };
 
 export const getLucTuName = (codeOrName: string): string => {
@@ -222,4 +222,50 @@ export const getLucTuName = (codeOrName: string): string => {
 export const getLucThanName = (codeOrName: string): string => {
   if (!codeOrName) return "";
   return LUC_THAN_NAMES[codeOrName] || codeOrName;
+};
+
+// =========================
+// Quan hệ Tương Sinh / Tương Khắc của Lục Thân
+// =========================
+
+// Map Lục Thân (tên đầy đủ) -> Lục Thân mà nó SINH ra
+// Lưu ý: chỉ một chiều, không tự sinh ngược lại
+export const LUC_THAN_SINH_MAP: Record<string, string> = {
+  "Phụ Mẫu": "Huynh Đệ",
+  "Huynh Đệ": "Tử Tôn",
+  "Tử Tôn": "Thê Tài",
+  "Thê Tài": "Quan Quỷ",
+  "Quan Quỷ": "Phụ Mẫu"
+};
+
+// Map Lục Thân (tên đầy đủ) -> Lục Thân mà nó KHẮC
+// Lưu ý: chỉ một chiều, không tự khắc ngược lại
+export const LUC_THAN_KHAC_MAP: Record<string, string> = {
+  "Phụ Mẫu": "Tử Tôn",
+  "Tử Tôn": "Quan Quỷ",
+  "Quan Quỷ": "Huynh Đệ",
+  "Huynh Đệ": "Thê Tài",
+  "Thê Tài": "Phụ Mẫu"
+};
+
+// Helper: chuẩn hoá input (code hoặc tên) về tên Lục Thân đầy đủ
+const normalizeLucThan = (value: string): string => {
+  if (!value) return "";
+  return getLucThanName(value);
+};
+
+// Kiểm tra A sinh B? (chỉ xét 1 chiều, không xét sinh ngược lại)
+export const isLucThanSinh = (from: string, to: string): boolean => {
+  const a = normalizeLucThan(from);
+  const b = normalizeLucThan(to);
+  if (!a || !b) return false;
+  return LUC_THAN_SINH_MAP[a] === b;
+};
+
+// Kiểm tra A khắc B? (chỉ xét 1 chiều, không xét khắc ngược lại)
+export const isLucThanKhac = (from: string, to: string): boolean => {
+  const a = normalizeLucThan(from);
+  const b = normalizeLucThan(to);
+  if (!a || !b) return false;
+  return LUC_THAN_KHAC_MAP[a] === b;
 };

@@ -8,7 +8,7 @@ import {
   Tooltip,
   Card,
   Radio,
-  Switch,
+  Switch
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { getDungThanInfo } from "../data/dungThan";
@@ -34,7 +34,7 @@ export default function DivinationForm({ onDivinate }) {
         month: now.getMonth() + 1,
         year: now.getFullYear(),
         hour: now.getHours(),
-        minute: now.getMinutes(),
+        minute: now.getMinutes()
       });
     }
   }, [mode, form]);
@@ -44,11 +44,64 @@ export default function DivinationForm({ onDivinate }) {
     { value: "Huynh Đệ", label: "Huynh Đệ" },
     { value: "Tử Tôn", label: "Tử Tôn" },
     { value: "Thê Tài", label: "Thê Tài" },
-    { value: "Quan Quỷ", label: "Quan Quỷ" },
+    { value: "Quan Quỷ", label: "Quan Quỷ" }
   ];
 
   const handleDungThanChange = (value) => {
     setSelectedDungThan(value ? getDungThanInfo(value) : null);
+  };
+
+  const renderDungThanTooltip = () => {
+    if (selectedDungThan) {
+      return (
+        <div className="max-w-md text-xs space-y-2">
+          <div className="font-bold mb-2 text-sm">{selectedDungThan.label}</div>
+          <div>
+            <span className="font-semibold">Mô tả:</span>{" "}
+            <span>{selectedDungThan.description}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Vai vế / quan hệ:</span>{" "}
+            <span>{selectedDungThan.vaiVe}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Đồ dùng:</span>{" "}
+            <span>{selectedDungThan.doDung}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Mang tính chất:</span>{" "}
+            <span>{selectedDungThan.mangTinhChat}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Thời tiết:</span>{" "}
+            <span>{selectedDungThan.thoiTiet}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Cơ thể:</span>{" "}
+            <span>{selectedDungThan.coThe}</span>
+          </div>
+          <div>
+            <span className="font-semibold">Sự vật:</span>{" "}
+            <span>{selectedDungThan.suVat}</span>
+          </div>
+          <div className="pt-2 border-t border-gray-300">
+            <span className="font-semibold text-green-600">Trị thế cát:</span>{" "}
+            <span>{selectedDungThan.triTheCat}</span>
+          </div>
+          <div>
+            <span className="font-semibold text-red-600">
+              Trị thế không cát:
+            </span>{" "}
+            <span>{selectedDungThan.triTheKhongCat}</span>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="text-xs">
+        Chọn dụng thần để xem thông tin chi tiết về ý nghĩa và ứng dụng
+      </div>
+    );
   };
 
   const handleSubmit = async (values) => {
@@ -67,18 +120,18 @@ export default function DivinationForm({ onDivinate }) {
         await onDivinate({ type: "serial", serial }, values.dungThan);
       } else if (mode === "datetime") {
         const { day, month, year, hour, minute } = values;
-        
+
         // Convert to Lunar
         const lunarObj = LunarCalendar.fromSolar(day, month, year);
         // Access nested lunarDate object
         const lunarDate = lunarObj.lunarDate;
-        
+
         const lunarYear = lunarDate.year;
-        const lunarMonth = lunarDate.month; 
-        const lunarDay = lunarDate.day; 
+        const lunarMonth = lunarDate.month;
+        const lunarDay = lunarDate.day;
 
         // Year Branch (Chi Năm): 1=Tý..12=Hợi
-        // Formula: (year - 4) % 12 + 1. 
+        // Formula: (year - 4) % 12 + 1.
         // 1984 (Giáp Tý) -> (1984-4)%12 = 0 -> +1 = 1 (Tý). Correct.
         const yearBranch = ((lunarYear - 4) % 12) + 1;
 
@@ -95,12 +148,12 @@ export default function DivinationForm({ onDivinate }) {
         // Thượng quái: (Năm + Tháng + Ngày) % 8
         const upperSum = yearBranch + lunarMonth + lunarDay;
         let upperRemainder = upperSum % 8;
-        if (upperRemainder === 0) upperRemainder = 8; 
+        if (upperRemainder === 0) upperRemainder = 8;
 
         // Hạ quái: (Năm + Tháng + Ngày + Giờ) % 8
         const lowerSum = upperSum + hourBranch;
         let lowerRemainder = lowerSum % 8;
-        if (lowerRemainder === 0) lowerRemainder = 8; 
+        if (lowerRemainder === 0) lowerRemainder = 8;
 
         // Hào động: (Năm + Tháng + Ngày + Giờ) % 6
         const movingSum = lowerSum;
@@ -116,14 +169,21 @@ export default function DivinationForm({ onDivinate }) {
         const lowerTrigram = TRIGRAMS[lowerId];
 
         if (!upperTrigram || !lowerTrigram) {
-             console.error("Invalid Trigrams:", { upperId, lowerId, TRIGRAMS, upperSum, upperRemainder, lowerSum, lowerRemainder });
-             throw new Error("Không thể tính được quẻ. Vui lòng kiểm tra lại ngày giờ.");
+          console.error("Invalid Trigrams:", {
+            upperId,
+            lowerId,
+            TRIGRAMS,
+            upperSum,
+            upperRemainder,
+            lowerSum,
+            lowerRemainder
+          });
+          throw new Error(
+            "Không thể tính được quẻ. Vui lòng kiểm tra lại ngày giờ."
+          );
         }
 
-        const lines = [
-          ...lowerTrigram.lines,
-          ...upperTrigram.lines
-        ];
+        const lines = [...lowerTrigram.lines, ...upperTrigram.lines];
 
         const selectedDate = new Date(year, month - 1, day, hour, minute);
 
@@ -132,11 +192,10 @@ export default function DivinationForm({ onDivinate }) {
             type: "manual",
             lines,
             movingLine: movingRemainder,
-            datetime: selectedDate,
+            datetime: selectedDate
           },
           values.dungThan
         );
-
       } else {
         // Manual mode: collect six lines and moving line
         const lines = [];
@@ -172,7 +231,7 @@ export default function DivinationForm({ onDivinate }) {
           {
             type: "manual",
             lines,
-            movingLine: movingLine === "none" ? null : Number(movingLine),
+            movingLine: movingLine === "none" ? null : Number(movingLine)
           },
           values.dungThan
         );
@@ -216,7 +275,7 @@ export default function DivinationForm({ onDivinate }) {
           month: currentDate.getMonth() + 1,
           year: currentDate.getFullYear(),
           hour: currentDate.getHours(),
-          minute: currentDate.getMinutes(),
+          minute: currentDate.getMinutes()
         }}
       >
         {mode === "serial" && (
@@ -225,7 +284,7 @@ export default function DivinationForm({ onDivinate }) {
               name="serial"
               rules={[
                 { required: true, message: "Vui lòng nhập" },
-                { pattern: /^\d+$/, message: "Chỉ được nhập số" },
+                { pattern: /^\d+$/, message: "Chỉ được nhập số" }
               ]}
               className="flex-1 min-w-[200px]"
             >
@@ -244,12 +303,10 @@ export default function DivinationForm({ onDivinate }) {
                 <span className="font-semibold text-gray-700 flex items-center gap-2">
                   Dụng Thần:
                   <Tooltip
-                    title={
-                      <div className="text-xs">
-                        Chọn dụng thần để xem thông tin chi tiết về ý nghĩa và
-                        ứng dụng
-                      </div>
-                    }
+                    title={renderDungThanTooltip()}
+                    placement="right"
+                    overlayClassName="tooltip-custom"
+                    overlayStyle={{ maxWidth: "500px" }}
                   >
                     <InfoCircleOutlined className="text-blue-500 cursor-help" />
                   </Tooltip>
@@ -312,87 +369,105 @@ export default function DivinationForm({ onDivinate }) {
         )}
 
         {mode === "datetime" && (
-            <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Form.Item label="Ngày lập quẻ" className="mb-0">
-                        <div className="flex gap-2">
-                             <Form.Item name="day" noStyle>
-                                 <Select className="min-w-[70px]">
-                                     {Array.from({length: 31}, (_, i) => i + 1).map(d => (
-                                         <Option key={d} value={d}>{d}</Option>
-                                     ))}
-                                 </Select>
-                             </Form.Item>
-                             <Form.Item name="month" noStyle>
-                                 <Select className="min-w-[70px]">
-                                     {Array.from({length: 12}, (_, i) => i + 1).map(m => (
-                                         <Option key={m} value={m}>{m}</Option>
-                                     ))}
-                                 </Select>
-                             </Form.Item>
-                             <Form.Item name="year" noStyle>
-                                 <Select className="min-w-[90px]">
-                                     {Array.from({length: 100}, (_, i) => new Date().getFullYear() - 50 + i).map(y => (
-                                         <Option key={y} value={y}>{y}</Option>
-                                     ))}
-                                 </Select>
-                             </Form.Item>
-                        </div>
-                    </Form.Item>
-                    <Form.Item label="Giờ lập quẻ" className="mb-0">
-                         <div className="flex gap-2">
-                             <Form.Item name="hour" noStyle>
-                                 <Select className="min-w-[70px]">
-                                     {Array.from({length: 24}, (_, i) => i).map(h => (
-                                         <Option key={h} value={h}>{h.toString().padStart(2, '0')}</Option>
-                                     ))}
-                                 </Select>
-                             </Form.Item>
-                             <Form.Item name="minute" noStyle>
-                                 <Select className="min-w-[70px]">
-                                     {Array.from({length: 60}, (_, i) => i).map(m => (
-                                         <Option key={m} value={m}>{m.toString().padStart(2, '0')}</Option>
-                                     ))}
-                                 </Select>
-                             </Form.Item>
-                         </div>
-                    </Form.Item>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Form.Item label="Ngày lập quẻ" className="mb-0">
+                <div className="flex gap-2">
+                  <Form.Item name="day" noStyle>
+                    <Select className="min-w-[70px]">
+                      {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                        <Option key={d} value={d}>
+                          {d}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item name="month" noStyle>
+                    <Select className="min-w-[70px]">
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                        <Option key={m} value={m}>
+                          {m}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item name="year" noStyle>
+                    <Select className="min-w-[90px]">
+                      {Array.from(
+                        { length: 100 },
+                        (_, i) => new Date().getFullYear() - 50 + i
+                      ).map((y) => (
+                        <Option key={y} value={y}>
+                          {y}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
                 </div>
-                
-                <div className="flex flex-wrap items-end gap-4">
-                 <Form.Item
-                  name="dungThan"
-                  label={
-                    <span className="font-semibold text-gray-700 flex items-center gap-2">
-                      Dụng Thần:
-                      <Tooltip title="Chọn dụng thần">
-                        <InfoCircleOutlined className="text-blue-500 cursor-help" />
-                      </Tooltip>
-                    </span>
-                  }
-                  className="min-w-[180px]"
-                >
-                  <Select placeholder="Chọn dụng thần" size="large" allowClear onChange={handleDungThanChange}>
-                    {dungThanOptions.map((option) => (
-                      <Option key={option.value} value={option.value}>
-                        {option.label}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    size="large"
-                    loading={loading}
-                    className="bg-amber-600 hover:bg-amber-700 border-amber-600"
-                  >
-                    Lập Quẻ
-                  </Button>
-                </Form.Item>
+              </Form.Item>
+              <Form.Item label="Giờ lập quẻ" className="mb-0">
+                <div className="flex gap-2">
+                  <Form.Item name="hour" noStyle>
+                    <Select className="min-w-[70px]">
+                      {Array.from({ length: 24 }, (_, i) => i).map((h) => (
+                        <Option key={h} value={h}>
+                          {h.toString().padStart(2, "0")}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item name="minute" noStyle>
+                    <Select className="min-w-[70px]">
+                      {Array.from({ length: 60 }, (_, i) => i).map((m) => (
+                        <Option key={m} value={m}>
+                          {m.toString().padStart(2, "0")}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
                 </div>
+              </Form.Item>
             </div>
+
+            <div className="flex flex-wrap items-end gap-4">
+              <Form.Item
+                name="dungThan"
+                label={
+                  <span className="font-semibold text-gray-700 flex items-center gap-2">
+                    Dụng Thần:
+                    <Tooltip title="Chọn dụng thần">
+                      <InfoCircleOutlined className="text-blue-500 cursor-help" />
+                    </Tooltip>
+                  </span>
+                }
+                className="min-w-[180px]"
+              >
+                <Select
+                  placeholder="Chọn dụng thần"
+                  size="large"
+                  allowClear
+                  onChange={handleDungThanChange}
+                >
+                  {dungThanOptions.map((option) => (
+                    <Option key={option.value} value={option.value}>
+                      {option.label}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  size="large"
+                  loading={loading}
+                  className="bg-amber-600 hover:bg-amber-700 border-amber-600"
+                >
+                  Lập Quẻ
+                </Button>
+              </Form.Item>
+            </div>
+          </div>
         )}
 
         {mode === "manual" && (
@@ -435,7 +510,7 @@ export default function DivinationForm({ onDivinate }) {
                                 <div className="h-2 w-12 bg-gray-500 rounded-full dark:bg-gray-300" />
                               </div>
                             ),
-                            value: 1,
+                            value: 1
                           },
                           {
                             label: (
@@ -445,8 +520,8 @@ export default function DivinationForm({ onDivinate }) {
                                 <div className="h-2 w-5 bg-gray-500 rounded-full dark:bg-gray-300" />
                               </div>
                             ),
-                            value: 0,
-                          },
+                            value: 0
+                          }
                         ]}
                         optionType="button"
                         buttonStyle="solid"
@@ -483,12 +558,10 @@ export default function DivinationForm({ onDivinate }) {
                 <span className="font-semibold text-gray-700 flex items-center gap-2">
                   Dụng Thần:
                   <Tooltip
-                    title={
-                      <div className="text-xs">
-                        Chọn dụng thần để xem thông tin chi tiết về ý nghĩa và
-                        ứng dụng
-                      </div>
-                    }
+                    title={renderDungThanTooltip()}
+                    placement="right"
+                    overlayClassName="tooltip-custom"
+                    overlayStyle={{ maxWidth: "500px" }}
                   >
                     <InfoCircleOutlined className="text-blue-500 cursor-help" />
                   </Tooltip>
