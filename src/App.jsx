@@ -298,6 +298,7 @@ function App() {
             changedHexagram={result.changedHexagram}
             movingLine={result.movingLine}
             dungThan={dungThan}
+            metadata={result.metadata}
           />
         )}
 

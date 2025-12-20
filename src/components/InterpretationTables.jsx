@@ -1,5 +1,5 @@
-import React from "react";
-import { Table, Card, Tooltip, Drawer } from "antd";
+import React, { useState } from "react";
+import { Table, Card, Tooltip, Drawer, Modal } from "antd";
 import ReactMarkdown from "react-markdown";
 import { getDungThanInfo } from "../data/dungThan";
 import {
@@ -23,9 +23,19 @@ import {
   isLucThanKhac
 } from "../data/lucThuInfo";
 import { getHexagramOmen } from "../data/hexagramOmens";
+import { getHexagramMeaning } from "../data/hexagramMeanings";
 import { UserOutlined } from "@ant-design/icons";
 import { useHexagramLines } from "../hooks/useHexagramLines";
-import { getNhiHopOf, getNhiXungOf, getTamHopGroupOf } from "../utils/diaChi";
+import {
+  getNhiHopOf,
+  getNhiXungOf,
+  getTamHopGroupOf,
+  getNhapMoOf,
+  getDiaChiNhapMoTai,
+  isTamHopDiaChi,
+  isNhiHopDiaChi,
+  isNhiXungDiaChi
+} from "../utils/diaChi";
 /**
  * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
  * TỨC ĐIỀU PHÁN SÀO: uses original hexagram
@@ -35,7 +45,8 @@ export default function InterpretationTables({
   originalHexagram,
   changedHexagram,
   movingLine,
-  dungThan = null
+  dungThan = null,
+  metadata = null
 }) {
   if (!originalHexagram) {
     return null;
@@ -184,6 +195,89 @@ export default function InterpretationTables({
     return nguHanhMap[diaChi] || null;
   };
 
+  // Helper: Extract địa chi từ canChi
+  const extractDiaChi = (canChi) => {
+    if (!canChi) return null;
+    if (canChi.includes("-")) {
+      const parts = canChi.split("-");
+      return parts[0];
+    } else {
+      const parts = canChi.split(" ");
+      return parts[parts.length - 1];
+    }
+  };
+
+  // Helper: Xác định quan hệ tương sinh/tương khắc giữa 2 địa chi
+  const getDiaChiRelation = (chi1, chi2) => {
+    if (!chi1 || !chi2) return null;
+    if (chi1 === chi2) return "bằng";
+
+    const nguHanh1 = getNguHanhFromDiaChi(chi1);
+    const nguHanh2 = getNguHanhFromDiaChi(chi2);
+    if (!nguHanh1 || !nguHanh2) return null;
+
+    const nguHanhRelations = {
+      Mộc: { sinh: "Hỏa", duocSinh: "Thủy", khac: "Thổ", biKhac: "Kim" },
+      Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
+      Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
+      Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
+      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" }
+    };
+
+    const rel1 = nguHanhRelations[nguHanh1.name];
+    if (rel1.sinh === nguHanh2.name) return "sinh"; // chi1 sinh chi2
+    if (rel1.duocSinh === nguHanh2.name) return "duocSinh"; // chi2 sinh chi1
+    if (rel1.khac === nguHanh2.name) return "khac"; // chi1 khắc chi2
+    if (rel1.biKhac === nguHanh2.name) return "biKhac"; // chi2 khắc chi1
+
+    return null;
+  };
+
+  // Helper: Lấy địa chi của năm từ metadata
+  const getYearDiaChi = () => {
+    if (!metadata || !metadata.yearCanChi) return null;
+    const parts = metadata.yearCanChi.split(" ");
+    return parts[parts.length - 1];
+  };
+
+  // Helper: Lấy địa chi của tháng từ metadata
+  const getMonthDiaChi = () => {
+    if (!metadata || !metadata.monthCanChi) return null;
+    const parts = metadata.monthCanChi.split(" ");
+    return parts[parts.length - 1];
+  };
+
+  // Helper: Lấy địa chi của ngày từ metadata
+  const getDayDiaChi = () => {
+    if (!metadata || !metadata.dayCanChi) return null;
+    const parts = metadata.dayCanChi.split(" ");
+    return parts[parts.length - 1];
+  };
+
+  // Helper: Xác định quan hệ ngũ hành giữa 2 ngũ hành
+  const getNguHanhRelation = (nguHanh1, nguHanh2) => {
+    if (!nguHanh1 || !nguHanh2) return null;
+    if (nguHanh1 === nguHanh2) return "trung"; // Trùng nhau
+
+    const nguHanhRelations = {
+      Mộc: { sinh: "Hỏa", duocSinh: "Thủy", khac: "Thổ", biKhac: "Kim" },
+      Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
+      Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
+      Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
+      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" }
+    };
+
+    const rel1 = nguHanhRelations[nguHanh1];
+    if (!rel1) return null;
+
+    if (rel1.sinh === nguHanh2) return "sinh"; // nguHanh1 sinh nguHanh2
+    if (rel1.duocSinh === nguHanh2) return "duocSinh"; // nguHanh2 sinh nguHanh1
+    if (rel1.khac === nguHanh2) return "khac"; // nguHanh1 khắc nguHanh2
+    if (rel1.biKhac === nguHanh2) return "biKhac"; // nguHanh2 khắc nguHanh1
+
+    return null;
+  };
+
   const renderNguHanhTooltip = (nguHanhName) => {
     const rel = nguHanhRelations[nguHanhName];
     if (!rel) return nguHanhName;
@@ -238,6 +332,9 @@ export default function InterpretationTables({
   // State for fullscreen Lục Thú drawer
   const [lucTuDrawerData, setLucTuDrawerData] = React.useState(null);
 
+  // State for hexagram meaning modal
+  const [hexagramModalData, setHexagramModalData] = useState(null);
+
   const openLucTuDrawer = (lucTu, record) => {
     if (!lucTu) return;
     const lucTuName = getLucTuName(lucTu);
@@ -246,6 +343,14 @@ export default function InterpretationTables({
 
   const closeLucTuDrawer = () => {
     setLucTuDrawerData(null);
+  };
+
+  const openHexagramModal = (hexagramKey, hexagramName, omen) => {
+    setHexagramModalData({ hexagramKey, hexagramName, omen });
+  };
+
+  const closeHexagramModal = () => {
+    setHexagramModalData(null);
   };
 
   const getClassification = (lucTu, lucThan) => {
@@ -290,6 +395,8 @@ export default function InterpretationTables({
     const tamHopPartners = tamHopGroup
       ? tamHopGroup.filter((c) => c !== diaChi)
       : [];
+    const nhapMo = getNhapMoOf(diaChi);
+    const diaChiNhapMoTai = getDiaChiNhapMoTai(diaChi);
 
     return (
       <div className="max-w-xs text-xs space-y-2">
@@ -315,6 +422,20 @@ export default function InterpretationTables({
             <span className="font-bold">
               {tamHopPartners.join(", ")} (cùng với {diaChi})
             </span>
+          </div>
+        )}
+
+        {nhapMo && (
+          <div>
+            <span className="font-semibold text-purple-600">Nhập Mộ tại:</span>{" "}
+            <span className="font-bold">{nhapMo}</span>
+          </div>
+        )}
+
+        {diaChiNhapMoTai.length > 0 && (
+          <div>
+            <span className="font-semibold text-purple-600">Là mộ của:</span>{" "}
+            <span className="font-bold">{diaChiNhapMoTai.join(", ")}</span>
           </div>
         )}
       </div>
@@ -840,13 +961,59 @@ export default function InterpretationTables({
         {renderLucTuDrawerContent()}
       </Drawer>
 
+      {/* Modal hiển thị thông tin quẻ */}
+      <Modal
+        title={
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 m-0">
+              {hexagramModalData?.hexagramName}
+            </h2>
+            {hexagramModalData?.omen && (
+              <p className="text-sm text-amber-700 mt-2 italic">
+                Điềm: {hexagramModalData.omen}
+              </p>
+            )}
+          </div>
+        }
+        open={!!hexagramModalData}
+        onCancel={closeHexagramModal}
+        footer={null}
+        width={window.innerWidth < 640 ? "90%" : "70%"}
+        className="hexagram-modal"
+      >
+        <div className="prose prose-sm max-w-none text-gray-700">
+          {hexagramModalData?.hexagramKey
+            ? (() => {
+                const meaning = getHexagramMeaning(
+                  hexagramModalData.hexagramKey
+                );
+                return meaning ? (
+                  <ReactMarkdown>{meaning}</ReactMarkdown>
+                ) : (
+                  <p className="text-gray-500 italic">
+                    Ý nghĩa quẻ này đang được cập nhật...
+                  </p>
+                );
+              })()
+            : null}
+        </div>
+      </Modal>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
         {/* TỨC ĐIỀU PHÁN SÀO */}
         <Card
           title={
             <p
-              className="text-center font-bold text-lg text-gray-800 m-0"
+              className="text-center font-bold text-lg text-gray-800 m-0 cursor-pointer hover:text-blue-600 transition-colors"
               style={{ textTransform: "uppercase" }}
+              onClick={() => {
+                const key = `${originalHexagram.upperTrigram}-${originalHexagram.lowerTrigram}`;
+                openHexagramModal(
+                  key,
+                  originalHexagram.vietnameseName,
+                  getHexagramOmen(key)
+                );
+              }}
             >
               {getHexagramOmen(
                 `${originalHexagram.upperTrigram}-${originalHexagram.lowerTrigram}`
@@ -875,8 +1042,18 @@ export default function InterpretationTables({
         <Card
           title={
             <p
-              className="text-center font-bold text-lg text-gray-800 m-0"
+              className="text-center font-bold text-lg text-gray-800 m-0 cursor-pointer hover:text-blue-600 transition-colors"
               style={{ textTransform: "uppercase" }}
+              onClick={() => {
+                if (changedHexagram) {
+                  const key = `${changedHexagram.upperTrigram}-${changedHexagram.lowerTrigram}`;
+                  openHexagramModal(
+                    key,
+                    changedHexagram.vietnameseName,
+                    getHexagramOmen(key)
+                  );
+                }
+              }}
             >
               {changedHexagram &&
                 getHexagramOmen(
@@ -902,6 +1079,781 @@ export default function InterpretationTables({
           />
         </Card>
       </div>
+
+      {/* PHÂN TÍCH QUẺ */}
+      {(() => {
+        // Tìm hào Thế (theUng = 1)
+        const theHao = lineData1.find((line) => Number(line.theUng) === 1);
+        const theDiaChi = theHao ? extractDiaChi(theHao.canChi) : null;
+
+        // Tìm hào Dụng Thần
+        const dungThanHao = lineData1.find((line) => {
+          if (!dungThan) return false;
+          const dungThanName = getLucThanName(dungThan);
+          return getLucThanName(line.lucThan) === dungThanName;
+        });
+        const dungThanDiaChi = dungThanHao
+          ? extractDiaChi(dungThanHao.canChi)
+          : null;
+        const dungThanInfo = dungThan
+          ? getDungThanInfo(getLucThanName(dungThan))
+          : null;
+
+        // Phân tích quan hệ giữa hào Thế và Dụng Thần
+        let buoc2KetLuan = null;
+        if (theDiaChi && dungThanDiaChi) {
+          const relation = getDiaChiRelation(theDiaChi, dungThanDiaChi);
+          if (relation === "bằng") {
+            buoc2KetLuan = {
+              relation: "Bằng nhau",
+              text: "Tốt",
+              color: "text-green-600"
+            };
+          } else if (relation === "duocSinh") {
+            // Thế được sinh bởi Dụng
+            buoc2KetLuan = {
+              relation: "Thế được sinh bởi Dụng",
+              text: "Tốt",
+              color: "text-green-600"
+            };
+          } else if (relation === "sinh") {
+            // Thế sinh Dụng
+            buoc2KetLuan = {
+              relation: "Thế sinh Dụng",
+              text: "Tốt nhưng cần phải có sự cố gắng thì việc mới thành",
+              color: "text-yellow-600"
+            };
+          } else if (relation === "khac") {
+            // Thế khắc Dụng
+            buoc2KetLuan = {
+              relation: "Thế khắc Dụng",
+              text: "Rất xấu",
+              color: "text-red-600"
+            };
+          } else if (relation === "biKhac") {
+            // Dụng khắc Thế
+            buoc2KetLuan = {
+              relation: "Dụng khắc Thế",
+              text: "Tương đối xấu",
+              color: "text-orange-600"
+            };
+          }
+        }
+
+        // Kiểm tra Thái Tuế và Tuế Phá
+        const yearDiaChi = getYearDiaChi();
+        let thaiTue = false;
+        let tuePha = false;
+        if (dungThanDiaChi && yearDiaChi) {
+          thaiTue = dungThanDiaChi === yearDiaChi;
+          tuePha = getNhiXungOf(dungThanDiaChi) === yearDiaChi;
+        }
+
+        // Bước 3: Xét mối tương quan Dụng Thần và Tháng
+        const monthDiaChi = getMonthDiaChi();
+        let buoc3Results = [];
+        let buoc3Diem = 0;
+        let buoc3Dung = false; // Dừng xét bước 3
+        let buoc3DungTai = null; // Bước dừng
+
+        if (dungThanDiaChi && monthDiaChi) {
+          // 3.1: Nguyệt kiến (trùng tháng)
+          buoc3Results.push({
+            step: "3.1",
+            name: "Nguyệt Kiến",
+            description: `Địa chi Dụng Thần (${dungThanDiaChi}) trùng với địa chi tháng (${monthDiaChi})`,
+            checked: true
+          });
+          if (dungThanDiaChi === monthDiaChi) {
+            buoc3Diem += 1.75;
+            buoc3Results[buoc3Results.length - 1].diem = 1.75;
+            buoc3Results[buoc3Results.length - 1].color = "text-green-600";
+            buoc3Results[buoc3Results.length - 1].matched = true;
+            buoc3Dung = true;
+            buoc3DungTai = "3.1";
+          } else {
+            buoc3Results[buoc3Results.length - 1].matched = false;
+            buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+            // 3.2: Tam hợp
+            buoc3Results.push({
+              step: "3.2",
+              name: "Tam Hợp",
+              description: `Địa chi Dụng Thần (${dungThanDiaChi}) tam hợp với địa chi tháng (${monthDiaChi})`,
+              checked: true
+            });
+            if (isTamHopDiaChi(dungThanDiaChi, monthDiaChi)) {
+              buoc3Diem += 1;
+              buoc3Results[buoc3Results.length - 1].diem = 1;
+              buoc3Results[buoc3Results.length - 1].color = "text-green-600";
+              buoc3Results[buoc3Results.length - 1].matched = true;
+              buoc3Dung = true;
+              buoc3DungTai = "3.2";
+            } else {
+              buoc3Results[buoc3Results.length - 1].matched = false;
+              buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+              // 3.3: Nhị hợp
+              buoc3Results.push({
+                step: "3.3",
+                name: "Nhị Hợp",
+                description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị hợp với địa chi tháng (${monthDiaChi})`,
+                checked: true
+              });
+              if (isNhiHopDiaChi(dungThanDiaChi, monthDiaChi)) {
+                buoc3Diem += 1;
+                buoc3Results[buoc3Results.length - 1].diem = 1;
+                buoc3Results[buoc3Results.length - 1].color = "text-green-600";
+                buoc3Results[buoc3Results.length - 1].matched = true;
+                buoc3Dung = true;
+                buoc3DungTai = "3.3";
+              } else {
+                buoc3Results[buoc3Results.length - 1].matched = false;
+                buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+                // 3.4: Nhị xung (Nguyệt Phá)
+                buoc3Results.push({
+                  step: "3.4",
+                  name: "Nguyệt Phá",
+                  description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị xung với địa chi tháng (${monthDiaChi})`,
+                  checked: true
+                });
+                if (isNhiXungDiaChi(dungThanDiaChi, monthDiaChi)) {
+                  buoc3Diem -= 1;
+                  buoc3Results[buoc3Results.length - 1].diem = -1;
+                  buoc3Results[buoc3Results.length - 1].color = "text-red-600";
+                  buoc3Results[buoc3Results.length - 1].matched = true;
+                  buoc3Dung = true;
+                  buoc3DungTai = "3.4";
+                } else {
+                  buoc3Results[buoc3Results.length - 1].matched = false;
+                  buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+                  // 3.5: Nhập mộ
+                  const nhapMo = getNhapMoOf(dungThanDiaChi);
+                  buoc3Results.push({
+                    step: "3.5",
+                    name: "Nhập Mộ",
+                    description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhập mộ tại địa chi tháng (${monthDiaChi})`,
+                    checked: true
+                  });
+                  if (nhapMo === monthDiaChi) {
+                    buoc3Diem -= 0.5;
+                    buoc3Results[buoc3Results.length - 1].diem = -0.5;
+                    buoc3Results[buoc3Results.length - 1].color = "text-orange-600";
+                    buoc3Results[buoc3Results.length - 1].matched = true;
+                    buoc3Dung = true;
+                    buoc3DungTai = "3.5";
+                  } else {
+                    buoc3Results[buoc3Results.length - 1].matched = false;
+                    buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+                    // 3.6: Xét ngũ hành
+                    const dungThanNguHanh = getNguHanhFromDiaChi(dungThanDiaChi);
+                    const monthNguHanh = getNguHanhFromDiaChi(monthDiaChi);
+                    if (dungThanNguHanh && monthNguHanh) {
+                      const nguHanhRel = getNguHanhRelation(dungThanNguHanh.name, monthNguHanh.name);
+                      buoc3Results.push({
+                        step: "3.6",
+                        name: "Ngũ Hành",
+                        description: `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) với ngũ hành tháng (${monthNguHanh.name})`,
+                        checked: true
+                      });
+                      if (nguHanhRel === "duocSinh") {
+                        // Dụng được tháng sinh
+                        buoc3Diem += 1;
+                        buoc3Results[buoc3Results.length - 1].diem = 1;
+                        buoc3Results[buoc3Results.length - 1].color = "text-green-600";
+                        buoc3Results[buoc3Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) được ngũ hành tháng (${monthNguHanh.name}) tương sinh`;
+                        buoc3Results[buoc3Results.length - 1].matched = true;
+                        buoc3DungTai = "3.6";
+                      } else if (nguHanhRel === "trung") {
+                        // Trùng ngũ hành
+                        buoc3Diem += 1;
+                        buoc3Results[buoc3Results.length - 1].diem = 1;
+                        buoc3Results[buoc3Results.length - 1].color = "text-green-600";
+                        buoc3Results[buoc3Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) trùng với ngũ hành tháng (${monthNguHanh.name})`;
+                        buoc3Results[buoc3Results.length - 1].matched = true;
+                        buoc3DungTai = "3.6";
+                      } else if (nguHanhRel === "sinh") {
+                        // Dụng sinh tháng
+                        buoc3Diem -= 1;
+                        buoc3Results[buoc3Results.length - 1].diem = -1;
+                        buoc3Results[buoc3Results.length - 1].color = "text-red-600";
+                        buoc3Results[buoc3Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) tương sinh ngũ hành tháng (${monthNguHanh.name})`;
+                        buoc3Results[buoc3Results.length - 1].matched = true;
+                        buoc3DungTai = "3.6";
+                      } else if (nguHanhRel === "khac") {
+                        // Dụng khắc tháng
+                        buoc3Diem -= 0.5;
+                        buoc3Results[buoc3Results.length - 1].diem = -0.5;
+                        buoc3Results[buoc3Results.length - 1].color = "text-orange-600";
+                        buoc3Results[buoc3Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) tương khắc ngũ hành tháng (${monthNguHanh.name})`;
+                        buoc3Results[buoc3Results.length - 1].matched = true;
+                        buoc3DungTai = "3.6";
+                      } else if (nguHanhRel === "biKhac") {
+                        // Tháng khắc Dụng
+                        buoc3Diem -= 1;
+                        buoc3Results[buoc3Results.length - 1].diem = -1;
+                        buoc3Results[buoc3Results.length - 1].color = "text-red-600";
+                        buoc3Results[buoc3Results.length - 1].description = `Ngũ hành tháng (${monthNguHanh.name}) tương khắc ngũ hành Dụng Thần (${dungThanNguHanh.name})`;
+                        buoc3Results[buoc3Results.length - 1].matched = true;
+                        buoc3DungTai = "3.6";
+                      } else {
+                        buoc3Results[buoc3Results.length - 1].matched = false;
+                        buoc3Results[buoc3Results.length - 1].color = "text-gray-500";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Bước 4: Xét mối tương quan Dụng Thần và Ngày
+        const dayDiaChi = getDayDiaChi();
+        let buoc4Results = [];
+        let buoc4Diem = 0;
+        let buoc4Dung = false; // Dừng xét bước 4
+        let buoc4DungTai = null; // Bước dừng
+
+        if (dungThanDiaChi && dayDiaChi) {
+          // 4.1: Nhật kiến (trùng ngày)
+          buoc4Results.push({
+            step: "4.1",
+            name: "Nhật Kiến",
+            description: `Địa chi Dụng Thần (${dungThanDiaChi}) trùng với địa chi ngày (${dayDiaChi})`,
+            checked: true
+          });
+          if (dungThanDiaChi === dayDiaChi) {
+            buoc4Diem += 1.75;
+            buoc4Results[buoc4Results.length - 1].diem = 1.75;
+            buoc4Results[buoc4Results.length - 1].color = "text-green-600";
+            buoc4Results[buoc4Results.length - 1].matched = true;
+            buoc4Dung = true;
+            buoc4DungTai = "4.1";
+          } else {
+            buoc4Results[buoc4Results.length - 1].matched = false;
+            buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+            // 4.2: Tam hợp
+            buoc4Results.push({
+              step: "4.2",
+              name: "Tam Hợp",
+              description: `Địa chi Dụng Thần (${dungThanDiaChi}) tam hợp với địa chi ngày (${dayDiaChi})`,
+              checked: true
+            });
+            if (isTamHopDiaChi(dungThanDiaChi, dayDiaChi)) {
+              buoc4Diem += 1;
+              buoc4Results[buoc4Results.length - 1].diem = 1;
+              buoc4Results[buoc4Results.length - 1].color = "text-green-600";
+              buoc4Results[buoc4Results.length - 1].matched = true;
+              buoc4Dung = true;
+              buoc4DungTai = "4.2";
+            } else {
+              buoc4Results[buoc4Results.length - 1].matched = false;
+              buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+              // 4.3: Nhị hợp
+              buoc4Results.push({
+                step: "4.3",
+                name: "Nhị Hợp",
+                description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị hợp với địa chi ngày (${dayDiaChi})`,
+                checked: true
+              });
+              if (isNhiHopDiaChi(dungThanDiaChi, dayDiaChi)) {
+                buoc4Diem += 1;
+                buoc4Results[buoc4Results.length - 1].diem = 1;
+                buoc4Results[buoc4Results.length - 1].color = "text-green-600";
+                buoc4Results[buoc4Results.length - 1].matched = true;
+                buoc4Dung = true;
+                buoc4DungTai = "4.3";
+              } else {
+                buoc4Results[buoc4Results.length - 1].matched = false;
+                buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+                // 4.4: Nhị xung (Nhật Phá)
+                buoc4Results.push({
+                  step: "4.4",
+                  name: "Nhật Phá",
+                  description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị xung với địa chi ngày (${dayDiaChi})`,
+                  checked: true
+                });
+                if (isNhiXungDiaChi(dungThanDiaChi, dayDiaChi)) {
+                  buoc4Diem -= 1;
+                  buoc4Results[buoc4Results.length - 1].diem = -1;
+                  buoc4Results[buoc4Results.length - 1].color = "text-red-600";
+                  buoc4Results[buoc4Results.length - 1].matched = true;
+                  buoc4Dung = true;
+                  buoc4DungTai = "4.4";
+                } else {
+                  buoc4Results[buoc4Results.length - 1].matched = false;
+                  buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+                  // 4.5: Nhập mộ
+                  const nhapMo = getNhapMoOf(dungThanDiaChi);
+                  buoc4Results.push({
+                    step: "4.5",
+                    name: "Nhập Mộ",
+                    description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhập mộ tại địa chi ngày (${dayDiaChi})`,
+                    checked: true
+                  });
+                  if (nhapMo === dayDiaChi) {
+                    buoc4Diem -= 0.5;
+                    buoc4Results[buoc4Results.length - 1].diem = -0.5;
+                    buoc4Results[buoc4Results.length - 1].color = "text-orange-600";
+                    buoc4Results[buoc4Results.length - 1].matched = true;
+                    buoc4Dung = true;
+                    buoc4DungTai = "4.5";
+                  } else {
+                    buoc4Results[buoc4Results.length - 1].matched = false;
+                    buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+                    // 4.6: Xét ngũ hành
+                    const dungThanNguHanh = getNguHanhFromDiaChi(dungThanDiaChi);
+                    const dayNguHanh = getNguHanhFromDiaChi(dayDiaChi);
+                    if (dungThanNguHanh && dayNguHanh) {
+                      const nguHanhRel = getNguHanhRelation(dungThanNguHanh.name, dayNguHanh.name);
+                      buoc4Results.push({
+                        step: "4.6",
+                        name: "Ngũ Hành",
+                        description: `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) với ngũ hành ngày (${dayNguHanh.name})`,
+                        checked: true
+                      });
+                      if (nguHanhRel === "duocSinh") {
+                        // Dụng được ngày sinh
+                        buoc4Diem += 1;
+                        buoc4Results[buoc4Results.length - 1].diem = 1;
+                        buoc4Results[buoc4Results.length - 1].color = "text-green-600";
+                        buoc4Results[buoc4Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) được ngũ hành ngày (${dayNguHanh.name}) tương sinh`;
+                        buoc4Results[buoc4Results.length - 1].matched = true;
+                        buoc4DungTai = "4.6";
+                      } else if (nguHanhRel === "trung") {
+                        // Trùng ngũ hành
+                        buoc4Diem += 1;
+                        buoc4Results[buoc4Results.length - 1].diem = 1;
+                        buoc4Results[buoc4Results.length - 1].color = "text-green-600";
+                        buoc4Results[buoc4Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) trùng với ngũ hành ngày (${dayNguHanh.name})`;
+                        buoc4Results[buoc4Results.length - 1].matched = true;
+                        buoc4DungTai = "4.6";
+                      } else if (nguHanhRel === "sinh") {
+                        // Dụng sinh ngày
+                        buoc4Diem -= 1;
+                        buoc4Results[buoc4Results.length - 1].diem = -1;
+                        buoc4Results[buoc4Results.length - 1].color = "text-red-600";
+                        buoc4Results[buoc4Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) tương sinh ngũ hành ngày (${dayNguHanh.name})`;
+                        buoc4Results[buoc4Results.length - 1].matched = true;
+                        buoc4DungTai = "4.6";
+                      } else if (nguHanhRel === "khac") {
+                        // Dụng khắc ngày
+                        buoc4Diem -= 0.5;
+                        buoc4Results[buoc4Results.length - 1].diem = -0.5;
+                        buoc4Results[buoc4Results.length - 1].color = "text-orange-600";
+                        buoc4Results[buoc4Results.length - 1].description = `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) tương khắc ngũ hành ngày (${dayNguHanh.name})`;
+                        buoc4Results[buoc4Results.length - 1].matched = true;
+                        buoc4DungTai = "4.6";
+                      } else if (nguHanhRel === "biKhac") {
+                        // Ngày khắc Dụng
+                        buoc4Diem -= 1;
+                        buoc4Results[buoc4Results.length - 1].diem = -1;
+                        buoc4Results[buoc4Results.length - 1].color = "text-red-600";
+                        buoc4Results[buoc4Results.length - 1].description = `Ngũ hành ngày (${dayNguHanh.name}) tương khắc ngũ hành Dụng Thần (${dungThanNguHanh.name})`;
+                        buoc4Results[buoc4Results.length - 1].matched = true;
+                        buoc4DungTai = "4.6";
+                      } else {
+                        buoc4Results[buoc4Results.length - 1].matched = false;
+                        buoc4Results[buoc4Results.length - 1].color = "text-gray-500";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        return (
+          <div className="mt-8">
+            <Card
+              title={
+                <p
+                  className="text-center font-bold text-xl text-gray-800 m-0"
+                  style={{ textTransform: "uppercase" }}
+                >
+                  Phân Tích Quẻ
+                </p>
+              }
+              className="bg-parchment-50 border-2 border-parchment-300"
+            >
+              <div className="space-y-6">
+                {/* Công thức giải quẻ */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
+                    Công Thức Giải Quẻ
+                  </h3>
+                  <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                    <div className="prose prose-sm max-w-none text-gray-700">
+                      {/* Nội dung công thức sẽ được thêm vào đây */}
+                      <p className="text-gray-500 italic">
+                        Công thức giải quẻ sẽ được hiển thị tại đây...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Các bước giải quẻ */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
+                    Các Bước Giải Quẻ
+                  </h3>
+                  <div className="space-y-4">
+                    {/* Bước 1: Xác định Dụng Thần */}
+                    <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          1
+                        </div>
+                        <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                          <p className="font-semibold mb-2">
+                            Xác định Dụng Thần
+                          </p>
+                          {dungThan && dungThanInfo ? (
+                            <div className="space-y-2">
+                              <p>
+                                <strong>Dụng Thần đã chọn:</strong>{" "}
+                                {dungThanInfo.label}
+                              </p>
+                              <p>
+                                <strong>Vai vế:</strong> {dungThanInfo.vaiVe}
+                              </p>
+                              <p>
+                                <strong>Đồ dùng:</strong> {dungThanInfo.doDung}
+                              </p>
+                              <p>
+                                <strong>Mang tính chất:</strong>{" "}
+                                {dungThanInfo.mangTinhChat}
+                              </p>
+                              {dungThanHao && (
+                                <p>
+                                  <strong>Hào Dụng Thần:</strong> Hào{" "}
+                                  {dungThanHao.hao} ({dungThanHao.canChi})
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <p className="text-gray-500 italic">
+                              Chưa chọn Dụng Thần
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bước 2: Phân tích mối tương quan giữa hào Thế và Dụng Thần */}
+                    <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          2
+                        </div>
+                        <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                          <p className="font-semibold mb-2">
+                            Phân tích mối tương quan giữa hào Thế và Dụng Thần
+                          </p>
+                          {theHao &&
+                          dungThanHao &&
+                          theDiaChi &&
+                          dungThanDiaChi ? (
+                            <div className="space-y-2">
+                              <p>
+                                <strong>Hào Thế:</strong> Hào {theHao.hao} (
+                                {theHao.canChi}) - Địa Chi:{" "}
+                                <strong>{theDiaChi}</strong>
+                              </p>
+                              <p>
+                                <strong>Hào Dụng Thần:</strong> Hào{" "}
+                                {dungThanHao.hao} ({dungThanHao.canChi}) - Địa
+                                Chi: <strong>{dungThanDiaChi}</strong>
+                              </p>
+                              {buoc2KetLuan && (
+                                <div className="mt-3 p-3 bg-gray-50 rounded border-l-4 border-parchment-400">
+                                  <p className="font-semibold mb-1">
+                                    Kết luận:
+                                  </p>
+                                  <p className="mb-2 text-gray-700">
+                                    <strong>{buoc2KetLuan.relation}</strong> →{" "}
+                                    <span
+                                      className={`font-bold ${buoc2KetLuan.color}`}
+                                    >
+                                      {buoc2KetLuan.text}
+                                    </span>
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <p className="text-gray-500 italic">
+                              Không đủ thông tin để phân tích
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bước 3: Xác định Thái Tuế và Tuế Phá */}
+                    <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                          3
+                        </div>
+                        <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                          <p className="font-semibold mb-2">
+                            Xác định Dụng Thần có Thái Tuế hay Tuế Phá
+                          </p>
+                          {dungThanDiaChi && yearDiaChi ? (
+                            <div className="space-y-2">
+                              <p>
+                                <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                {dungThanDiaChi}
+                              </p>
+                              <p>
+                                <strong>Địa Chi của năm:</strong> {yearDiaChi}
+                              </p>
+                              <div className="mt-3 space-y-2">
+                                {thaiTue && (
+                                  <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                    <p className="font-semibold text-green-700">
+                                      ✓ Có Thái Tuế
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                      Địa chi của Dụng Thần trùng với địa chi
+                                      của năm
+                                    </p>
+                                  </div>
+                                )}
+                                {tuePha && (
+                                  <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
+                                    <p className="font-semibold text-red-700">
+                                      ✗ Có Tuế Phá
+                                    </p>
+                                    <p className="text-sm text-gray-600">
+                                      Địa chi của Dụng Thần xung với địa chi của
+                                      năm
+                                    </p>
+                                  </div>
+                                )}
+                                {!thaiTue && !tuePha && (
+                                  <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
+                                    <p className="font-semibold text-gray-700">
+                                      Không có Thái Tuế hay Tuế Phá
+                                    </p>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-gray-500 italic">
+                              Không đủ thông tin để xác định
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bước 3: Xét mối tương quan Dụng Thần và Tháng */}
+                    {dungThanDiaChi && monthDiaChi && (
+                      <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                            3
+                          </div>
+                          <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                            <p className="font-semibold mb-2">
+                              Xét mối tương quan Dụng Thần và Tháng
+                            </p>
+                            <div className="space-y-2">
+                              <p>
+                                <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                {dungThanDiaChi}
+                              </p>
+                              <p>
+                                <strong>Địa Chi của tháng:</strong> {monthDiaChi}
+                              </p>
+                              {buoc3Results.length > 0 ? (
+                                <div className="mt-3 space-y-3">
+                                  {buoc3Results.map((result, index) => (
+                                    <div
+                                      key={index}
+                                      className={`p-3 rounded border-l-4 ${
+                                        result.matched
+                                          ? result.diem > 0
+                                            ? "bg-green-50 border-green-500"
+                                            : result.diem < 0
+                                            ? "bg-red-50 border-red-500"
+                                            : "bg-orange-50 border-orange-500"
+                                          : "bg-gray-50 border-gray-300"
+                                      }`}
+                                    >
+                                      <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                          <div className="flex items-center gap-2">
+                                            <p
+                                              className={`font-semibold ${result.color}`}
+                                            >
+                                              {result.step}: {result.name}
+                                            </p>
+                                            {result.matched && (
+                                              <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                ✓ Thỏa mãn
+                                              </span>
+                                            )}
+                                            {!result.matched && (
+                                              <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                ✗ Không thỏa mãn
+                                              </span>
+                                            )}
+                                            {buoc3DungTai === result.step && (
+                                              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                Dừng tại đây
+                                              </span>
+                                            )}
+                                          </div>
+                                          <p className="text-sm text-gray-600 mt-1">
+                                            {result.description}
+                                          </p>
+                                        </div>
+                                        {result.matched && result.diem !== undefined && (
+                                          <div
+                                            className={`ml-3 font-bold text-lg ${result.color}`}
+                                          >
+                                            {result.diem > 0 ? "+" : ""}
+                                            {result.diem}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))}
+                                  <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <p className="font-semibold text-blue-700">
+                                      Tổng điểm Bước 3:{" "}
+                                      <span className="text-xl">
+                                        {buoc3Diem > 0 ? "+" : ""}
+                                        {buoc3Diem.toFixed(2)} điểm
+                                      </span>
+                                    </p>
+                                    {buoc3Dung && buoc3DungTai && (
+                                      <p className="text-sm text-gray-600 mt-1">
+                                        <strong>Đã dừng xét tại:</strong> Bước {buoc3DungTai}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-gray-500 italic mt-3">
+                                  Không có mối tương quan nào được xác định
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Bước 4: Xét mối tương quan Dụng Thần và Ngày */}
+                    {dungThanDiaChi && dayDiaChi && (
+                      <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                            4
+                          </div>
+                          <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                            <p className="font-semibold mb-2">
+                              Xét mối tương quan Dụng Thần và Ngày
+                            </p>
+                            <div className="space-y-2">
+                              <p>
+                                <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                {dungThanDiaChi}
+                              </p>
+                              <p>
+                                <strong>Địa Chi của ngày:</strong> {dayDiaChi}
+                              </p>
+                              {buoc4Results.length > 0 ? (
+                                <div className="mt-3 space-y-3">
+                                  {buoc4Results.map((result, index) => (
+                                    <div
+                                      key={index}
+                                      className={`p-3 rounded border-l-4 ${
+                                        result.matched
+                                          ? result.diem > 0
+                                            ? "bg-green-50 border-green-500"
+                                            : result.diem < 0
+                                            ? "bg-red-50 border-red-500"
+                                            : "bg-orange-50 border-orange-500"
+                                          : "bg-gray-50 border-gray-300"
+                                      }`}
+                                    >
+                                      <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                          <div className="flex items-center gap-2">
+                                            <p
+                                              className={`font-semibold ${result.color}`}
+                                            >
+                                              {result.step}: {result.name}
+                                            </p>
+                                            {result.matched && (
+                                              <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                ✓ Thỏa mãn
+                                              </span>
+                                            )}
+                                            {!result.matched && (
+                                              <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                ✗ Không thỏa mãn
+                                              </span>
+                                            )}
+                                            {buoc4DungTai === result.step && (
+                                              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                Dừng tại đây
+                                              </span>
+                                            )}
+                                          </div>
+                                          <p className="text-sm text-gray-600 mt-1">
+                                            {result.description}
+                                          </p>
+                                        </div>
+                                        {result.matched && result.diem !== undefined && (
+                                          <div
+                                            className={`ml-3 font-bold text-lg ${result.color}`}
+                                          >
+                                            {result.diem > 0 ? "+" : ""}
+                                            {result.diem}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  ))}
+                                  <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <p className="font-semibold text-blue-700">
+                                      Tổng điểm Bước 4:{" "}
+                                      <span className="text-xl">
+                                        {buoc4Diem > 0 ? "+" : ""}
+                                        {buoc4Diem.toFixed(2)} điểm
+                                      </span>
+                                    </p>
+                                    {buoc4Dung && buoc4DungTai && (
+                                      <p className="text-sm text-gray-600 mt-1">
+                                        <strong>Đã dừng xét tại:</strong> Bước {buoc4DungTai}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-gray-500 italic mt-3">
+                                  Không có mối tương quan nào được xác định
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+      })()}
     </>
   );
 }

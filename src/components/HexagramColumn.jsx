@@ -1,5 +1,6 @@
-import React from "react";
-import { Card, Tooltip } from "antd";
+import React, { useState } from "react";
+import { Card, Tooltip, Modal } from "antd";
+import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import Line from "./Line";
 import { getHexagramMeaning } from "../data/hexagramMeanings";
@@ -40,6 +41,18 @@ export default function HexagramColumn({
   // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
   const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
   const omen = getHexagramOmen(hexagramKey);
+  const meaning = getHexagramMeaning(hexagramKey);
+
+  // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <motion.div
@@ -56,30 +69,15 @@ export default function HexagramColumn({
         <div className="text-center space-y-3">
           {/* Hexagram Name */}
           <Tooltip
-            title={
-              <div className="max-w-md">
-                <div className="font-bold mb-2 text-lg">
-                  {hexagram.vietnameseName}
-                </div>
-                <div className="text-sm leading-relaxed space-y-2">
-                  <div>
-                    {getHexagramMeaning(hexagramKey) ||
-                      "Ý nghĩa quẻ này đang được cập nhật..."}
-                  </div>
-                  {omen && (
-                    <div className="italic text-amber-800">Điềm: {omen}</div>
-                  )}
-                </div>
-              </div>
-            }
+            title="Click để xem chi tiết"
             placement="top"
-            overlayClassName="tooltip-custom"
           >
             <motion.div
-              className="text-2xl font-bold text-gray-900 mb-4 cursor-help hover:text-blue-600 transition-colors"
+              className="text-2xl font-bold text-gray-900 mb-4 cursor-pointer hover:text-blue-600 transition-colors"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
+              onClick={openModal}
             >
               {hexagram.vietnameseName}
             </motion.div>
@@ -122,6 +120,37 @@ export default function HexagramColumn({
           </div>
         </div>
       </Card>
+
+      {/* Modal hiển thị thông tin quẻ */}
+      <Modal
+        title={
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 m-0">
+              {hexagram.vietnameseName}
+            </h2>
+            {omen && (
+              <p className="text-sm text-amber-700 mt-2 italic">
+                Điềm: {omen}
+              </p>
+            )}
+          </div>
+        }
+        open={isModalOpen}
+        onCancel={closeModal}
+        footer={null}
+        width={window.innerWidth < 640 ? "90%" : "70%"}
+        className="hexagram-modal"
+      >
+        <div className="prose prose-sm max-w-none text-gray-700">
+          {meaning ? (
+            <ReactMarkdown>{meaning}</ReactMarkdown>
+          ) : (
+            <p className="text-gray-500 italic">
+              Ý nghĩa quẻ này đang được cập nhật...
+            </p>
+          )}
+        </div>
+      </Modal>
     </motion.div>
   );
 }

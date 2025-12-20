@@ -60,7 +60,7 @@ export const HEXAGRAM_MEANINGS: Record<string, string> = {
     "Quyết dã. QUYẾT ĐỊNH. Quyết định, quyết đoán, cắt đứt, phân ly, tách rời, quyết liệt.",
   // TRẠCH HỎA CÁCH
   "2-3":
-    "Cách dã. CẢI CÁCH. Cải cách, thay đổi, đổi mới, cách mạng, biến đổi, thay thế.",
+    "**Cách dã.** CẢI CÁCH. Cải cách, thay đổi, đổi mới, cách mạng, biến đổi, thay thế.",
   // TRẠCH LÔI TÙY
   "2-4":
     "Tùy dã. TÙY THEO. Tùy theo, theo sau, phụ thuộc, tùy thuộc, đi theo, hưởng ứng.",

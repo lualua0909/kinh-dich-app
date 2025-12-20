@@ -170,4 +170,59 @@ export function getTamHopPartnersOf(chi: DiaChi): [DiaChi, DiaChi] | null {
   return partners.length === 2 ? partners : null;
 }
 
+// =========================
+// Nhập Mộ (Entering Tomb) - mối quan hệ một chiều
+// =========================
+
+// Map địa chi -> địa chi mà nó nhập mộ
+// Lưu ý: Thìn, Tuất, Sửu, Mùi không nhập mộ
+export const NHAP_MO_DIA_CHI_MAP: Partial<Record<DiaChi, DiaChi>> = {
+  Tý: "Thìn",
+  Dần: "Mùi",
+  Mão: "Mùi",
+  Tỵ: "Tuất",
+  Ngọ: "Tuất",
+  Thân: "Sửu",
+  Dậu: "Sửu",
+  Hợi: "Thìn",
+  // Thìn, Tuất, Sửu, Mùi không nhập mộ (không có trong map này)
+};
+
+/**
+ * Lấy địa chi mà một địa chi nhập mộ
+ * - Trả về địa chi mộ nếu có, null nếu không nhập mộ
+ * - Thìn, Tuất, Sửu, Mùi không nhập mộ nên trả về null
+ */
+export function getNhapMoOf(chi: DiaChi): DiaChi | null {
+  return NHAP_MO_DIA_CHI_MAP[chi] ?? null;
+}
+
+/**
+ * Kiểm tra một địa chi có nhập mộ hay không
+ * - Trả về true nếu địa chi có nhập mộ
+ * - Thìn, Tuất, Sửu, Mùi trả về false
+ */
+export function hasNhapMo(chi: DiaChi): boolean {
+  return NHAP_MO_DIA_CHI_MAP[chi] !== undefined;
+}
+
+/**
+ * Kiểm tra một địa chi có phải là mộ của địa chi khác hay không
+ * - Trả về true nếu chi là mộ của ít nhất một địa chi khác
+ */
+export function isMoOf(chi: DiaChi): boolean {
+  return Object.values(NHAP_MO_DIA_CHI_MAP).includes(chi);
+}
+
+/**
+ * Lấy danh sách các địa chi nhập mộ tại một địa chi cho trước
+ * - Trả về mảng các địa chi nhập mộ tại chi đó
+ * - Nếu không có địa chi nào nhập mộ tại đó, trả về mảng rỗng
+ */
+export function getDiaChiNhapMoTai(chi: DiaChi): DiaChi[] {
+  return Object.entries(NHAP_MO_DIA_CHI_MAP)
+    .filter(([_, mo]) => mo === chi)
+    .map(([diaChi, _]) => diaChi as DiaChi);
+}
+
 
