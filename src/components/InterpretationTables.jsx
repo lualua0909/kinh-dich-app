@@ -3288,6 +3288,251 @@ export default function InterpretationTables({
                           },
                           {
                             key: "2",
+                            label: "Luận Vợ/Chồng Đã Từng Kết Hôn",
+                            children: (
+                              <div className="bg-white p-4 rounded-lg border border-amber-200">
+                                {(() => {
+                                  // Bước 1: Tìm hào Thê Tài trong quẻ chính
+                                  const theTaiHao = lineData1.find(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) === "Thê Tài"
+                                  );
+
+                                  if (!theTaiHao) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Thê Tài trong quẻ
+                                        chính
+                                      </p>
+                                    );
+                                  }
+
+                                  // Xác định quái của hào Thê Tài
+                                  const theTaiTrigram =
+                                    theTaiHao.hao <= 3 ? "lower" : "upper";
+
+                                  // Tìm các hào Phụ Mẫu trong quẻ chính
+                                  const phuMauHaos = lineData1.filter(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) === "Phụ Mẫu"
+                                  );
+
+                                  if (phuMauHaos.length === 0) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Phụ Mẫu trong quẻ
+                                        chính
+                                      </p>
+                                    );
+                                  }
+
+                                  // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Thê Tài không
+                                  const phuMauCungQuai = phuMauHaos.find(
+                                    (line) => {
+                                      const phuMauTrigram =
+                                        line.hao <= 3 ? "lower" : "upper";
+                                      return phuMauTrigram === theTaiTrigram;
+                                    }
+                                  );
+
+                                  if (!phuMauCungQuai) {
+                                    return (
+                                      <div className="space-y-2">
+                                        <p className="text-gray-500 italic">
+                                          Không tìm thấy hào Phụ Mẫu cùng quái
+                                          với hào Thê Tài
+                                        </p>
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                          <p className="font-semibold mb-2">
+                                            Bước 1: Kiểm tra hào Thê Tài và Phụ
+                                            Mẫu cùng quái
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Hào Thê Tài: Hào {theTaiHao.hao} (
+                                            {theTaiHao.canChi}) - Thuộc{" "}
+                                            {theTaiTrigram === "lower"
+                                              ? "Hạ quái"
+                                              : "Thượng quái"}
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Các hào Phụ Mẫu tìm thấy:{" "}
+                                            {phuMauHaos
+                                              .map(
+                                                (pm) =>
+                                                  `Hào ${pm.hao} (${pm.canChi})`
+                                              )
+                                              .join(", ")}
+                                          </p>
+                                          <p className="text-sm text-red-600 mt-2">
+                                            → Không có hào Phụ Mẫu nào cùng quái
+                                            với hào Thê Tài
+                                          </p>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+
+                                  // Bước 2: Tìm hào tương ứng trong quẻ biến
+                                  const phuMauIndex = lineData1.findIndex(
+                                    (line) => line.hao === phuMauCungQuai.hao
+                                  );
+                                  const phuMauBienHao =
+                                    phuMauIndex >= 0 &&
+                                    phuMauIndex < lineData2.length
+                                      ? lineData2[phuMauIndex]
+                                      : null;
+
+                                  if (!phuMauBienHao) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào tương ứng trong quẻ
+                                        biến
+                                      </p>
+                                    );
+                                  }
+
+                                  // Kiểm tra Lục Thú có phải Câu Trần không
+                                  const lucTuName = getLucTuName(
+                                    phuMauBienHao.lucTu
+                                  );
+                                  const laCauTran = lucTuName === "Câu Trần";
+
+                                  // Kiểm tra tuanKhong = "K"
+                                  const coTuanKhong =
+                                    phuMauBienHao.tuanKhong === "K";
+
+                                  // Kết luận
+                                  const coKhaNangTungKetHon =
+                                    laCauTran && coTuanKhong;
+
+                                  return (
+                                    <div className="space-y-3">
+                                      <div>
+                                        <p className="font-semibold mb-2">
+                                          Hào Thê Tài: Hào {theTaiHao.hao} (
+                                          {theTaiHao.canChi}) - Thuộc{" "}
+                                          {theTaiTrigram === "lower"
+                                            ? "Hạ quái"
+                                            : "Thượng quái"}
+                                        </p>
+                                      </div>
+
+                                      <div className="space-y-2">
+                                        <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                          <p className="font-semibold mb-2">
+                                            Bước 1: Kiểm tra hào Thê Tài và Phụ
+                                            Mẫu cùng quái
+                                          </p>
+                                          <p className="text-green-700 mb-1">
+                                            ✓ Tìm thấy hào Phụ Mẫu cùng quái với
+                                            hào Thê Tài
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Hào Phụ Mẫu: Hào{" "}
+                                            {phuMauCungQuai.hao} (
+                                            {phuMauCungQuai.canChi}) - Thuộc{" "}
+                                            {phuMauCungQuai.hao <= 3
+                                              ? "Hạ quái"
+                                              : "Thượng quái"}
+                                          </p>
+                                        </div>
+
+                                        <div
+                                          className={`p-3 rounded border-l-4 ${
+                                            laCauTran && coTuanKhong
+                                              ? "bg-green-50 border-green-500"
+                                              : "bg-gray-50 border-gray-300"
+                                          }`}
+                                        >
+                                          <p className="font-semibold mb-2">
+                                            Bước 2: Kiểm tra hào Phụ Mẫu trong
+                                            quẻ biến
+                                          </p>
+                                          <p className="text-sm text-gray-600 mb-1">
+                                            Hào Phụ Mẫu trong quẻ biến: Hào{" "}
+                                            {phuMauBienHao.hao} (
+                                            {phuMauBienHao.canChi})
+                                          </p>
+                                          <div className="space-y-1 mt-2">
+                                            <p
+                                              className={
+                                                laCauTran
+                                                  ? "text-green-700"
+                                                  : "text-red-700"
+                                              }
+                                            >
+                                              {laCauTran ? "✓" : "✗"} Lục Thú:{" "}
+                                              {lucTuName}
+                                              {laCauTran
+                                                ? " (Câu Trần - đại diện cho phía trước, thời gian trước đây)"
+                                                : ""}
+                                            </p>
+                                            <p
+                                              className={
+                                                coTuanKhong
+                                                  ? "text-green-700"
+                                                  : "text-red-700"
+                                              }
+                                            >
+                                              {coTuanKhong ? "✓" : "✗"} Tuần
+                                              không:{" "}
+                                              {phuMauBienHao.tuanKhong ||
+                                                "Không có"}
+                                              {coTuanKhong ? ' (= "K")' : ""}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        {coKhaNangTungKetHon && (
+                                          <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
+                                            <p className="font-bold text-lg mb-2">
+                                              Kết luận:
+                                            </p>
+                                            <p className="text-blue-800 font-bold text-lg">
+                                              ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
+                                              TRƯỚC ĐÂY
+                                            </p>
+                                            <p className="text-sm text-blue-700 mt-2">
+                                              Hào Phụ Mẫu cùng quái với hào Thê
+                                              Tài có Lục Thú là Câu Trần (đại
+                                              diện cho phía trước, thời gian
+                                              trước đây) và có Tuần không = "K",
+                                              cho thấy có khả năng vợ/chồng đã
+                                              từng kết hôn trước đây.
+                                            </p>
+                                          </div>
+                                        )}
+
+                                        {!coKhaNangTungKetHon && (
+                                          <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                            <p className="font-semibold mb-2">
+                                              Kết luận:
+                                            </p>
+                                            <p className="text-gray-700">
+                                              Không đủ điều kiện để kết luận đã
+                                              từng kết hôn trước đây.
+                                            </p>
+                                            {!laCauTran && (
+                                              <p className="text-sm text-red-600 mt-1">
+                                                • Lục Thú không phải Câu Trần
+                                              </p>
+                                            )}
+                                            {!coTuanKhong && (
+                                              <p className="text-sm text-red-600 mt-1">
+                                                • Không có Tuần không = "K"
+                                              </p>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })()}
+                              </div>
+                            )
+                          },
+                          {
+                            key: "3",
                             label: "Luận Cây Trước Nhà",
                             children: (
                               <div className="bg-white p-4 rounded-lg border border-amber-200">
