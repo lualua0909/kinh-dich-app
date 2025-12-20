@@ -228,6 +228,218 @@ export default function InterpretationTables({
     return parts[parts.length - 1];
   };
 
+  // Helper: Tính điểm cho địa chi (dùng cho hào động hoặc các trường hợp xét lực khác)
+  const calculateDiaChiForce = (diaChi, yearDiaChi, monthDiaChi, dayDiaChi) => {
+    let score = 0;
+    const details = [];
+
+    // 1. Năm (Thái Tuế / Tuế Phá)
+    if (yearDiaChi) {
+      if (diaChi === yearDiaChi) {
+        details.push({
+          step: "1",
+          name: "Thái Tuế",
+          matched: true,
+          diem: 0,
+          description: "Trùng Thái Tuế",
+          color: "text-green-600",
+        });
+      } else if (getNhiXungOf(diaChi) === yearDiaChi) {
+        score -= 0.25;
+        details.push({
+          step: "1",
+          name: "Tuế Phá",
+          matched: true,
+          diem: -0.25,
+          description: "Bị Thái Tuế xung (Tuế Phá)",
+          color: "text-red-600",
+        });
+      }
+    }
+
+    // 2. Tháng
+    if (monthDiaChi) {
+      if (diaChi === monthDiaChi) {
+        score += 1.75;
+        details.push({
+          step: "2.1",
+          name: "Nguyệt Kiến",
+          matched: true,
+          diem: 1.75,
+          description: "Trùng Nguyệt Kiến",
+          color: "text-green-600",
+        });
+      } else if (isTamHopDiaChi(diaChi, monthDiaChi)) {
+        score += 1;
+        details.push({
+          step: "2.2",
+          name: "Tam Hợp Tháng",
+          matched: true,
+          diem: 1,
+          description: "Tam hợp với Tháng",
+          color: "text-green-600",
+        });
+      } else if (isNhiHopDiaChi(diaChi, monthDiaChi)) {
+        score += 1;
+        details.push({
+          step: "2.3",
+          name: "Nhị Hợp Tháng",
+          matched: true,
+          diem: 1,
+          description: "Nhị hợp với Tháng",
+          color: "text-green-600",
+        });
+      } else if (isNhiXungDiaChi(diaChi, monthDiaChi)) {
+        score -= 1;
+        details.push({
+          step: "2.4",
+          name: "Nguyệt Phá",
+          matched: true,
+          diem: -1,
+          description: "Bị Tháng xung (Nguyệt Phá)",
+          color: "text-red-600",
+        });
+      } else if (getNhapMoOf(diaChi) === monthDiaChi) {
+        score -= 0.25;
+        details.push({
+          step: "2.5",
+          name: "Nhập Mộ Tháng",
+          matched: true,
+          diem: -0.25,
+          description: "Nhập mộ tại Tháng",
+          color: "text-orange-600",
+        });
+      } else {
+        const nh1 = getNguHanhFromDiaChi(diaChi)?.name;
+        const nh2 = getNguHanhFromDiaChi(monthDiaChi)?.name;
+        const rel = getNguHanhRelation(nh1, nh2);
+        if (rel === "duocSinh" || rel === "trung") {
+          score += 0.75;
+          details.push({
+            step: "2.6",
+            name: "Ngũ Hành Tháng",
+            matched: true,
+            diem: 0.75,
+            description: "Được Tháng sinh hoặc tỷ hòa",
+            color: "text-green-600",
+          });
+        } else if (rel === "sinh" || rel === "khac") {
+          score -= 0.25;
+          details.push({
+            step: "2.6",
+            name: "Ngũ Hành Tháng",
+            matched: true,
+            diem: -0.25,
+            description: "Sinh Tháng hoặc khắc Tháng",
+            color: "text-orange-600",
+          });
+        } else if (rel === "biKhac") {
+          score -= 0.75;
+          details.push({
+            step: "2.6",
+            name: "Ngũ Hành Tháng",
+            matched: true,
+            diem: -0.75,
+            description: "Bị Tháng khắc",
+            color: "text-red-600",
+          });
+        }
+      }
+    }
+
+    // 3. Ngày
+    if (dayDiaChi) {
+      if (diaChi === dayDiaChi) {
+        score += 1.75;
+        details.push({
+          step: "3.1",
+          name: "Nhật Kiến",
+          matched: true,
+          diem: 1.75,
+          description: "Trùng Nhật Kiến",
+          color: "text-green-600",
+        });
+      } else if (isTamHopDiaChi(diaChi, dayDiaChi)) {
+        score += 1;
+        details.push({
+          step: "3.2",
+          name: "Tam Hợp Ngày",
+          matched: true,
+          diem: 1,
+          description: "Tam hợp với Ngày",
+          color: "text-green-600",
+        });
+      } else if (isNhiHopDiaChi(diaChi, dayDiaChi)) {
+        score += 1;
+        details.push({
+          step: "3.3",
+          name: "Nhị Hợp Ngày",
+          matched: true,
+          diem: 1,
+          description: "Nhị hợp với Ngày",
+          color: "text-green-600",
+        });
+      } else if (isNhiXungDiaChi(diaChi, dayDiaChi)) {
+        score -= 1;
+        details.push({
+          step: "3.4",
+          name: "Nhật Phá",
+          matched: true,
+          diem: -1,
+          description: "Bị Ngày xung (Nhật Phá)",
+          color: "text-red-600",
+        });
+      } else if (getNhapMoOf(diaChi) === dayDiaChi) {
+        score -= 0.25;
+        details.push({
+          step: "3.5",
+          name: "Nhập Mộ Ngày",
+          matched: true,
+          diem: -0.25,
+          description: "Nhập mộ tại Ngày",
+          color: "text-orange-600",
+        });
+      } else {
+        const nh1 = getNguHanhFromDiaChi(diaChi)?.name;
+        const nh2 = getNguHanhFromDiaChi(dayDiaChi)?.name;
+        const rel = getNguHanhRelation(nh1, nh2);
+        if (rel === "duocSinh" || rel === "trung") {
+          score += 1;
+          details.push({
+            step: "3.6",
+            name: "Ngũ Hành Ngày",
+            matched: true,
+            diem: 1,
+            description: "Được Ngày sinh hoặc tỷ hòa",
+            color: "text-green-600",
+          });
+        } else if (rel === "khac") {
+          score -= 0.5;
+          details.push({
+            step: "3.6",
+            name: "Ngũ Hành Ngày",
+            matched: true,
+            diem: -0.5,
+            description: "Khắc Ngày",
+            color: "text-orange-600",
+          });
+        } else if (rel === "sinh" || rel === "biKhac") {
+          score -= 1;
+          details.push({
+            step: "3.6",
+            name: "Ngũ Hành Ngày",
+            matched: true,
+            diem: -1,
+            description: "Sinh Ngày hoặc bị Ngày khắc",
+            color: "text-red-600",
+          });
+        }
+      }
+    }
+
+    return { totalScore: score, details };
+  };
+
   // Helper: Xác định quan hệ ngũ hành giữa 2 ngũ hành
   const getNguHanhRelation = (nguHanh1, nguHanh2) => {
     if (!nguHanh1 || !nguHanh2) return null;
@@ -2128,6 +2340,131 @@ export default function InterpretationTables({
                         if (voDaTungKetHonResult) break;
                       }
 
+                      // Bước 8: Ứng kỳ
+                      let buoc8Item = null;
+                      if (dungThanHao && dungThanDiaChi) {
+                        const isDong = dungThanHao.hao === movingLine;
+                        const isQuaVuong = (dungThanDiaChi === monthDiaChi) && (dungThanDiaChi === dayDiaChi);
+
+                        const dungThanNguHanh = getNguHanhFromDiaChi(dungThanDiaChi);
+                        const monthNguHanh = getNguHanhFromDiaChi(monthDiaChi);
+                        const isSuyTuyet = dungThanNguHanh && monthNguHanh && getNguHanhRelation(dungThanNguHanh.name, monthNguHanh.name) === 'biKhac';
+
+                        const isNhapTamMo = getNhapMoOf(dungThanDiaChi) === (DIA_CHI_CODES[monthDiaChi] || monthDiaChi);
+                        const isNguyetPha = isNhiXungDiaChi(dungThanDiaChi, monthDiaChi);
+
+                        const formatDiaChiUngKy = (dc) => {
+                          const name = DIA_CHI_NAMES[DIA_CHI_CODES[dc] || dc] || dc;
+                          const dayMap = { "Tý": 1, "Sửu": 2, "Dần": 3, "Mão": 4, "Thìn": 5, "Tỵ": 6, "Ngọ": 7, "Mùi": 8, "Thân": 9, "Dậu": 10, "Tuất": 11, "Hợi": 12 };
+                          const monthMap = { "Dần": 1, "Mão": 2, "Thìn": 3, "Tỵ": 4, "Ngọ": 5, "Mùi": 6, "Thân": 7, "Dậu": 8, "Tuất": 9, "Hợi": 10, "Tý": 11, "Sửu": 12 };
+                          return <span>ngày {name} (ngày {dayMap[name]}), tháng {name} (tháng {monthMap[name]})</span>;
+                        };
+
+                        buoc8Item = {
+                          key: "8",
+                          label: "Bước 8: Ứng kỳ",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  8
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-3 text-base">Phân tích Ứng kỳ cho Dụng Thần</p>
+                                  <div className="space-y-4">
+                                    <div className={`p-3 rounded border-l-4 ${isDong ? 'bg-blue-50 border-blue-500' : 'bg-gray-50 border-gray-400'}`}>
+                                      <p className="font-bold m-0 text-sm">{isDong ? 'Hào Động' : 'Hào Tĩnh'}</p>
+                                      <p className="text-xs text-gray-600 m-0 mt-1">
+                                        {isDong ? `Hào Dụng Thần (Hào ${dungThanHao.hao}) là hào động.` : `Hào Dụng Thần (Hào ${dungThanHao.hao}) là hào tĩnh.`}
+                                      </p>
+                                      {isDong && (
+                                        <div className="mt-2 pt-2 border-t border-gray-200">
+                                          <p className="text-xs text-blue-700 m-0 leading-relaxed">
+                                            • Ứng kỳ: {formatDiaChiUngKy(dungThanDiaChi)}
+                                          </p>
+                                          <p className="text-xs text-green-700 m-0 mt-1 leading-relaxed">
+                                            • Ứng kỳ (Hợp): {formatDiaChiUngKy(getNhiHopOf(dungThanDiaChi))}
+                                          </p>
+                                          {(() => {
+                                            const ttIndex = lineData1.findIndex(l => l.hao === dungThanHao.hao);
+                                            const ttChangedLine = lineData2[ttIndex];
+                                            if (ttChangedLine) {
+                                              const changedDiaChi = extractDiaChi(ttChangedLine.canChi);
+                                              if (changedDiaChi && changedDiaChi !== dungThanDiaChi) {
+                                                return (
+                                                  <p className="text-xs text-purple-700 m-0 mt-1 leading-relaxed">
+                                                    • Ứng kỳ (Biến): {formatDiaChiUngKy(changedDiaChi)}
+                                                  </p>
+                                                );
+                                              }
+                                            }
+                                            return null;
+                                          })()}
+                                        </div>
+                                      )}
+                                      {!isDong && (
+                                        <div className="mt-2 pt-2 border-t border-gray-200">
+                                          <p className="text-xs text-blue-700 m-0 leading-relaxed">
+                                            • Ứng kỳ: {formatDiaChiUngKy(dungThanDiaChi)}
+                                          </p>
+                                          <p className="text-xs text-red-700 m-0 mt-1 leading-relaxed">
+                                            • Ứng kỳ (Xung): {formatDiaChiUngKy(getNhiXungOf(dungThanDiaChi))}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {isQuaVuong && (
+                                      <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                        <p className="font-bold text-green-700 m-0 text-sm">Quá Vượng</p>
+                                        <p className="text-xs text-gray-600 m-0 mt-1">Dụng thần đồng thời xuất hiện tại Nhật kiến và Nguyệt kiến ({dungThanDiaChi}).</p>
+                                        <div className="mt-2 pt-2 border-t border-green-200">
+                                          {getNhapMoOf(dungThanDiaChi) && (
+                                            <p className="text-xs text-amber-700 m-0 leading-relaxed">
+                                              • Ứng kỳ (Mộ): {formatDiaChiUngKy(getNhapMoOf(dungThanDiaChi))}
+                                            </p>
+                                          )}
+                                          <p className="text-xs text-red-700 m-0 mt-1 leading-relaxed">
+                                            • Ứng kỳ (Xung): {formatDiaChiUngKy(getNhiXungOf(dungThanDiaChi))}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {isSuyTuyet && (
+                                      <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
+                                        <p className="font-bold text-red-700 m-0 text-sm">Suy Tuyệt</p>
+                                        <p className="text-xs text-gray-600 m-0 mt-1">Ngũ hành Dụng thần ({dungThanNguHanh.name}) bị ngũ hành của Tháng ({monthNguHanh.name}) tương khắc.</p>
+                                      </div>
+                                    )}
+
+                                    {isNhapTamMo && (
+                                      <div className="p-3 bg-orange-50 rounded border-l-4 border-orange-500">
+                                        <p className="font-bold text-orange-700 m-0 text-sm">Nhập Tam Mộ</p>
+                                        <p className="text-xs text-gray-600 m-0 mt-1">Địa chi Dụng thần ({dungThanDiaChi}) nhập mộ tại địa chi của Tháng ({monthDiaChi}).</p>
+                                      </div>
+                                    )}
+
+                                    {isNguyetPha && (
+                                      <div className="p-3 bg-red-100 rounded border-l-4 border-red-600">
+                                        <p className="font-bold text-red-800 m-0 text-sm">Bị Nguyệt Phá</p>
+                                        <p className="text-xs text-gray-600 m-0 mt-1">Địa chi Dụng thần ({dungThanDiaChi}) bị địa chi của Tháng ({monthDiaChi}) nhị xung.</p>
+                                      </div>
+                                    )}
+
+                                    {!isQuaVuong && !isSuyTuyet && !isNhapTamMo && !isNguyetPha && (
+                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                        <p className="text-gray-500 italic text-xs m-0">Không có các trạng thái Quá Vượng, Suy Tuyệt, Nhập Mộ hay Nguyệt Phá.</p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        };
+                      }
+
                       const collapseItems = [
                         {
                           key: "1",
@@ -2839,15 +3176,159 @@ export default function InterpretationTables({
                         });
                       }
 
-                      if (voDaTungKetHonResult) {
+                      // Bước 7: Lực của hào động và mối tương quan với Dụng Thần
+                      const movingHaos = normalizedLines1.filter((l) => l.isMoving);
+                      if (movingHaos.length > 0) {
                         collapseItems.push({
                           key: "7",
-                          label: "Bước 7: Luận Vợ Đã Từng Kết Hôn",
+                          label: "Bước 7: Lực của hào động và mối tương quan với Dụng Thần",
+                          children: (
+                            <div className="space-y-4">
+                              {movingHaos.map((mHao, idx) => {
+                                const mDiaChi = extractDiaChi(mHao.lineData.canChi);
+                                const force = calculateDiaChiForce(
+                                  mDiaChi,
+                                  yearDiaChi,
+                                  monthDiaChi,
+                                  dayDiaChi
+                                );
+
+                                let correlation = null;
+                                if (force.totalScore > 0 && dungThanDiaChi) {
+                                  const isHop = isNhiHopDiaChi(
+                                    mDiaChi,
+                                    dungThanDiaChi
+                                  );
+                                  const isXung = isNhiXungDiaChi(
+                                    mDiaChi,
+                                    dungThanDiaChi
+                                  );
+                                  const nh1 = getNguHanhFromDiaChi(mDiaChi)?.name;
+                                  const nh2 =
+                                    getNguHanhFromDiaChi(dungThanDiaChi)?.name;
+                                  const nhRel = getNguHanhRelation(nh1, nh2);
+                                  correlation = { isHop, isXung, nhRel, nh1, nh2 };
+                                }
+
+                                return (
+                                  <div
+                                    key={idx}
+                                    className="bg-white p-4 rounded-lg border border-parchment-200"
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        7
+                                      </div>
+                                      <div className="flex-1 space-y-3 prose prose-sm max-w-none text-gray-700">
+                                        <p className="font-semibold mb-0">
+                                          Hào Động: Hào {mHao.hao} (
+                                          {mHao.lineData.canChi})
+                                        </p>
+
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-parchment-400">
+                                          <p className="font-semibold mb-2 text-sm">
+                                            7.2: Xét lực của hào động (Tổng điểm:{" "}
+                                            {force.totalScore.toFixed(2)})
+                                          </p>
+                                          <div className="space-y-1">
+                                            {force.details.map((d, i) => (
+                                              <p
+                                                key={i}
+                                                className={`text-xs m-0 ${d.color}`}
+                                              >
+                                                • {d.name}: {d.diem > 0 ? "+" : ""}
+                                                {d.diem} ({d.description})
+                                              </p>
+                                            ))}
+                                          </div>
+                                          <p
+                                            className={`font-bold mt-2 mb-0 ${force.totalScore > 0
+                                              ? "text-green-600"
+                                              : "text-gray-500"
+                                              }`}
+                                          >
+                                            →{" "}
+                                            {force.totalScore > 0
+                                              ? "Hào có Lực (Vượng)"
+                                              : "Hào hưu tù (Không có lực)"}
+                                          </p>
+                                        </div>
+
+                                        {correlation && (
+                                          <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                                            <p className="font-semibold mb-2 text-sm">
+                                              7.3: Tương quan với Dụng Thần (
+                                              {dungThanDiaChi})
+                                            </p>
+                                            <div className="space-y-1 text-xs text-gray-700">
+                                              {correlation.isHop && (
+                                                <p className="text-blue-600 font-semibold m-0">
+                                                  • Nhị Hợp với Dụng Thần
+                                                </p>
+                                              )}
+                                              {correlation.isXung && (
+                                                <p className="text-red-600 font-semibold m-0">
+                                                  • Nhị Xung với Dụng Thần
+                                                </p>
+                                              )}
+                                              {correlation.nhRel === "sinh" && (
+                                                <p className="m-0">
+                                                  • Ngũ hành: Hào động (
+                                                  {correlation.nh1}) sinh Dụng Thần
+                                                  ({correlation.nh2})
+                                                </p>
+                                              )}
+                                              {correlation.nhRel ===
+                                                "duocSinh" && (
+                                                  <p className="text-green-600 font-semibold m-0">
+                                                    • Ngũ hành: Hào động (
+                                                    {correlation.nh1}) được Dụng Thần
+                                                    ({correlation.nh2}) sinh
+                                                  </p>
+                                                )}
+                                              {correlation.nhRel === "khac" && (
+                                                <p className="text-red-600 font-semibold m-0">
+                                                  • Ngũ hành: Hào động (
+                                                  {correlation.nh1}) khắc Dụng Thần
+                                                  ({correlation.nh2})
+                                                </p>
+                                              )}
+                                              {correlation.nhRel ===
+                                                "biKhac" && (
+                                                  <p className="m-0">
+                                                    • Ngũ hành: Hào động (
+                                                    {correlation.nh1}) bị Dụng Thần
+                                                    ({correlation.nh2}) khắc
+                                                  </p>
+                                                )}
+                                              {correlation.nhRel === "trung" && (
+                                                <p className="m-0">
+                                                  • Ngũ hành: Hào động và Dụng Thần
+                                                  cùng hành {correlation.nh1}
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ),
+                        });
+                      }
+
+                      if (voDaTungKetHonResult) {
+                        collapseItems.push({
+                          key: "vo-da-tung-ket-hon",
+                          label: "Luận giải bổ sung: Luận Vợ Đã Từng Kết Hôn",
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
                                 <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                                  7
+                                  +
                                 </div>
                                 <div className="flex-1 prose prose-sm max-w-none text-gray-700">
                                   <p className="font-semibold mb-2">Luận đoán Thê Tài biến Chu Tước</p>
@@ -2865,6 +3346,10 @@ export default function InterpretationTables({
                             </div>
                           )
                         });
+                      }
+
+                      if (buoc8Item) {
+                        collapseItems.push(buoc8Item);
                       }
 
                       return <Collapse items={collapseItems} />;
@@ -4360,6 +4845,32 @@ export default function InterpretationTables({
                                 };
 
                                 hexNames.forEach(checkLogic);
+
+                                // Logic: Hào 6 Phụ Mẫu nhị xung hào động
+                                if (movingLine) {
+                                  const hao6 = lineData1[0]; // Hào 6 (vì lineData1 được sắp xếp từ hào 6 đến 1)
+                                  const movingHaoRecord = lineData1.find(
+                                    (l) => l.hao === movingLine
+                                  );
+
+                                  if (hao6 && movingHaoRecord) {
+                                    const diaChi6 = extractDiaChi(hao6.canChi);
+                                    const diaChiMoving = extractDiaChi(
+                                      movingHaoRecord.canChi
+                                    );
+
+                                    if (
+                                      getLucThanName(hao6.lucThan) === "Phụ Mẫu" &&
+                                      isNhiXungDiaChi(diaChi6, diaChiMoving)
+                                    ) {
+                                      results.push({
+                                        title: "Hào 6 Phụ Mẫu nhị xung Hào Động",
+                                        content:
+                                          "Có khả năng là mộ phần nứt nẻ hoặc bệnh đau đầu.",
+                                      });
+                                    }
+                                  }
+                                }
 
                                 // Remove duplicates if same rule applies to both original and changed hexagrams
                                 const uniqueResults = [];
