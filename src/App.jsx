@@ -76,7 +76,7 @@ const renderCanChiWithNguHanh = (canChi) => {
   const nguHanh = nguHanhFromDiaChi[diaChiCode];
 
   return (
-    <span>
+    <>
       {diaChiCode && DIA_CHI_ICONS[diaChiCode] && (
         <span className="mr-1">{DIA_CHI_ICONS[diaChiCode]}</span>
       )}
@@ -88,21 +88,32 @@ const renderCanChiWithNguHanh = (canChi) => {
           overlayClassName="tooltip-custom"
         >
           <span
-            className={`ml-2 text-xs px-2 py-0.5 rounded ${nguHanh.color} font-semibold cursor-help flex items-center gap-1`}
+            className={`${nguHanh.color}`}
           >
-            <span>{nguHanhRelations[nguHanh.name]?.icon}</span>
-            <span>{nguHanh.name}</span>
+            {nguHanhRelations[nguHanh.name]?.icon}
           </span>
         </Tooltip>
       )}
-    </span>
+    </>
   );
 };
 
 const getDiaChiFromCanChi = (canChi) => {
   if (!canChi) return null;
   const parts = canChi.split(" ");
-  return parts[1];
+  return parts[parts.length - 1];
+};
+
+const getDungThanDiaChi = (result, dungThan) => {
+  if (!dungThan || !result || !result.originalHexagram) return null;
+  const lineData = generateLineData(
+    result.originalHexagram.id,
+    result.movingLine
+  );
+  const dungThanLine = lineData.find(
+    (line) => line.lucThan === LUC_THAN_CODES[dungThan]
+  );
+  return dungThanLine ? getDiaChiFromCanChi(dungThanLine.canChi) : null;
 };
 
 function App() {
@@ -202,7 +213,7 @@ function App() {
         {result && result.metadata && (
           <div className="mb-6">
             <Card className="bg-parchment-50 border-2 border-parchment-300">
-              <div className="text-sm grid grid-cols-1 sm:grid-cols-3 gap-y-1 gap-x-4">
+              <div className="text-sm grid grid-cols-1 sm:grid-cols-3 gap-y-1 gap-x-4 flex">
                 <div>
                   <span className="font-semibold">Thời gian lập quẻ:</span>{" "}
                   <span>{result.metadata.thoiGianDuong}</span>
@@ -215,87 +226,42 @@ function App() {
                 <div>
                   <span className="font-semibold">Ngày:</span>{" "}
                   {renderCanChiWithNguHanh(result.metadata.dayCanChi)}
+                  {(() => {
+                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                    const dayDiaChi = getDiaChiFromCanChi(result.metadata.dayCanChi);
+                    if (dtDiaChi && dayDiaChi && dtDiaChi === dayDiaChi) {
+                      return <span className="ml-2 text-green-700 font-bold">(Nhật lệnh)</span>;
+                    }
+                    return null;
+                  })()}
                 </div>
                 <div>
                   <span className="font-semibold">Tháng:</span>{" "}
                   {renderCanChiWithNguHanh(result.metadata.monthCanChi)}
+                  {(() => {
+                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                    const monthDiaChi = getDiaChiFromCanChi(result.metadata.monthCanChi);
+                    if (dtDiaChi && monthDiaChi && dtDiaChi === monthDiaChi) {
+                      return <span className="ml-2 text-green-700 font-bold">(Nguyệt lệnh)</span>;
+                    }
+                    return null;
+                  })()}
                 </div>
                 <div>
                   <span className="font-semibold">Năm:</span>{" "}
                   {renderCanChiWithNguHanh(result.metadata.yearCanChi)}
+                  {(() => {
+                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                    const yearDiaChi = getDiaChiFromCanChi(result.metadata.yearCanChi);
+                    if (dtDiaChi && yearDiaChi && dtDiaChi === yearDiaChi) {
+                      return <span className="ml-2 text-green-700 font-bold">(Thái tuế)</span>;
+                    }
+                    return null;
+                  })()}
                 </div>
               </div>
 
-              {/* Thái tuế / Nguyệt lệnh / Nhật lệnh */}
-              {dungThan &&
-                result.originalHexagram &&
-                (() => {
-                  const lineData = generateLineData(
-                    result.originalHexagram.id,
-                    result.movingLine
-                  );
-                  const dungThanLine = lineData.find(
-                    (line) => line.lucThan === LUC_THAN_CODES[dungThan]
-                  );
-                  const dungThanDiaChi = dungThanLine
-                    ? getDiaChiFromCanChi(dungThanLine.canChi)
-                    : null;
-                  const yearDiaChi = getDiaChiFromCanChi(
-                    result.metadata.yearCanChi
-                  );
-                  const monthDiaChi = getDiaChiFromCanChi(
-                    result.metadata.monthCanChi
-                  );
-                  const dayDiaChi = getDiaChiFromCanChi(
-                    result.metadata.dayCanChi
-                  );
 
-                  const isThaiTue =
-                    dungThanDiaChi &&
-                    yearDiaChi &&
-                    dungThanDiaChi === yearDiaChi;
-                  const isNguyetLenh =
-                    dungThanDiaChi &&
-                    monthDiaChi &&
-                    dungThanDiaChi === monthDiaChi;
-                  const isNhatLenh =
-                    dungThanDiaChi && dayDiaChi && dungThanDiaChi === dayDiaChi;
-                  if (
-                    !dungThanDiaChi ||
-                    (!isThaiTue && !isNguyetLenh && !isNhatLenh)
-                  ) {
-                    return null;
-                  }
-
-                  return (
-                    <div className="mt-3 pt-2 border-t border-parchment-300 text-sm grid grid-cols-1 sm:grid-cols-3 gap-y-1 gap-x-4">
-                      {isThaiTue && (
-                        <div>
-                          <span className="font-semibold">Thái tuế:</span>{" "}
-                          <span className="text-green-700">
-                            Trùng {yearDiaChi ? `(${yearDiaChi})` : ""}
-                          </span>
-                        </div>
-                      )}
-                      {isNguyetLenh && (
-                        <div>
-                          <span className="font-semibold">Nguyệt lệnh:</span>{" "}
-                          <span className="text-green-700">
-                            Trùng {monthDiaChi ? `(${monthDiaChi})` : ""}
-                          </span>
-                        </div>
-                      )}
-                      {isNhatLenh && (
-                        <div>
-                          <span className="font-semibold">Nhật lệnh:</span>{" "}
-                          <span className="text-green-700">
-                            Trùng {dayDiaChi ? `(${dayDiaChi})` : ""}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
             </Card>
           </div>
         )}

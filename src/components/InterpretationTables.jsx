@@ -325,8 +325,9 @@ export default function InterpretationTables({
     if (!tuCode || !thanCode) return null;
 
     const code = `${tuCode}-${thanCode}`;
+    const tuIcon = LUC_TU_ICONS[tuCode] || "";
     return {
-      label: `${tuName} lâm ${thanName}`,
+      label: `${tuIcon}${tuName} lâm ${thanName}`,
       code,
     };
   };
@@ -347,9 +348,10 @@ export default function InterpretationTables({
 
     const code = `${tuCode}-${chiCode}`;
 
+    const tuIcon = LUC_TU_ICONS[tuCode] || "";
     const chiIcon = DIA_CHI_ICONS[chiCode] || "";
     return {
-      label: `${tuName} lâm ${chiIcon}${diaChi}`,
+      label: `${tuIcon}${tuName} lâm ${chiIcon}${diaChi}`,
       code,
     };
   };
@@ -1003,7 +1005,12 @@ export default function InterpretationTables({
         placement="left"
         height="100%"
         width={window.innerWidth < 640 ? "100%" : "70%"}
-        title={getLucTuName(lucTuDrawerData?.lucTu) || "Lục Thú"}
+        title={
+          <div className="flex items-center gap-2">
+            <span>{LUC_TU_ICONS[LUC_TU_CODES[getLucTuName(lucTuDrawerData?.lucTu)] || lucTuDrawerData?.lucTu]}</span>
+            <span>{getLucTuName(lucTuDrawerData?.lucTu) || "Lục Thú"}</span>
+          </div>
+        }
         destroyOnClose
         bodyStyle={{ padding: 16 }}
       >
@@ -4311,6 +4318,81 @@ export default function InterpretationTables({
                                       })}
                                     </div>
                                   );
+                                })()}
+                              </div>
+                            ),
+                          },
+                          {
+                            key: "5",
+                            label: "Khác",
+                            children: (
+                              <div className="bg-white p-4 rounded-lg border border-amber-200 space-y-4">
+                                {(() => {
+                                  const results = [];
+                                  const hexNames = [];
+                                  if (originalHexagram?.name)
+                                    hexNames.push(originalHexagram.name);
+                                  if (changedHexagram?.name)
+                                    hexNames.push(changedHexagram.name);
+
+                                  const checkLogic = (name) => {
+                                    const upperName = name.toUpperCase();
+                                    if (upperName === "HỎA SƠN LỮ") {
+                                      results.push({
+                                        title: `Quẻ ${name}`,
+                                        content:
+                                          "Cần kiểm tra phong thuỷ của phòng khách, nhà kho hoặc nơi cất tạm bợ.",
+                                      });
+                                    }
+                                    if (upperName.includes("BÍ")) {
+                                      results.push({
+                                        title: `Quẻ ${name}`,
+                                        content:
+                                          "Cần kiểm tra bóng đèn trong nhà, trên bàn thờ hoặc di ảnh.",
+                                      });
+                                    }
+                                    if (upperName === "THIÊN LÔI VÔ VỌNG") {
+                                      results.push({
+                                        title: `Quẻ ${name}`,
+                                        content:
+                                          "Nhà có vong, vong bị đói khát không được cúng kiếng.",
+                                      });
+                                    }
+                                  };
+
+                                  hexNames.forEach(checkLogic);
+
+                                  // Remove duplicates if same rule applies to both original and changed hexagrams
+                                  const uniqueResults = [];
+                                  const seenContent = new Set();
+                                  results.forEach((res) => {
+                                    if (!seenContent.has(res.content)) {
+                                      uniqueResults.push(res);
+                                      seenContent.add(res.content);
+                                    }
+                                  });
+
+                                  if (uniqueResults.length === 0) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không có thông tin bổ sung cho quẻ này.
+                                      </p>
+                                    );
+                                  }
+
+                                  return uniqueResults.map((res, i) => (
+                                    <div
+                                      key={i}
+                                      className="p-3 bg-blue-50 rounded border-l-4 border-blue-500"
+                                    >
+                                      <p className="font-semibold text-blue-800 mb-1">
+                                        {res.title}
+                                      </p>
+                                      <p className="text-gray-700">
+                                        {res.content}
+                                      </p>
+                                    </div>
+                                  ));
                                 })()}
                               </div>
                             ),
