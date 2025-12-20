@@ -2150,7 +2150,9 @@ export default function InterpretationTables({
                           key: "3",
                           label: `Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá${
                             (thaiTue || tuePha) && dungThanDiaChi && yearDiaChi
-                              ? ` (${buoc3ThaiTueDiem > 0 ? "+" : ""}${buoc3ThaiTueDiem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc3ThaiTueDiem > 0 ? "+" : ""
+                                }${buoc3ThaiTueDiem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -2238,7 +2240,9 @@ export default function InterpretationTables({
                           key: "3b",
                           label: `Bước 3: Xét mối tương quan Dụng Thần và Tháng${
                             buoc3Diem !== undefined && buoc3Diem !== null
-                              ? ` (${buoc3Diem > 0 ? "+" : ""}${buoc3Diem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc3Diem > 0 ? "+" : ""
+                                }${buoc3Diem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -2351,7 +2355,9 @@ export default function InterpretationTables({
                           key: "4",
                           label: `Bước 4: Xét mối tương quan Dụng Thần và Ngày${
                             buoc4Diem !== undefined && buoc4Diem !== null
-                              ? ` (${buoc4Diem > 0 ? "+" : ""}${buoc4Diem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc4Diem > 0 ? "+" : ""
+                                }${buoc4Diem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -2464,7 +2470,9 @@ export default function InterpretationTables({
                           key: "5",
                           label: `Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá${
                             (thaiTueThe || tuePhaThe) && theDiaChi && yearDiaChi
-                              ? ` (${buoc5ThaiTueDiem > 0 ? "+" : ""}${buoc5ThaiTueDiem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc5ThaiTueDiem > 0 ? "+" : ""
+                                }${buoc5ThaiTueDiem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -2542,7 +2550,9 @@ export default function InterpretationTables({
                           key: "5b",
                           label: `Bước 5: Xét mối tương quan Hào Thế và Tháng${
                             buoc5Diem !== undefined && buoc5Diem !== null
-                              ? ` (${buoc5Diem > 0 ? "+" : ""}${buoc5Diem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc5Diem > 0 ? "+" : ""
+                                }${buoc5Diem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -2655,7 +2665,9 @@ export default function InterpretationTables({
                           key: "6",
                           label: `Bước 6: Xét mối tương quan Hào Thế và Ngày${
                             buoc6Diem !== undefined && buoc6Diem !== null
-                              ? ` (${buoc6Diem > 0 ? "+" : ""}${buoc6Diem.toFixed(2)} điểm)`
+                              ? ` (${
+                                  buoc6Diem > 0 ? "+" : ""
+                                }${buoc6Diem.toFixed(2)} điểm)`
                               : ""
                           }`,
                           children: (
@@ -3082,6 +3094,45 @@ export default function InterpretationTables({
                                   const coNguyCo =
                                     tamHinhCheck.hasFullGroup && dieuKien2;
 
+                                  // Kiểm tra xem có phải con của người hỏi không
+                                  // Người hỏi tương ứng với hào Thế
+                                  const theHao = lineData1.find(
+                                    (line) => Number(line.theUng) === 1
+                                  );
+
+                                  let khongPhaiConCuaNguoiHoi = false;
+                                  let thongTinKiemTraCon = null;
+
+                                  if (coNguyCo && theHao) {
+                                    // Xác định quái của hào Thế: hào 1-3 thuộc hạ quái, hào 4-6 thuộc thượng quái
+                                    const theTrigram =
+                                      theHao.hao <= 3 ? "lower" : "upper";
+
+                                    // Xác định quái của hào Tử Tôn
+                                    const tuTonTrigram =
+                                      tuTonHao.hao <= 3 ? "lower" : "upper";
+
+                                    // Kiểm tra: nếu hào Tử tôn có tuanKhong = "K" và không cùng quái với hào Thế
+                                    if (
+                                      tuTonHao.tuanKhong === "K" &&
+                                      theTrigram !== tuTonTrigram
+                                    ) {
+                                      khongPhaiConCuaNguoiHoi = true;
+                                      thongTinKiemTraCon = {
+                                        theHao: theHao.hao,
+                                        theTrigram:
+                                          theTrigram === "lower"
+                                            ? "Hạ quái"
+                                            : "Thượng quái",
+                                        tuTonHao: tuTonHao.hao,
+                                        tuTonTrigram:
+                                          tuTonTrigram === "lower"
+                                            ? "Hạ quái"
+                                            : "Thượng quái"
+                                      };
+                                    }
+                                  }
+
                                   return (
                                     <div className="space-y-3">
                                       <div>
@@ -3184,6 +3235,48 @@ export default function InterpretationTables({
                                             <p className="text-red-800 font-bold text-lg">
                                               ⚠ CÓ NGUY CƠ SẢY BỎ CON
                                             </p>
+
+                                            {/* Kiểm tra xem có phải con của người hỏi không */}
+                                            {khongPhaiConCuaNguoiHoi &&
+                                              thongTinKiemTraCon && (
+                                                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded">
+                                                  <p className="font-semibold text-yellow-800 mb-2">
+                                                    ⚠ Lưu ý về quan hệ:
+                                                  </p>
+                                                  <div className="text-sm text-yellow-700 space-y-1">
+                                                    <p>
+                                                      • Hào Thế (Hào{" "}
+                                                      {
+                                                        thongTinKiemTraCon.theHao
+                                                      }
+                                                      ) - đại diện cho người hỏi
+                                                      - thuộc{" "}
+                                                      {
+                                                        thongTinKiemTraCon.theTrigram
+                                                      }
+                                                    </p>
+                                                    <p>
+                                                      • Hào Tử Tôn (Hào{" "}
+                                                      {
+                                                        thongTinKiemTraCon.tuTonHao
+                                                      }
+                                                      ) có Tuần không = "K" và
+                                                      thuộc{" "}
+                                                      {
+                                                        thongTinKiemTraCon.tuTonTrigram
+                                                      }
+                                                    </p>
+                                                    <p className="font-semibold mt-2">
+                                                      → Có thể suy luận: Đây có
+                                                      thể không phải là con của
+                                                      người hỏi (hào Thế) vì hào
+                                                      Tử Tôn có Tuần không = "K"
+                                                      và không nằm cùng quái với
+                                                      hào Thế.
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                              )}
                                           </div>
                                         )}
                                       </div>
