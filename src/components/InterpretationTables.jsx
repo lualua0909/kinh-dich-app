@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Card, Tooltip, Drawer, Modal } from "antd";
+import { Table, Card, Tooltip, Drawer, Modal, Collapse } from "antd";
 import ReactMarkdown from "react-markdown";
 import { getDungThanInfo } from "../data/dungThan";
 import {
@@ -2035,1541 +2035,1614 @@ export default function InterpretationTables({
                     <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
                       Các Bước Giải Quẻ
                     </h3>
-                    <div className="space-y-4">
-                      {/* Bước 1: Xác định Dụng Thần */}
-                      <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                            1
-                          </div>
-                          <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                            <p className="font-semibold mb-2">
-                              Xác định Dụng Thần
-                            </p>
-                            {dungThan && dungThanInfo ? (
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Dụng Thần đã chọn:</strong>{" "}
-                                  {dungThanInfo.label}
-                                </p>
-                                <p>
-                                  <strong>Vai vế:</strong> {dungThanInfo.vaiVe}
-                                </p>
-                                <p>
-                                  <strong>Đồ dùng:</strong>{" "}
-                                  {dungThanInfo.doDung}
-                                </p>
-                                <p>
-                                  <strong>Mang tính chất:</strong>{" "}
-                                  {dungThanInfo.mangTinhChat}
-                                </p>
-                                {dungThanHao && (
-                                  <p>
-                                    <strong>Hào Dụng Thần:</strong> Hào{" "}
-                                    {dungThanHao.hao} ({dungThanHao.canChi})
-                                  </p>
-                                )}
-                              </div>
-                            ) : (
-                              <p className="text-gray-500 italic">
-                                Chưa chọn Dụng Thần
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Bước 2: Phân tích mối tương quan giữa hào Thế và Dụng Thần */}
-                      <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                            2
-                          </div>
-                          <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                            <p className="font-semibold mb-2">
-                              Phân tích mối tương quan giữa hào Thế và Dụng Thần
-                            </p>
-                            {theHao &&
-                            dungThanHao &&
-                            theDiaChi &&
-                            dungThanDiaChi ? (
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Hào Thế:</strong> Hào {theHao.hao} (
-                                  {theHao.canChi}) - Địa Chi:{" "}
-                                  <strong>{theDiaChi}</strong>
-                                </p>
-                                <p>
-                                  <strong>Hào Dụng Thần:</strong> Hào{" "}
-                                  {dungThanHao.hao} ({dungThanHao.canChi}) - Địa
-                                  Chi: <strong>{dungThanDiaChi}</strong>
-                                </p>
-                                {buoc2KetLuan && (
-                                  <div className="mt-3 p-3 bg-gray-50 rounded border-l-4 border-parchment-400">
-                                    <p className="font-semibold mb-1">
-                                      Kết luận:
-                                    </p>
-                                    <p className="mb-2 text-gray-700">
-                                      <strong>{buoc2KetLuan.relation}</strong> →{" "}
-                                      <span
-                                        className={`font-bold ${buoc2KetLuan.color}`}
-                                      >
-                                        {buoc2KetLuan.text}
-                                      </span>
-                                    </p>
-                                  </div>
-                                )}
-                              </div>
-                            ) : (
-                              <p className="text-gray-500 italic">
-                                Không đủ thông tin để phân tích
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Bước 3: Xác định Thái Tuế và Tuế Phá */}
-                      <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                            3
-                          </div>
-                          <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                            <p className="font-semibold mb-2">
-                              Xác định Dụng Thần có Thái Tuế hay Tuế Phá
-                            </p>
-                            {dungThanDiaChi && yearDiaChi ? (
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Dụng Thần:</strong>{" "}
-                                  {dungThanDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của năm:</strong> {yearDiaChi}
-                                </p>
-                                <div className="mt-3 space-y-2">
-                                  {thaiTue && (
-                                    <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
-                                      <p className="font-semibold text-green-700">
-                                        ✓ Có Thái Tuế (+0 điểm)
-                                      </p>
-                                      <p className="text-sm text-gray-600">
-                                        Địa chi của Dụng Thần trùng với địa chi
-                                        của năm
-                                      </p>
-                                    </div>
-                                  )}
-                                  {tuePha && (
-                                    <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
-                                      <p className="font-semibold text-red-700">
-                                        ✗ Có Tuế Phá (-0.25 điểm)
-                                      </p>
-                                      <p className="text-sm text-gray-600">
-                                        Địa chi của Dụng Thần xung với địa chi
-                                        của năm
-                                      </p>
-                                    </div>
-                                  )}
-                                  {!thaiTue && !tuePha && (
-                                    <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
-                                      <p className="font-semibold text-gray-700">
-                                        Không có Thái Tuế hay Tuế Phá (0 điểm)
-                                      </p>
-                                    </div>
-                                  )}
-                                  {(thaiTue || tuePha) && (
-                                    <div className="mt-3 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Điểm Bước 3:{" "}
-                                        <span className="text-xl">
-                                          {buoc3ThaiTueDiem > 0 ? "+" : ""}
-                                          {buoc3ThaiTueDiem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                    </div>
-                                  )}
+                    {(() => {
+                      const collapseItems = [
+                        {
+                          key: "1",
+                          label: "Bước 1: Xác định Dụng Thần",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  1
                                 </div>
-                              </div>
-                            ) : (
-                              <p className="text-gray-500 italic">
-                                Không đủ thông tin để xác định
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Bước 3: Xét mối tương quan Dụng Thần và Tháng */}
-                      {dungThanDiaChi && monthDiaChi && (
-                        <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                              3
-                            </div>
-                            <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                              <p className="font-semibold mb-2">
-                                Xét mối tương quan Dụng Thần và Tháng
-                              </p>
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Dụng Thần:</strong>{" "}
-                                  {dungThanDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của tháng:</strong>{" "}
-                                  {monthDiaChi}
-                                </p>
-                                {buoc3Results.length > 0 ? (
-                                  <div className="mt-3 space-y-3">
-                                    {buoc3Results.map((result, index) => (
-                                      <div
-                                        key={index}
-                                        className={`p-3 rounded border-l-4 ${
-                                          result.matched
-                                            ? result.diem > 0
-                                              ? "bg-green-50 border-green-500"
-                                              : result.diem < 0
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-orange-50 border-orange-500"
-                                            : "bg-gray-50 border-gray-300"
-                                        }`}
-                                      >
-                                        <div className="flex items-start justify-between">
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                              <p
-                                                className={`font-semibold ${result.color}`}
-                                              >
-                                                {result.step}: {result.name}
-                                              </p>
-                                              {result.matched && (
-                                                <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
-                                                  ✓ Thỏa mãn
-                                                </span>
-                                              )}
-                                              {!result.matched && (
-                                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
-                                                  ✗ Không thỏa mãn
-                                                </span>
-                                              )}
-                                              {buoc3DungTai === result.step && (
-                                                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                  Dừng tại đây
-                                                </span>
-                                              )}
-                                            </div>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              {result.description}
-                                            </p>
-                                          </div>
-                                          {result.matched &&
-                                            result.diem !== undefined && (
-                                              <div
-                                                className={`ml-3 font-bold text-lg ${result.color}`}
-                                              >
-                                                {result.diem > 0 ? "+" : ""}
-                                                {result.diem}
-                                              </div>
-                                            )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                    <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Tổng điểm Bước 3:{" "}
-                                        <span className="text-xl">
-                                          {buoc3Diem > 0 ? "+" : ""}
-                                          {buoc3Diem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                      {buoc3Dung && buoc3DungTai && (
-                                        <p className="text-sm text-gray-600 mt-1">
-                                          <strong>Đã dừng xét tại:</strong> Bước{" "}
-                                          {buoc3DungTai}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-gray-500 italic mt-3">
-                                    Không có mối tương quan nào được xác định
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xác định Dụng Thần
                                   </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Bước 4: Xét mối tương quan Dụng Thần và Ngày */}
-                      {dungThanDiaChi && dayDiaChi && (
-                        <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                              4
-                            </div>
-                            <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                              <p className="font-semibold mb-2">
-                                Xét mối tương quan Dụng Thần và Ngày
-                              </p>
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Dụng Thần:</strong>{" "}
-                                  {dungThanDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của ngày:</strong> {dayDiaChi}
-                                </p>
-                                {buoc4Results.length > 0 ? (
-                                  <div className="mt-3 space-y-3">
-                                    {buoc4Results.map((result, index) => (
-                                      <div
-                                        key={index}
-                                        className={`p-3 rounded border-l-4 ${
-                                          result.matched
-                                            ? result.diem > 0
-                                              ? "bg-green-50 border-green-500"
-                                              : result.diem < 0
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-orange-50 border-orange-500"
-                                            : "bg-gray-50 border-gray-300"
-                                        }`}
-                                      >
-                                        <div className="flex items-start justify-between">
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                              <p
-                                                className={`font-semibold ${result.color}`}
-                                              >
-                                                {result.step}: {result.name}
-                                              </p>
-                                              {result.matched && (
-                                                <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
-                                                  ✓ Thỏa mãn
-                                                </span>
-                                              )}
-                                              {!result.matched && (
-                                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
-                                                  ✗ Không thỏa mãn
-                                                </span>
-                                              )}
-                                              {buoc4DungTai === result.step && (
-                                                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                  Dừng tại đây
-                                                </span>
-                                              )}
-                                            </div>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              {result.description}
-                                            </p>
-                                          </div>
-                                          {result.matched &&
-                                            result.diem !== undefined && (
-                                              <div
-                                                className={`ml-3 font-bold text-lg ${result.color}`}
-                                              >
-                                                {result.diem > 0 ? "+" : ""}
-                                                {result.diem}
-                                              </div>
-                                            )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                    <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Tổng điểm Bước 4:{" "}
-                                        <span className="text-xl">
-                                          {buoc4Diem > 0 ? "+" : ""}
-                                          {buoc4Diem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                      {buoc4Dung && buoc4DungTai && (
-                                        <p className="text-sm text-gray-600 mt-1">
-                                          <strong>Đã dừng xét tại:</strong> Bước{" "}
-                                          {buoc4DungTai}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-gray-500 italic mt-3">
-                                    Không có mối tương quan nào được xác định
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá */}
-                      {theDiaChi && yearDiaChi && (
-                        <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                              5
-                            </div>
-                            <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                              <p className="font-semibold mb-2">
-                                Xác định Hào Thế có Thái Tuế hay Tuế Phá
-                              </p>
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Hào Thế:</strong>{" "}
-                                  {theDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của năm:</strong> {yearDiaChi}
-                                </p>
-                                <div className="mt-3 space-y-2">
-                                  {thaiTueThe && (
-                                    <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
-                                      <p className="font-semibold text-green-700">
-                                        ✓ Có Thái Tuế (+0 điểm)
-                                      </p>
-                                      <p className="text-sm text-gray-600">
-                                        Địa chi của Hào Thế trùng với địa chi
-                                        của năm
-                                      </p>
-                                    </div>
-                                  )}
-                                  {tuePhaThe && (
-                                    <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
-                                      <p className="font-semibold text-red-700">
-                                        ✗ Có Tuế Phá (-0.25 điểm)
-                                      </p>
-                                      <p className="text-sm text-gray-600">
-                                        Địa chi của Hào Thế xung với địa chi của
-                                        năm
-                                      </p>
-                                    </div>
-                                  )}
-                                  {!thaiTueThe && !tuePhaThe && (
-                                    <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
-                                      <p className="font-semibold text-gray-700">
-                                        Không có Thái Tuế hay Tuế Phá (0 điểm)
-                                      </p>
-                                    </div>
-                                  )}
-                                  {(thaiTueThe || tuePhaThe) && (
-                                    <div className="mt-3 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Điểm Bước 5:{" "}
-                                        <span className="text-xl">
-                                          {buoc5ThaiTueDiem > 0 ? "+" : ""}
-                                          {buoc5ThaiTueDiem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Bước 5: Xét mối tương quan Hào Thế và Tháng */}
-                      {theDiaChi && monthDiaChi && (
-                        <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                              5
-                            </div>
-                            <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                              <p className="font-semibold mb-2">
-                                Xét mối tương quan Hào Thế và Tháng
-                              </p>
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Hào Thế:</strong>{" "}
-                                  {theDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của tháng:</strong>{" "}
-                                  {monthDiaChi}
-                                </p>
-                                {buoc5Results.length > 0 ? (
-                                  <div className="mt-3 space-y-3">
-                                    {buoc5Results.map((result, index) => (
-                                      <div
-                                        key={index}
-                                        className={`p-3 rounded border-l-4 ${
-                                          result.matched
-                                            ? result.diem > 0
-                                              ? "bg-green-50 border-green-500"
-                                              : result.diem < 0
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-orange-50 border-orange-500"
-                                            : "bg-gray-50 border-gray-300"
-                                        }`}
-                                      >
-                                        <div className="flex items-start justify-between">
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                              <p
-                                                className={`font-semibold ${result.color}`}
-                                              >
-                                                {result.step}: {result.name}
-                                              </p>
-                                              {result.matched && (
-                                                <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
-                                                  ✓ Thỏa mãn
-                                                </span>
-                                              )}
-                                              {!result.matched && (
-                                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
-                                                  ✗ Không thỏa mãn
-                                                </span>
-                                              )}
-                                              {buoc5DungTai === result.step && (
-                                                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                  Dừng tại đây
-                                                </span>
-                                              )}
-                                            </div>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              {result.description}
-                                            </p>
-                                          </div>
-                                          {result.matched &&
-                                            result.diem !== undefined && (
-                                              <div
-                                                className={`ml-3 font-bold text-lg ${result.color}`}
-                                              >
-                                                {result.diem > 0 ? "+" : ""}
-                                                {result.diem}
-                                              </div>
-                                            )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                    <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Tổng điểm Bước 5:{" "}
-                                        <span className="text-xl">
-                                          {buoc5Diem > 0 ? "+" : ""}
-                                          {buoc5Diem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                      {buoc5Dung && buoc5DungTai && (
-                                        <p className="text-sm text-gray-600 mt-1">
-                                          <strong>Đã dừng xét tại:</strong> Bước{" "}
-                                          {buoc5DungTai}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-gray-500 italic mt-3">
-                                    Không có mối tương quan nào được xác định
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Bước 6: Xét mối tương quan Hào Thế và Ngày */}
-                      {theDiaChi && dayDiaChi && (
-                        <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                          <div className="flex items-start gap-3">
-                            <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
-                              6
-                            </div>
-                            <div className="flex-1 prose prose-sm max-w-none text-gray-700">
-                              <p className="font-semibold mb-2">
-                                Xét mối tương quan Hào Thế và Ngày
-                              </p>
-                              <div className="space-y-2">
-                                <p>
-                                  <strong>Địa Chi của Hào Thế:</strong>{" "}
-                                  {theDiaChi}
-                                </p>
-                                <p>
-                                  <strong>Địa Chi của ngày:</strong> {dayDiaChi}
-                                </p>
-                                {buoc6Results.length > 0 ? (
-                                  <div className="mt-3 space-y-3">
-                                    {buoc6Results.map((result, index) => (
-                                      <div
-                                        key={index}
-                                        className={`p-3 rounded border-l-4 ${
-                                          result.matched
-                                            ? result.diem > 0
-                                              ? "bg-green-50 border-green-500"
-                                              : result.diem < 0
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-orange-50 border-orange-500"
-                                            : "bg-gray-50 border-gray-300"
-                                        }`}
-                                      >
-                                        <div className="flex items-start justify-between">
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                              <p
-                                                className={`font-semibold ${result.color}`}
-                                              >
-                                                {result.step}: {result.name}
-                                              </p>
-                                              {result.matched && (
-                                                <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
-                                                  ✓ Thỏa mãn
-                                                </span>
-                                              )}
-                                              {!result.matched && (
-                                                <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
-                                                  ✗ Không thỏa mãn
-                                                </span>
-                                              )}
-                                              {buoc6DungTai === result.step && (
-                                                <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                  Dừng tại đây
-                                                </span>
-                                              )}
-                                            </div>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              {result.description}
-                                            </p>
-                                          </div>
-                                          {result.matched &&
-                                            result.diem !== undefined && (
-                                              <div
-                                                className={`ml-3 font-bold text-lg ${result.color}`}
-                                              >
-                                                {result.diem > 0 ? "+" : ""}
-                                                {result.diem}
-                                              </div>
-                                            )}
-                                        </div>
-                                      </div>
-                                    ))}
-                                    <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
-                                      <p className="font-semibold text-blue-700">
-                                        Tổng điểm Bước 6:{" "}
-                                        <span className="text-xl">
-                                          {buoc6Diem > 0 ? "+" : ""}
-                                          {buoc6Diem.toFixed(2)} điểm
-                                        </span>
-                                      </p>
-                                      {buoc6Dung && buoc6DungTai && (
-                                        <p className="text-sm text-gray-600 mt-1">
-                                          <strong>Đã dừng xét tại:</strong> Bước{" "}
-                                          {buoc6DungTai}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-gray-500 italic mt-3">
-                                    Không có mối tương quan nào được xác định
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Tổng điểm và Kết luận cho Dụng Thần */}
-                      {dungThanDiaChi && (
-                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-300 shadow-lg">
-                          <div className="text-center">
-                            <p className="font-bold text-lg text-gray-800 mb-4">
-                              Tổng Điểm Giải Quẻ - Dụng Thần
-                            </p>
-                            {(() => {
-                              // Tính tổng điểm cho Dụng Thần (bước 3 + 4)
-                              const tongDiemDungThan =
-                                buoc3ThaiTueDiem +
-                                (buoc3Diem || 0) +
-                                (buoc4Diem || 0);
-
-                              // Xác định kết luận cho Dụng Thần
-                              let ketLuanDungThan = "";
-                              let ketLuanColorDungThan = "";
-                              if (tongDiemDungThan > 0) {
-                                ketLuanDungThan = "Vượng";
-                                ketLuanColorDungThan =
-                                  "text-green-700 bg-green-100";
-                              } else if (tongDiemDungThan === 0) {
-                                ketLuanDungThan = "Trung Hoà";
-                                ketLuanColorDungThan =
-                                  "text-blue-700 bg-blue-100";
-                              } else {
-                                ketLuanDungThan = "Suy";
-                                ketLuanColorDungThan =
-                                  "text-red-700 bg-red-100";
-                              }
-
-                              return (
-                                <div className="space-y-3">
-                                  <div className="flex justify-center items-baseline gap-2">
-                                    <span className="text-sm text-gray-600">
-                                      Tổng điểm:
-                                    </span>
-                                    <span className="text-3xl font-bold text-gray-800">
-                                      {tongDiemDungThan > 0 ? "+" : ""}
-                                      {tongDiemDungThan.toFixed(2)}
-                                    </span>
-                                    <span className="text-sm text-gray-600">
-                                      điểm
-                                    </span>
-                                  </div>
-                                  <div className="mt-4">
-                                    <span
-                                      className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${
-                                        tongDiemDungThan > 0
-                                          ? "border-green-500"
-                                          : tongDiemDungThan === 0
-                                          ? "border-blue-500"
-                                          : "border-red-500"
-                                      }`}
-                                    >
-                                      {ketLuanDungThan}
-                                    </span>
-                                  </div>
-                                  <div className="mt-4 text-sm text-gray-600 space-y-1">
-                                    <p>
-                                      <strong>Chi tiết:</strong>
-                                    </p>
-                                    <div className="flex justify-center gap-4 text-xs">
-                                      <span>
-                                        Thái Tuế/Tuế Phá:{" "}
-                                        {buoc3ThaiTueDiem > 0 ? "+" : ""}
-                                        {buoc3ThaiTueDiem.toFixed(2)}
-                                      </span>
-                                      <span>
-                                        Với Tháng: {buoc3Diem > 0 ? "+" : ""}
-                                        {buoc3Diem.toFixed(2)}
-                                      </span>
-                                      <span>
-                                        Với Ngày: {buoc4Diem > 0 ? "+" : ""}
-                                        {buoc4Diem.toFixed(2)}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Tổng điểm và Kết luận cho Hào Thế */}
-                      {theDiaChi && (
-                        <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-300 shadow-lg">
-                          <div className="text-center">
-                            <p className="font-bold text-lg text-gray-800 mb-4">
-                              Tổng Điểm Giải Quẻ - Hào Thế
-                            </p>
-                            {(() => {
-                              // Tính tổng điểm cho Hào Thế (bước 5 + 6)
-                              const tongDiemHaoThe =
-                                buoc5ThaiTueDiem +
-                                (buoc5Diem || 0) +
-                                (buoc6Diem || 0);
-
-                              // Xác định kết luận cho Hào Thế
-                              let ketLuanHaoThe = "";
-                              let ketLuanColorHaoThe = "";
-                              if (tongDiemHaoThe > 0) {
-                                ketLuanHaoThe = "Vượng";
-                                ketLuanColorHaoThe =
-                                  "text-green-700 bg-green-100";
-                              } else if (tongDiemHaoThe === 0) {
-                                ketLuanHaoThe = "Trung Hoà";
-                                ketLuanColorHaoThe =
-                                  "text-blue-700 bg-blue-100";
-                              } else {
-                                ketLuanHaoThe = "Suy";
-                                ketLuanColorHaoThe = "text-red-700 bg-red-100";
-                              }
-
-                              return (
-                                <div className="space-y-3">
-                                  <div className="flex justify-center items-baseline gap-2">
-                                    <span className="text-sm text-gray-600">
-                                      Tổng điểm:
-                                    </span>
-                                    <span className="text-3xl font-bold text-gray-800">
-                                      {tongDiemHaoThe > 0 ? "+" : ""}
-                                      {tongDiemHaoThe.toFixed(2)}
-                                    </span>
-                                    <span className="text-sm text-gray-600">
-                                      điểm
-                                    </span>
-                                  </div>
-                                  <div className="mt-4">
-                                    <span
-                                      className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${
-                                        tongDiemHaoThe > 0
-                                          ? "border-green-500"
-                                          : tongDiemHaoThe === 0
-                                          ? "border-blue-500"
-                                          : "border-red-500"
-                                      }`}
-                                    >
-                                      {ketLuanHaoThe}
-                                    </span>
-                                  </div>
-                                  <div className="mt-4 text-sm text-gray-600 space-y-1">
-                                    <p>
-                                      <strong>Chi tiết:</strong>
-                                    </p>
-                                    <div className="flex justify-center gap-4 text-xs">
-                                      <span>
-                                        Thái Tuế/Tuế Phá:{" "}
-                                        {buoc5ThaiTueDiem > 0 ? "+" : ""}
-                                        {buoc5ThaiTueDiem.toFixed(2)}
-                                      </span>
-                                      <span>
-                                        Với Tháng: {buoc5Diem > 0 ? "+" : ""}
-                                        {buoc5Diem.toFixed(2)}
-                                      </span>
-                                      <span>
-                                        Với Ngày: {buoc6Diem > 0 ? "+" : ""}
-                                        {buoc6Diem.toFixed(2)}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Thông tin ngoài lề */}
-                      <div className="mt-8">
-                        <Card
-                          title={
-                            <p className="text-center font-bold text-lg text-gray-800 m-0">
-                              Thông Tin Ngoài Lề
-                            </p>
-                          }
-                          className="bg-amber-50 border-2 border-amber-300"
-                        >
-                          <div className="space-y-6">
-                            {/* Luận sảy bỏ con */}
-                            <div className="bg-white p-4 rounded-lg border border-amber-200">
-                              <h3 className="text-md font-semibold text-gray-800 mb-3">
-                                Luận Sảy Bỏ Con
-                              </h3>
-                              {(() => {
-                                // Tìm hào Tử Tôn trong quẻ chính và quẻ biến
-                                const tuTonHao1 = lineData1.find(
-                                  (line) =>
-                                    getLucThanName(line.lucThan) === "Tử Tôn"
-                                );
-                                const tuTonHao2 = lineData2.find(
-                                  (line) =>
-                                    getLucThanName(line.lucThan) === "Tử Tôn"
-                                );
-                                const tuTonHao = tuTonHao1 || tuTonHao2;
-
-                                if (!tuTonHao) {
-                                  return (
-                                    <p className="text-gray-500 italic">
-                                      Không tìm thấy hào Tử Tôn trong quẻ
-                                    </p>
-                                  );
-                                }
-
-                                const tuTonDiaChi = extractDiaChi(
-                                  tuTonHao.canChi
-                                );
-                                if (!tuTonDiaChi) {
-                                  return (
-                                    <p className="text-gray-500 italic">
-                                      Không thể xác định địa chi của hào Tử Tôn
-                                    </p>
-                                  );
-                                }
-
-                                // Thu thập tất cả địa chi từ ngày, tháng và các hào
-                                const allDiaChi = [];
-
-                                // Thêm địa chi từ ngày, tháng
-                                const dayDiaChi = getDayDiaChi();
-                                const monthDiaChi = getMonthDiaChi();
-                                if (dayDiaChi) allDiaChi.push(dayDiaChi);
-                                if (monthDiaChi) allDiaChi.push(monthDiaChi);
-
-                                // Thêm địa chi từ các hào trong quẻ chính
-                                lineData1.forEach((line) => {
-                                  const diaChi = extractDiaChi(line.canChi);
-                                  if (diaChi) allDiaChi.push(diaChi);
-                                });
-
-                                // Thêm địa chi từ các hào trong quẻ biến
-                                lineData2.forEach((line) => {
-                                  const diaChi = extractDiaChi(line.canChi);
-                                  if (diaChi) allDiaChi.push(diaChi);
-                                });
-
-                                // Thêm địa chi của hào Tử Tôn vào để kiểm tra
-                                const diaChiArrayWithTuTon = [
-                                  ...allDiaChi,
-                                  tuTonDiaChi
-                                ];
-
-                                // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
-                                const tamHinhCheck =
-                                  hasFullTamHinhGroup(diaChiArrayWithTuTon);
-
-                                // Điều kiện 2: Kiểm tra không vong hoặc suy/nhập mộ
-                                const isKhongVong = tuTonHao.tuanKhong === "K";
-
-                                // Kiểm tra suy/nhập mộ với ngày và tháng
-                                let isSuyNhapMo = false;
-                                let suyNhapMoDetails = [];
-
-                                if (dayDiaChi) {
-                                  const nhapMoDay = getNhapMoOf(tuTonDiaChi);
-                                  if (nhapMoDay === dayDiaChi) {
-                                    isSuyNhapMo = true;
-                                    suyNhapMoDetails.push(
-                                      `Nhập mộ với ngày (${dayDiaChi})`
-                                    );
-                                  }
-                                }
-
-                                if (monthDiaChi) {
-                                  const nhapMoMonth = getNhapMoOf(tuTonDiaChi);
-                                  if (nhapMoMonth === monthDiaChi) {
-                                    isSuyNhapMo = true;
-                                    suyNhapMoDetails.push(
-                                      `Nhập mộ với tháng (${monthDiaChi})`
-                                    );
-                                  }
-                                }
-
-                                // Kiểm tra suy (ngũ hành bị khắc)
-                                if (dayDiaChi) {
-                                  const tuTonNguHanh =
-                                    getNguHanhFromDiaChi(tuTonDiaChi);
-                                  const dayNguHanh =
-                                    getNguHanhFromDiaChi(dayDiaChi);
-                                  if (tuTonNguHanh && dayNguHanh) {
-                                    const relation = getDiaChiRelation(
-                                      tuTonDiaChi,
-                                      dayDiaChi
-                                    );
-                                    if (relation === "biKhac") {
-                                      isSuyNhapMo = true;
-                                      suyNhapMoDetails.push(
-                                        `Bị ngày khắc (${dayDiaChi})`
-                                      );
-                                    }
-                                  }
-                                }
-
-                                if (monthDiaChi) {
-                                  const tuTonNguHanh =
-                                    getNguHanhFromDiaChi(tuTonDiaChi);
-                                  const monthNguHanh =
-                                    getNguHanhFromDiaChi(monthDiaChi);
-                                  if (tuTonNguHanh && monthNguHanh) {
-                                    const relation = getDiaChiRelation(
-                                      tuTonDiaChi,
-                                      monthDiaChi
-                                    );
-                                    if (relation === "biKhac") {
-                                      isSuyNhapMo = true;
-                                      suyNhapMoDetails.push(
-                                        `Bị tháng khắc (${monthDiaChi})`
-                                      );
-                                    }
-                                  }
-                                }
-
-                                const dieuKien2 = isKhongVong || isSuyNhapMo;
-
-                                // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
-                                const coNguyCo =
-                                  tamHinhCheck.hasFullGroup && dieuKien2;
-
-                                return (
-                                  <div className="space-y-3">
-                                    <div>
-                                      <p className="font-semibold mb-2">
-                                        Hào Tử Tôn: Hào {tuTonHao.hao} (
-                                        {tuTonHao.canChi}) - Địa Chi:{" "}
-                                        <strong>{tuTonDiaChi}</strong>
-                                      </p>
-                                    </div>
-
+                                  {dungThan && dungThanInfo ? (
                                     <div className="space-y-2">
-                                      <div
-                                        className={`p-3 rounded border-l-4 ${
-                                          tamHinhCheck.hasFullGroup
-                                            ? "bg-red-50 border-red-500"
-                                            : "bg-green-50 border-green-500"
-                                        }`}
-                                      >
-                                        <p className="font-semibold mb-1">
-                                          Điều kiện 1: Kiểm tra Tam Hình
+                                      <p>
+                                        <strong>Dụng Thần đã chọn:</strong>{" "}
+                                        {dungThanInfo.label}
+                                      </p>
+                                      <p>
+                                        <strong>Vai vế:</strong>{" "}
+                                        {dungThanInfo.vaiVe}
+                                      </p>
+                                      <p>
+                                        <strong>Đồ dùng:</strong>{" "}
+                                        {dungThanInfo.doDung}
+                                      </p>
+                                      <p>
+                                        <strong>Mang tính chất:</strong>{" "}
+                                        {dungThanInfo.mangTinhChat}
+                                      </p>
+                                      {dungThanHao && (
+                                        <p>
+                                          <strong>Hào Dụng Thần:</strong> Hào{" "}
+                                          {dungThanHao.hao} (
+                                          {dungThanHao.canChi})
                                         </p>
-                                        {tamHinhCheck.hasFullGroup ? (
-                                          <div>
-                                            <p className="text-red-700 font-bold">
-                                              ⚠ Có nguy cơ: Tìm thấy nhóm Tam
-                                              Hình đầy đủ
-                                            </p>
-                                            <p className="text-sm text-gray-600 mt-1">
-                                              Nhóm: {tamHinhCheck.groupType}
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <p className="text-gray-500 italic">
+                                      Chưa chọn Dụng Thần
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        },
+                        {
+                          key: "2",
+                          label:
+                            "Bước 2: Phân tích mối tương quan giữa hào Thế và Dụng Thần",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  2
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Phân tích mối tương quan giữa hào Thế và
+                                    Dụng Thần
+                                  </p>
+                                  {theHao &&
+                                  dungThanHao &&
+                                  theDiaChi &&
+                                  dungThanDiaChi ? (
+                                    <div className="space-y-2">
+                                      <p>
+                                        <strong>Hào Thế:</strong> Hào{" "}
+                                        {theHao.hao} ({theHao.canChi}) - Địa
+                                        Chi: <strong>{theDiaChi}</strong>
+                                      </p>
+                                      <p>
+                                        <strong>Hào Dụng Thần:</strong> Hào{" "}
+                                        {dungThanHao.hao} ({dungThanHao.canChi})
+                                        - Địa Chi:{" "}
+                                        <strong>{dungThanDiaChi}</strong>
+                                      </p>
+                                      {buoc2KetLuan && (
+                                        <div className="mt-3 p-3 bg-gray-50 rounded border-l-4 border-parchment-400">
+                                          <p className="font-semibold mb-1">
+                                            Kết luận:
+                                          </p>
+                                          <p className="mb-2 text-gray-700">
+                                            <strong>
+                                              {buoc2KetLuan.relation}
+                                            </strong>{" "}
+                                            →{" "}
+                                            <span
+                                              className={`font-bold ${buoc2KetLuan.color}`}
+                                            >
+                                              {buoc2KetLuan.text}
+                                            </span>
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <p className="text-gray-500 italic">
+                                      Không đủ thông tin để phân tích
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        },
+                        {
+                          key: "3",
+                          label:
+                            "Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  3
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xác định Dụng Thần có Thái Tuế hay Tuế Phá
+                                  </p>
+                                  {dungThanDiaChi && yearDiaChi ? (
+                                    <div className="space-y-2">
+                                      <p>
+                                        <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                        {dungThanDiaChi}
+                                      </p>
+                                      <p>
+                                        <strong>Địa Chi của năm:</strong>{" "}
+                                        {yearDiaChi}
+                                      </p>
+                                      <div className="mt-3 space-y-2">
+                                        {thaiTue && (
+                                          <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                            <p className="font-semibold text-green-700">
+                                              ✓ Có Thái Tuế (+0 điểm)
                                             </p>
                                             <p className="text-sm text-gray-600">
-                                              Các địa chi:{" "}
-                                              {tamHinhCheck.groupMembers?.join(
-                                                ", "
-                                              )}
+                                              Địa chi của Dụng Thần trùng với
+                                              địa chi của năm
                                             </p>
                                           </div>
-                                        ) : (
-                                          <p className="text-green-700">
-                                            ✓ Không tìm thấy nhóm Tam Hình đầy
-                                            đủ
-                                          </p>
+                                        )}
+                                        {tuePha && (
+                                          <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
+                                            <p className="font-semibold text-red-700">
+                                              ✗ Có Tuế Phá (-0.25 điểm)
+                                            </p>
+                                            <p className="text-sm text-gray-600">
+                                              Địa chi của Dụng Thần xung với địa
+                                              chi của năm
+                                            </p>
+                                          </div>
+                                        )}
+                                        {!thaiTue && !tuePha && (
+                                          <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
+                                            <p className="font-semibold text-gray-700">
+                                              Không có Thái Tuế hay Tuế Phá (0
+                                              điểm)
+                                            </p>
+                                          </div>
+                                        )}
+                                        {(thaiTue || tuePha) && (
+                                          <div className="mt-3 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                            <p className="font-semibold text-blue-700">
+                                              Điểm Bước 3:{" "}
+                                              <span className="text-xl">
+                                                {buoc3ThaiTueDiem > 0
+                                                  ? "+"
+                                                  : ""}
+                                                {buoc3ThaiTueDiem.toFixed(2)}{" "}
+                                                điểm
+                                              </span>
+                                            </p>
+                                          </div>
                                         )}
                                       </div>
+                                    </div>
+                                  ) : (
+                                    <p className="text-gray-500 italic">
+                                      Không đủ thông tin để xác định
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        }
+                      ];
 
-                                      <div
-                                        className={`p-3 rounded border-l-4 ${
-                                          dieuKien2
-                                            ? "bg-red-50 border-red-500"
-                                            : "bg-green-50 border-green-500"
-                                        }`}
-                                      >
-                                        <p className="font-semibold mb-1">
-                                          Điều kiện 2: Kiểm tra Không Vong / Suy
-                                          / Nhập Mộ
-                                        </p>
-                                        {dieuKien2 ? (
-                                          <div>
-                                            <p className="text-red-700 font-bold">
-                                              ⚠ Có nguy cơ
-                                            </p>
-                                            <div className="text-sm text-gray-600 mt-1 space-y-1">
-                                              {isKhongVong && (
-                                                <p>
-                                                  • Có Không Vong (Tuần không =
-                                                  K)
+                      // Thêm các bước có điều kiện
+                      if (dungThanDiaChi && monthDiaChi) {
+                        collapseItems.push({
+                          key: "3b",
+                          label:
+                            "Bước 3: Xét mối tương quan Dụng Thần và Tháng",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  3
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xét mối tương quan Dụng Thần và Tháng
+                                  </p>
+                                  <div className="space-y-2">
+                                    <p>
+                                      <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                      {dungThanDiaChi}
+                                    </p>
+                                    <p>
+                                      <strong>Địa Chi của tháng:</strong>{" "}
+                                      {monthDiaChi}
+                                    </p>
+                                    {buoc3Results.length > 0 ? (
+                                      <div className="mt-3 space-y-3">
+                                        {buoc3Results.map((result, index) => (
+                                          <div
+                                            key={index}
+                                            className={`p-3 rounded border-l-4 ${
+                                              result.matched
+                                                ? result.diem > 0
+                                                  ? "bg-green-50 border-green-500"
+                                                  : result.diem < 0
+                                                  ? "bg-red-50 border-red-500"
+                                                  : "bg-orange-50 border-orange-500"
+                                                : "bg-gray-50 border-gray-300"
+                                            }`}
+                                          >
+                                            <div className="flex items-start justify-between">
+                                              <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <p
+                                                    className={`font-semibold ${result.color}`}
+                                                  >
+                                                    {result.step}: {result.name}
+                                                  </p>
+                                                  {result.matched && (
+                                                    <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                      ✓ Thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {!result.matched && (
+                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                      ✗ Không thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {buoc3DungTai ===
+                                                    result.step && (
+                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                      Dừng tại đây
+                                                    </span>
+                                                  )}
+                                                </div>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                  {result.description}
                                                 </p>
-                                              )}
-                                              {isSuyNhapMo &&
-                                                suyNhapMoDetails.length > 0 && (
-                                                  <div>
-                                                    <p>• Suy/Nhập Mộ:</p>
-                                                    <ul className="list-disc list-inside ml-2">
-                                                      {suyNhapMoDetails.map(
-                                                        (detail, idx) => (
-                                                          <li key={idx}>
-                                                            {detail}
-                                                          </li>
-                                                        )
-                                                      )}
-                                                    </ul>
+                                              </div>
+                                              {result.matched &&
+                                                result.diem !== undefined && (
+                                                  <div
+                                                    className={`ml-3 font-bold text-lg ${result.color}`}
+                                                  >
+                                                    {result.diem > 0 ? "+" : ""}
+                                                    {result.diem}
                                                   </div>
                                                 )}
                                             </div>
                                           </div>
-                                        ) : (
-                                          <p className="text-green-700">
-                                            ✓ Không có Không Vong, không bị Suy
-                                            hoặc Nhập Mộ
+                                        ))}
+                                        <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                          <p className="font-semibold text-blue-700">
+                                            Tổng điểm Bước 3:{" "}
+                                            <span className="text-xl">
+                                              {buoc3Diem > 0 ? "+" : ""}
+                                              {buoc3Diem.toFixed(2)} điểm
+                                            </span>
                                           </p>
-                                        )}
+                                          {buoc3Dung && buoc3DungTai && (
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              <strong>Đã dừng xét tại:</strong>{" "}
+                                              Bước {buoc3DungTai}
+                                            </p>
+                                          )}
+                                        </div>
                                       </div>
+                                    ) : (
+                                      <p className="text-gray-500 italic mt-3">
+                                        Không có mối tương quan nào được xác
+                                        định
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
 
-                                      {coNguyCo && (
-                                        <div className="p-4 rounded-lg border-2 bg-red-100 border-red-400">
-                                          <p className="font-bold text-lg mb-2">
-                                            Kết luận:
+                      if (dungThanDiaChi && dayDiaChi) {
+                        collapseItems.push({
+                          key: "4",
+                          label: "Bước 4: Xét mối tương quan Dụng Thần và Ngày",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  4
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xét mối tương quan Dụng Thần và Ngày
+                                  </p>
+                                  <div className="space-y-2">
+                                    <p>
+                                      <strong>Địa Chi của Dụng Thần:</strong>{" "}
+                                      {dungThanDiaChi}
+                                    </p>
+                                    <p>
+                                      <strong>Địa Chi của ngày:</strong>{" "}
+                                      {dayDiaChi}
+                                    </p>
+                                    {buoc4Results.length > 0 ? (
+                                      <div className="mt-3 space-y-3">
+                                        {buoc4Results.map((result, index) => (
+                                          <div
+                                            key={index}
+                                            className={`p-3 rounded border-l-4 ${
+                                              result.matched
+                                                ? result.diem > 0
+                                                  ? "bg-green-50 border-green-500"
+                                                  : result.diem < 0
+                                                  ? "bg-red-50 border-red-500"
+                                                  : "bg-orange-50 border-orange-500"
+                                                : "bg-gray-50 border-gray-300"
+                                            }`}
+                                          >
+                                            <div className="flex items-start justify-between">
+                                              <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <p
+                                                    className={`font-semibold ${result.color}`}
+                                                  >
+                                                    {result.step}: {result.name}
+                                                  </p>
+                                                  {result.matched && (
+                                                    <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                      ✓ Thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {!result.matched && (
+                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                      ✗ Không thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {buoc4DungTai ===
+                                                    result.step && (
+                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                      Dừng tại đây
+                                                    </span>
+                                                  )}
+                                                </div>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                  {result.description}
+                                                </p>
+                                              </div>
+                                              {result.matched &&
+                                                result.diem !== undefined && (
+                                                  <div
+                                                    className={`ml-3 font-bold text-lg ${result.color}`}
+                                                  >
+                                                    {result.diem > 0 ? "+" : ""}
+                                                    {result.diem}
+                                                  </div>
+                                                )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                          <p className="font-semibold text-blue-700">
+                                            Tổng điểm Bước 4:{" "}
+                                            <span className="text-xl">
+                                              {buoc4Diem > 0 ? "+" : ""}
+                                              {buoc4Diem.toFixed(2)} điểm
+                                            </span>
                                           </p>
-                                          <p className="text-red-800 font-bold text-lg">
-                                            ⚠ CÓ NGUY CƠ SẢY BỎ CON
+                                          {buoc4Dung && buoc4DungTai && (
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              <strong>Đã dừng xét tại:</strong>{" "}
+                                              Bước {buoc4DungTai}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <p className="text-gray-500 italic mt-3">
+                                        Không có mối tương quan nào được xác
+                                        định
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
+
+                      if (theDiaChi && yearDiaChi) {
+                        collapseItems.push({
+                          key: "5",
+                          label:
+                            "Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  5
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xác định Hào Thế có Thái Tuế hay Tuế Phá
+                                  </p>
+                                  <div className="space-y-2">
+                                    <p>
+                                      <strong>Địa Chi của Hào Thế:</strong>{" "}
+                                      {theDiaChi}
+                                    </p>
+                                    <p>
+                                      <strong>Địa Chi của năm:</strong>{" "}
+                                      {yearDiaChi}
+                                    </p>
+                                    <div className="mt-3 space-y-2">
+                                      {thaiTueThe && (
+                                        <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                          <p className="font-semibold text-green-700">
+                                            ✓ Có Thái Tuế (+0 điểm)
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            Địa chi của Hào Thế trùng với địa
+                                            chi của năm
+                                          </p>
+                                        </div>
+                                      )}
+                                      {tuePhaThe && (
+                                        <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
+                                          <p className="font-semibold text-red-700">
+                                            ✗ Có Tuế Phá (-0.25 điểm)
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            Địa chi của Hào Thế xung với địa chi
+                                            của năm
+                                          </p>
+                                        </div>
+                                      )}
+                                      {!thaiTueThe && !tuePhaThe && (
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-400">
+                                          <p className="font-semibold text-gray-700">
+                                            Không có Thái Tuế hay Tuế Phá (0
+                                            điểm)
+                                          </p>
+                                        </div>
+                                      )}
+                                      {(thaiTueThe || tuePhaThe) && (
+                                        <div className="mt-3 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                          <p className="font-semibold text-blue-700">
+                                            Điểm Bước 5:{" "}
+                                            <span className="text-xl">
+                                              {buoc5ThaiTueDiem > 0 ? "+" : ""}
+                                              {buoc5ThaiTueDiem.toFixed(2)} điểm
+                                            </span>
                                           </p>
                                         </div>
                                       )}
                                     </div>
                                   </div>
-                                );
-                              })()}
+                                </div>
+                              </div>
                             </div>
+                          )
+                        });
+                      }
 
-                            {/* Luận cây trước nhà */}
-                            <div className="bg-white p-4 rounded-lg border border-amber-200">
-                              <h3 className="text-md font-semibold text-gray-800 mb-3">
-                                Luận Cây Trước Nhà
-                              </h3>
-                              {(() => {
-                                // Bước 1: Tìm cây trong quẻ
-                                const cayHaos = [];
+                      if (theDiaChi && monthDiaChi) {
+                        collapseItems.push({
+                          key: "5b",
+                          label: "Bước 5: Xét mối tương quan Hào Thế và Tháng",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  5
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xét mối tương quan Hào Thế và Tháng
+                                  </p>
+                                  <div className="space-y-2">
+                                    <p>
+                                      <strong>Địa Chi của Hào Thế:</strong>{" "}
+                                      {theDiaChi}
+                                    </p>
+                                    <p>
+                                      <strong>Địa Chi của tháng:</strong>{" "}
+                                      {monthDiaChi}
+                                    </p>
+                                    {buoc5Results.length > 0 ? (
+                                      <div className="mt-3 space-y-3">
+                                        {buoc5Results.map((result, index) => (
+                                          <div
+                                            key={index}
+                                            className={`p-3 rounded border-l-4 ${
+                                              result.matched
+                                                ? result.diem > 0
+                                                  ? "bg-green-50 border-green-500"
+                                                  : result.diem < 0
+                                                  ? "bg-red-50 border-red-500"
+                                                  : "bg-orange-50 border-orange-500"
+                                                : "bg-gray-50 border-gray-300"
+                                            }`}
+                                          >
+                                            <div className="flex items-start justify-between">
+                                              <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <p
+                                                    className={`font-semibold ${result.color}`}
+                                                  >
+                                                    {result.step}: {result.name}
+                                                  </p>
+                                                  {result.matched && (
+                                                    <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                      ✓ Thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {!result.matched && (
+                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                      ✗ Không thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {buoc5DungTai ===
+                                                    result.step && (
+                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                      Dừng tại đây
+                                                    </span>
+                                                  )}
+                                                </div>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                  {result.description}
+                                                </p>
+                                              </div>
+                                              {result.matched &&
+                                                result.diem !== undefined && (
+                                                  <div
+                                                    className={`ml-3 font-bold text-lg ${result.color}`}
+                                                  >
+                                                    {result.diem > 0 ? "+" : ""}
+                                                    {result.diem}
+                                                  </div>
+                                                )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                          <p className="font-semibold text-blue-700">
+                                            Tổng điểm Bước 5:{" "}
+                                            <span className="text-xl">
+                                              {buoc5Diem > 0 ? "+" : ""}
+                                              {buoc5Diem.toFixed(2)} điểm
+                                            </span>
+                                          </p>
+                                          {buoc5Dung && buoc5DungTai && (
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              <strong>Đã dừng xét tại:</strong>{" "}
+                                              Bước {buoc5DungTai}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <p className="text-gray-500 italic mt-3">
+                                        Không có mối tương quan nào được xác
+                                        định
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
 
-                                // Tìm các hào có địa chi Dần, Mão, hoặc Mùi trong quẻ chính
-                                lineData1.forEach((line1, index) => {
-                                  const diaChi = extractDiaChi(line1.canChi);
-                                  if (
-                                    diaChi === "Dần" ||
-                                    diaChi === "Mão" ||
-                                    diaChi === "Mùi"
-                                  ) {
-                                    // Kiểm tra hào tương ứng trong quẻ biến
-                                    if (index < lineData2.length) {
-                                      const line2 = lineData2[index];
-                                      const lucTuName = getLucTuName(
-                                        line2.lucTu
+                      if (theDiaChi && dayDiaChi) {
+                        collapseItems.push({
+                          key: "6",
+                          label: "Bước 6: Xét mối tương quan Hào Thế và Ngày",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  6
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">
+                                    Xét mối tương quan Hào Thế và Ngày
+                                  </p>
+                                  <div className="space-y-2">
+                                    <p>
+                                      <strong>Địa Chi của Hào Thế:</strong>{" "}
+                                      {theDiaChi}
+                                    </p>
+                                    <p>
+                                      <strong>Địa Chi của ngày:</strong>{" "}
+                                      {dayDiaChi}
+                                    </p>
+                                    {buoc6Results.length > 0 ? (
+                                      <div className="mt-3 space-y-3">
+                                        {buoc6Results.map((result, index) => (
+                                          <div
+                                            key={index}
+                                            className={`p-3 rounded border-l-4 ${
+                                              result.matched
+                                                ? result.diem > 0
+                                                  ? "bg-green-50 border-green-500"
+                                                  : result.diem < 0
+                                                  ? "bg-red-50 border-red-500"
+                                                  : "bg-orange-50 border-orange-500"
+                                                : "bg-gray-50 border-gray-300"
+                                            }`}
+                                          >
+                                            <div className="flex items-start justify-between">
+                                              <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                  <p
+                                                    className={`font-semibold ${result.color}`}
+                                                  >
+                                                    {result.step}: {result.name}
+                                                  </p>
+                                                  {result.matched && (
+                                                    <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded">
+                                                      ✓ Thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {!result.matched && (
+                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-semibold rounded">
+                                                      ✗ Không thỏa mãn
+                                                    </span>
+                                                  )}
+                                                  {buoc6DungTai ===
+                                                    result.step && (
+                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                      Dừng tại đây
+                                                    </span>
+                                                  )}
+                                                </div>
+                                                <p className="text-sm text-gray-600 mt-1">
+                                                  {result.description}
+                                                </p>
+                                              </div>
+                                              {result.matched &&
+                                                result.diem !== undefined && (
+                                                  <div
+                                                    className={`ml-3 font-bold text-lg ${result.color}`}
+                                                  >
+                                                    {result.diem > 0 ? "+" : ""}
+                                                    {result.diem}
+                                                  </div>
+                                                )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                        <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                          <p className="font-semibold text-blue-700">
+                                            Tổng điểm Bước 6:{" "}
+                                            <span className="text-xl">
+                                              {buoc6Diem > 0 ? "+" : ""}
+                                              {buoc6Diem.toFixed(2)} điểm
+                                            </span>
+                                          </p>
+                                          {buoc6Dung && buoc6DungTai && (
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              <strong>Đã dừng xét tại:</strong>{" "}
+                                              Bước {buoc6DungTai}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <p className="text-gray-500 italic mt-3">
+                                        Không có mối tương quan nào được xác
+                                        định
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
+
+                      return <Collapse items={collapseItems} />;
+                    })()}
+                  </div>
+
+                  {/* Tổng điểm và Kết luận cho Dụng Thần */}
+                  {dungThanDiaChi && (
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-300 shadow-lg">
+                      <div className="text-center">
+                        <p className="font-bold text-lg text-gray-800 mb-4">
+                          Tổng Điểm Giải Quẻ - Dụng Thần
+                        </p>
+                        {(() => {
+                          // Tính tổng điểm cho Dụng Thần (bước 3 + 4)
+                          const tongDiemDungThan =
+                            buoc3ThaiTueDiem +
+                            (buoc3Diem || 0) +
+                            (buoc4Diem || 0);
+
+                          // Xác định kết luận cho Dụng Thần
+                          let ketLuanDungThan = "";
+                          let ketLuanColorDungThan = "";
+                          if (tongDiemDungThan > 0) {
+                            ketLuanDungThan = "Vượng";
+                            ketLuanColorDungThan =
+                              "text-green-700 bg-green-100";
+                          } else if (tongDiemDungThan === 0) {
+                            ketLuanDungThan = "Trung Hoà";
+                            ketLuanColorDungThan = "text-blue-700 bg-blue-100";
+                          } else {
+                            ketLuanDungThan = "Suy";
+                            ketLuanColorDungThan = "text-red-700 bg-red-100";
+                          }
+
+                          return (
+                            <div className="space-y-3">
+                              <div className="flex justify-center items-baseline gap-2">
+                                <span className="text-sm text-gray-600">
+                                  Tổng điểm:
+                                </span>
+                                <span className="text-3xl font-bold text-gray-800">
+                                  {tongDiemDungThan > 0 ? "+" : ""}
+                                  {tongDiemDungThan.toFixed(2)}
+                                </span>
+                                <span className="text-sm text-gray-600">
+                                  điểm
+                                </span>
+                              </div>
+                              <div className="mt-4">
+                                <span
+                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${
+                                    tongDiemDungThan > 0
+                                      ? "border-green-500"
+                                      : tongDiemDungThan === 0
+                                      ? "border-blue-500"
+                                      : "border-red-500"
+                                  }`}
+                                >
+                                  {ketLuanDungThan}
+                                </span>
+                              </div>
+                              <div className="mt-4 text-sm text-gray-600 space-y-1">
+                                <p>
+                                  <strong>Chi tiết:</strong>
+                                </p>
+                                <div className="flex justify-center gap-4 text-xs">
+                                  <span>
+                                    Thái Tuế/Tuế Phá:{" "}
+                                    {buoc3ThaiTueDiem > 0 ? "+" : ""}
+                                    {buoc3ThaiTueDiem.toFixed(2)}
+                                  </span>
+                                  <span>
+                                    Với Tháng: {buoc3Diem > 0 ? "+" : ""}
+                                    {buoc3Diem.toFixed(2)}
+                                  </span>
+                                  <span>
+                                    Với Ngày: {buoc4Diem > 0 ? "+" : ""}
+                                    {buoc4Diem.toFixed(2)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tổng điểm và Kết luận cho Hào Thế */}
+                  {theDiaChi && (
+                    <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-300 shadow-lg">
+                      <div className="text-center">
+                        <p className="font-bold text-lg text-gray-800 mb-4">
+                          Tổng Điểm Giải Quẻ - Hào Thế
+                        </p>
+                        {(() => {
+                          // Tính tổng điểm cho Hào Thế (bước 5 + 6)
+                          const tongDiemHaoThe =
+                            buoc5ThaiTueDiem +
+                            (buoc5Diem || 0) +
+                            (buoc6Diem || 0);
+
+                          // Xác định kết luận cho Hào Thế
+                          let ketLuanHaoThe = "";
+                          let ketLuanColorHaoThe = "";
+                          if (tongDiemHaoThe > 0) {
+                            ketLuanHaoThe = "Vượng";
+                            ketLuanColorHaoThe = "text-green-700 bg-green-100";
+                          } else if (tongDiemHaoThe === 0) {
+                            ketLuanHaoThe = "Trung Hoà";
+                            ketLuanColorHaoThe = "text-blue-700 bg-blue-100";
+                          } else {
+                            ketLuanHaoThe = "Suy";
+                            ketLuanColorHaoThe = "text-red-700 bg-red-100";
+                          }
+
+                          return (
+                            <div className="space-y-3">
+                              <div className="flex justify-center items-baseline gap-2">
+                                <span className="text-sm text-gray-600">
+                                  Tổng điểm:
+                                </span>
+                                <span className="text-3xl font-bold text-gray-800">
+                                  {tongDiemHaoThe > 0 ? "+" : ""}
+                                  {tongDiemHaoThe.toFixed(2)}
+                                </span>
+                                <span className="text-sm text-gray-600">
+                                  điểm
+                                </span>
+                              </div>
+                              <div className="mt-4">
+                                <span
+                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${
+                                    tongDiemHaoThe > 0
+                                      ? "border-green-500"
+                                      : tongDiemHaoThe === 0
+                                      ? "border-blue-500"
+                                      : "border-red-500"
+                                  }`}
+                                >
+                                  {ketLuanHaoThe}
+                                </span>
+                              </div>
+                              <div className="mt-4 text-sm text-gray-600 space-y-1">
+                                <p>
+                                  <strong>Chi tiết:</strong>
+                                </p>
+                                <div className="flex justify-center gap-4 text-xs">
+                                  <span>
+                                    Thái Tuế/Tuế Phá:{" "}
+                                    {buoc5ThaiTueDiem > 0 ? "+" : ""}
+                                    {buoc5ThaiTueDiem.toFixed(2)}
+                                  </span>
+                                  <span>
+                                    Với Tháng: {buoc5Diem > 0 ? "+" : ""}
+                                    {buoc5Diem.toFixed(2)}
+                                  </span>
+                                  <span>
+                                    Với Ngày: {buoc6Diem > 0 ? "+" : ""}
+                                    {buoc6Diem.toFixed(2)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Thông tin ngoài lề */}
+                  <div className="mt-8">
+                    <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4">
+                      <p className="text-center font-bold text-lg text-gray-800 m-0 mb-4">
+                        Thông Tin Ngoài Lề
+                      </p>
+                      <Collapse
+                        items={[
+                          {
+                            key: "1",
+                            label: "Luận Sảy Bỏ Con",
+                            children: (
+                              <div className="bg-white p-4 rounded-lg border border-amber-200">
+                                {(() => {
+                                  // Tìm hào Tử Tôn trong quẻ chính và quẻ biến
+                                  const tuTonHao1 = lineData1.find(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) === "Tử Tôn"
+                                  );
+                                  const tuTonHao2 = lineData2.find(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) === "Tử Tôn"
+                                  );
+                                  const tuTonHao = tuTonHao1 || tuTonHao2;
+
+                                  if (!tuTonHao) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Tử Tôn trong quẻ
+                                      </p>
+                                    );
+                                  }
+
+                                  const tuTonDiaChi = extractDiaChi(
+                                    tuTonHao.canChi
+                                  );
+                                  if (!tuTonDiaChi) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không thể xác định địa chi của hào Tử
+                                        Tôn
+                                      </p>
+                                    );
+                                  }
+
+                                  // Thu thập tất cả địa chi từ ngày, tháng và các hào
+                                  const allDiaChi = [];
+
+                                  // Thêm địa chi từ ngày, tháng
+                                  const dayDiaChi = getDayDiaChi();
+                                  const monthDiaChi = getMonthDiaChi();
+                                  if (dayDiaChi) allDiaChi.push(dayDiaChi);
+                                  if (monthDiaChi) allDiaChi.push(monthDiaChi);
+
+                                  // Thêm địa chi từ các hào trong quẻ chính
+                                  lineData1.forEach((line) => {
+                                    const diaChi = extractDiaChi(line.canChi);
+                                    if (diaChi) allDiaChi.push(diaChi);
+                                  });
+
+                                  // Thêm địa chi từ các hào trong quẻ biến
+                                  lineData2.forEach((line) => {
+                                    const diaChi = extractDiaChi(line.canChi);
+                                    if (diaChi) allDiaChi.push(diaChi);
+                                  });
+
+                                  // Thêm địa chi của hào Tử Tôn vào để kiểm tra
+                                  const diaChiArrayWithTuTon = [
+                                    ...allDiaChi,
+                                    tuTonDiaChi
+                                  ];
+
+                                  // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
+                                  const tamHinhCheck =
+                                    hasFullTamHinhGroup(diaChiArrayWithTuTon);
+
+                                  // Điều kiện 2: Kiểm tra không vong hoặc suy/nhập mộ
+                                  const isKhongVong =
+                                    tuTonHao.tuanKhong === "K";
+
+                                  // Kiểm tra suy/nhập mộ với ngày và tháng
+                                  let isSuyNhapMo = false;
+                                  let suyNhapMoDetails = [];
+
+                                  if (dayDiaChi) {
+                                    const nhapMoDay = getNhapMoOf(tuTonDiaChi);
+                                    if (nhapMoDay === dayDiaChi) {
+                                      isSuyNhapMo = true;
+                                      suyNhapMoDetails.push(
+                                        `Nhập mộ với ngày (${dayDiaChi})`
                                       );
-                                      if (
-                                        lucTuName === "Thanh Long" ||
-                                        lucTuName === "Bạch Hổ" ||
-                                        lucTuName === "Chu Tước"
-                                      ) {
-                                        cayHaos.push({
-                                          hao: line1.hao,
-                                          diaChi: diaChi,
-                                          canChi: line1.canChi,
-                                          lucTu: lucTuName,
-                                          line1: line1,
-                                          line2: line2
-                                        });
+                                    }
+                                  }
+
+                                  if (monthDiaChi) {
+                                    const nhapMoMonth =
+                                      getNhapMoOf(tuTonDiaChi);
+                                    if (nhapMoMonth === monthDiaChi) {
+                                      isSuyNhapMo = true;
+                                      suyNhapMoDetails.push(
+                                        `Nhập mộ với tháng (${monthDiaChi})`
+                                      );
+                                    }
+                                  }
+
+                                  // Kiểm tra suy (ngũ hành bị khắc)
+                                  if (dayDiaChi) {
+                                    const tuTonNguHanh =
+                                      getNguHanhFromDiaChi(tuTonDiaChi);
+                                    const dayNguHanh =
+                                      getNguHanhFromDiaChi(dayDiaChi);
+                                    if (tuTonNguHanh && dayNguHanh) {
+                                      const relation = getDiaChiRelation(
+                                        tuTonDiaChi,
+                                        dayDiaChi
+                                      );
+                                      if (relation === "biKhac") {
+                                        isSuyNhapMo = true;
+                                        suyNhapMoDetails.push(
+                                          `Bị ngày khắc (${dayDiaChi})`
+                                        );
                                       }
                                     }
                                   }
-                                });
 
-                                if (cayHaos.length === 0) {
+                                  if (monthDiaChi) {
+                                    const tuTonNguHanh =
+                                      getNguHanhFromDiaChi(tuTonDiaChi);
+                                    const monthNguHanh =
+                                      getNguHanhFromDiaChi(monthDiaChi);
+                                    if (tuTonNguHanh && monthNguHanh) {
+                                      const relation = getDiaChiRelation(
+                                        tuTonDiaChi,
+                                        monthDiaChi
+                                      );
+                                      if (relation === "biKhac") {
+                                        isSuyNhapMo = true;
+                                        suyNhapMoDetails.push(
+                                          `Bị tháng khắc (${monthDiaChi})`
+                                        );
+                                      }
+                                    }
+                                  }
+
+                                  const dieuKien2 = isKhongVong || isSuyNhapMo;
+
+                                  // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
+                                  const coNguyCo =
+                                    tamHinhCheck.hasFullGroup && dieuKien2;
+
                                   return (
-                                    <div className="space-y-2">
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy cây trong quẻ
-                                      </p>
-                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                    <div className="space-y-3">
+                                      <div>
                                         <p className="font-semibold mb-2">
-                                          Bước 1: Tìm cây trong quẻ
+                                          Hào Tử Tôn: Hào {tuTonHao.hao} (
+                                          {tuTonHao.canChi}) - Địa Chi:{" "}
+                                          <strong>{tuTonDiaChi}</strong>
                                         </p>
-                                        <p className="text-sm text-gray-600">
-                                          Điều kiện 1: Không có hào Dần, Mão,
-                                          hoặc Mùi trong quẻ chính
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                          HOẶC
-                                        </p>
-                                        <p className="text-sm text-gray-600">
-                                          Điều kiện 2: Hào tương ứng trong quẻ
-                                          biến không có Thanh Long, Bạch Hổ,
-                                          hoặc Chu Tước
-                                        </p>
+                                      </div>
+
+                                      <div className="space-y-2">
+                                        <div
+                                          className={`p-3 rounded border-l-4 ${
+                                            tamHinhCheck.hasFullGroup
+                                              ? "bg-red-50 border-red-500"
+                                              : "bg-green-50 border-green-500"
+                                          }`}
+                                        >
+                                          <p className="font-semibold mb-1">
+                                            Điều kiện 1: Kiểm tra Tam Hình
+                                          </p>
+                                          {tamHinhCheck.hasFullGroup ? (
+                                            <div>
+                                              <p className="text-red-700 font-bold">
+                                                ⚠ Có nguy cơ: Tìm thấy nhóm Tam
+                                                Hình đầy đủ
+                                              </p>
+                                              <p className="text-sm text-gray-600 mt-1">
+                                                Nhóm: {tamHinhCheck.groupType}
+                                              </p>
+                                              <p className="text-sm text-gray-600">
+                                                Các địa chi:{" "}
+                                                {tamHinhCheck.groupMembers?.join(
+                                                  ", "
+                                                )}
+                                              </p>
+                                            </div>
+                                          ) : (
+                                            <p className="text-green-700">
+                                              ✓ Không tìm thấy nhóm Tam Hình đầy
+                                              đủ
+                                            </p>
+                                          )}
+                                        </div>
+
+                                        <div
+                                          className={`p-3 rounded border-l-4 ${
+                                            dieuKien2
+                                              ? "bg-red-50 border-red-500"
+                                              : "bg-green-50 border-green-500"
+                                          }`}
+                                        >
+                                          <p className="font-semibold mb-1">
+                                            Điều kiện 2: Kiểm tra Không Vong /
+                                            Suy / Nhập Mộ
+                                          </p>
+                                          {dieuKien2 ? (
+                                            <div>
+                                              <p className="text-red-700 font-bold">
+                                                ⚠ Có nguy cơ
+                                              </p>
+                                              <div className="text-sm text-gray-600 mt-1 space-y-1">
+                                                {isKhongVong && (
+                                                  <p>
+                                                    • Có Không Vong (Tuần không
+                                                    = K)
+                                                  </p>
+                                                )}
+                                                {isSuyNhapMo &&
+                                                  suyNhapMoDetails.length >
+                                                    0 && (
+                                                    <div>
+                                                      <p>• Suy/Nhập Mộ:</p>
+                                                      <ul className="list-disc list-inside ml-2">
+                                                        {suyNhapMoDetails.map(
+                                                          (detail, idx) => (
+                                                            <li key={idx}>
+                                                              {detail}
+                                                            </li>
+                                                          )
+                                                        )}
+                                                      </ul>
+                                                    </div>
+                                                  )}
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            <p className="text-green-700">
+                                              ✓ Không có Không Vong, không bị
+                                              Suy hoặc Nhập Mộ
+                                            </p>
+                                          )}
+                                        </div>
+
+                                        {coNguyCo && (
+                                          <div className="p-4 rounded-lg border-2 bg-red-100 border-red-400">
+                                            <p className="font-bold text-lg mb-2">
+                                              Kết luận:
+                                            </p>
+                                            <p className="text-red-800 font-bold text-lg">
+                                              ⚠ CÓ NGUY CƠ SẢY BỎ CON
+                                            </p>
+                                          </div>
+                                        )}
                                       </div>
                                     </div>
                                   );
-                                }
+                                })()}
+                              </div>
+                            )
+                          },
+                          {
+                            key: "2",
+                            label: "Luận Cây Trước Nhà",
+                            children: (
+                              <div className="bg-white p-4 rounded-lg border border-amber-200">
+                                {(() => {
+                                  // Bước 1: Tìm cây trong quẻ
+                                  const cayHaos = [];
 
-                                return (
-                                  <div className="space-y-4">
-                                    {/* Bước 1: Tìm cây trong quẻ */}
-                                    <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
-                                      <p className="font-semibold mb-2">
-                                        Bước 1: Tìm cây trong quẻ
-                                      </p>
-                                      <p className="text-sm text-gray-600 mb-2">
-                                        ✓ Điều kiện 1: Tìm thấy hào có địa chi
-                                        Dần, Mão, hoặc Mùi trong quẻ chính
-                                      </p>
-                                      <p className="text-sm text-gray-600 mb-2">
-                                        ✓ Điều kiện 2: Hào tương ứng trong quẻ
-                                        biến có Thanh Long, Bạch Hổ, hoặc Chu
-                                        Tước
-                                      </p>
-                                      <div className="mt-2 space-y-1">
-                                        {cayHaos.map((cay, idx) => (
-                                          <p
-                                            key={idx}
-                                            className="text-sm font-medium text-gray-700"
-                                          >
-                                            • Hào {cay.hao} ({cay.canChi}) - Địa
-                                            Chi: <strong>{cay.diaChi}</strong> -
-                                            Lục Thú:{" "}
-                                            <strong>{cay.lucTu}</strong>
+                                  // Tìm các hào có địa chi Dần, Mão, hoặc Mùi trong quẻ chính
+                                  lineData1.forEach((line1, index) => {
+                                    const diaChi = extractDiaChi(line1.canChi);
+                                    if (
+                                      diaChi === "Dần" ||
+                                      diaChi === "Mão" ||
+                                      diaChi === "Mùi"
+                                    ) {
+                                      // Kiểm tra hào tương ứng trong quẻ biến
+                                      if (index < lineData2.length) {
+                                        const line2 = lineData2[index];
+                                        const lucTuName = getLucTuName(
+                                          line2.lucTu
+                                        );
+                                        if (
+                                          lucTuName === "Thanh Long" ||
+                                          lucTuName === "Bạch Hổ" ||
+                                          lucTuName === "Chu Tước"
+                                        ) {
+                                          cayHaos.push({
+                                            hao: line1.hao,
+                                            diaChi: diaChi,
+                                            canChi: line1.canChi,
+                                            lucTu: lucTuName,
+                                            line1: line1,
+                                            line2: line2
+                                          });
+                                        }
+                                      }
+                                    }
+                                  });
+
+                                  if (cayHaos.length === 0) {
+                                    return (
+                                      <div className="space-y-2">
+                                        <p className="text-gray-500 italic">
+                                          Không tìm thấy cây trong quẻ
+                                        </p>
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                          <p className="font-semibold mb-2">
+                                            Bước 1: Tìm cây trong quẻ
                                           </p>
-                                        ))}
+                                          <p className="text-sm text-gray-600">
+                                            Điều kiện 1: Không có hào Dần, Mão,
+                                            hoặc Mùi trong quẻ chính
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            HOẶC
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            Điều kiện 2: Hào tương ứng trong quẻ
+                                            biến không có Thanh Long, Bạch Hổ,
+                                            hoặc Chu Tước
+                                          </p>
+                                        </div>
                                       </div>
-                                    </div>
+                                    );
+                                  }
 
-                                    {/* Bước 2 và 3 cho từng cây */}
-                                    {cayHaos.map((cay, idx) => {
-                                      // Bước 2: Xác định vị trí
-                                      let viTri = "";
-                                      if (cay.lucTu === "Thanh Long") {
-                                        viTri = "Bên trái";
-                                      } else if (cay.lucTu === "Bạch Hổ") {
-                                        viTri = "Bên phải";
-                                      } else if (cay.lucTu === "Chu Tước") {
-                                        viTri = "Phía trước";
-                                      }
+                                  return (
+                                    <div className="space-y-4">
+                                      {/* Bước 1: Tìm cây trong quẻ */}
+                                      <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                        <p className="font-semibold mb-2">
+                                          Bước 1: Tìm cây trong quẻ
+                                        </p>
+                                        <p className="text-sm text-gray-600 mb-2">
+                                          ✓ Điều kiện 1: Tìm thấy hào có địa chi
+                                          Dần, Mão, hoặc Mùi trong quẻ chính
+                                        </p>
+                                        <p className="text-sm text-gray-600 mb-2">
+                                          ✓ Điều kiện 2: Hào tương ứng trong quẻ
+                                          biến có Thanh Long, Bạch Hổ, hoặc Chu
+                                          Tước
+                                        </p>
+                                        <div className="mt-2 space-y-1">
+                                          {cayHaos.map((cay, idx) => (
+                                            <p
+                                              key={idx}
+                                              className="text-sm font-medium text-gray-700"
+                                            >
+                                              • Hào {cay.hao} ({cay.canChi}) -
+                                              Địa Chi:{" "}
+                                              <strong>{cay.diaChi}</strong> -
+                                              Lục Thú:{" "}
+                                              <strong>{cay.lucTu}</strong>
+                                            </p>
+                                          ))}
+                                        </div>
+                                      </div>
 
-                                      // Bước 3: Xác định loại cây
-                                      let loaiCay = "";
-                                      let caySize = "medium"; // small, medium, large
-                                      let cayColor = "#22c55e"; // màu xanh lá
-                                      if (cay.diaChi === "Dần") {
-                                        loaiCay = "Cây to thân gỗ";
-                                        caySize = "large";
-                                        cayColor = "#166534"; // xanh đậm
-                                      } else if (cay.diaChi === "Mão") {
-                                        loaiCay =
-                                          "Cây cỏ hoặc thân leo hoặc bụi cây";
-                                        caySize = "small";
-                                        cayColor = "#86efac"; // xanh nhạt
-                                      } else if (cay.diaChi === "Mùi") {
-                                        loaiCay =
-                                          "Rất nhiều cây như rừng hoặc công viên hoặc lùm cây (nhập mộ của Dần/Mão)";
-                                        caySize = "multiple";
-                                        cayColor = "#16a34a"; // xanh lá
-                                      }
-
-                                      // Hàm vẽ SVG ngôi nhà và cây
-                                      const renderHouseWithTree = (
-                                        viTri,
-                                        loaiCay,
-                                        caySize,
-                                        cayColor
-                                      ) => {
-                                        const svgSize = 140; // Kích thước SVG lớn hơn để có không gian cho cây, đặc biệt là rừng cây
-                                        const houseSize = 32;
-                                        const houseX =
-                                          svgSize / 2 - houseSize / 2;
-                                        const houseY =
-                                          svgSize / 2 - houseSize / 2;
-
-                                        // Xác định vị trí cây (nhìn từ trên xuống, đảo ngược so với nhìn từ trong nhà ra ngoài)
-                                        // Điều chỉnh khoảng cách dựa trên loại cây (rừng cây cần nhiều không gian hơn)
-                                        const treeDistance =
-                                          caySize === "multiple" ? 25 : 20;
-                                        let treeX = 0;
-                                        let treeY = 0;
-                                        if (viTri === "Bên trái") {
-                                          // Bên trái (từ trong nhà) = Bên phải (nhìn từ trên xuống)
-                                          treeX =
-                                            houseX + houseSize + treeDistance;
-                                          treeY = houseY + houseSize / 2;
-                                        } else if (viTri === "Bên phải") {
-                                          // Bên phải (từ trong nhà) = Bên trái (nhìn từ trên xuống)
-                                          treeX = houseX - treeDistance;
-                                          treeY = houseY + houseSize / 2;
-                                        } else if (viTri === "Phía trước") {
-                                          // Phía trước (từ trong nhà) = Phía dưới (nhìn từ trên xuống)
-                                          treeX = houseX + houseSize / 2;
-                                          treeY =
-                                            houseY + houseSize + treeDistance;
+                                      {/* Bước 2 và 3 cho từng cây */}
+                                      {cayHaos.map((cay, idx) => {
+                                        // Bước 2: Xác định vị trí
+                                        let viTri = "";
+                                        if (cay.lucTu === "Thanh Long") {
+                                          viTri = "Bên trái";
+                                        } else if (cay.lucTu === "Bạch Hổ") {
+                                          viTri = "Bên phải";
+                                        } else if (cay.lucTu === "Chu Tước") {
+                                          viTri = "Phía trước";
                                         }
 
-                                        // Vẽ cây dựa trên loại
-                                        const renderTree = () => {
-                                          if (caySize === "multiple") {
-                                            // Rừng cây / Công viên / Lùm cây (Mùi) - nhiều cây rải rác
-                                            // Điều chỉnh vị trí để căn giữa tốt hơn
-                                            let offsetX = 0;
-                                            let offsetY = 0;
-                                            if (
-                                              viTri === "Bên trái" ||
-                                              viTri === "Bên phải"
-                                            ) {
-                                              // Khi ở bên trái/phải, căn giữa theo chiều dọc
-                                              offsetY = -5;
-                                            } else {
-                                              // Khi ở phía trước, căn giữa theo chiều ngang
-                                              offsetX = -5;
-                                            }
+                                        // Bước 3: Xác định loại cây
+                                        let loaiCay = "";
+                                        let caySize = "medium"; // small, medium, large
+                                        let cayColor = "#22c55e"; // màu xanh lá
+                                        if (cay.diaChi === "Dần") {
+                                          loaiCay = "Cây to thân gỗ";
+                                          caySize = "large";
+                                          cayColor = "#166534"; // xanh đậm
+                                        } else if (cay.diaChi === "Mão") {
+                                          loaiCay =
+                                            "Cây cỏ hoặc thân leo hoặc bụi cây";
+                                          caySize = "small";
+                                          cayColor = "#86efac"; // xanh nhạt
+                                        } else if (cay.diaChi === "Mùi") {
+                                          loaiCay =
+                                            "Rất nhiều cây như rừng hoặc công viên hoặc lùm cây (nhập mộ của Dần/Mão)";
+                                          caySize = "multiple";
+                                          cayColor = "#16a34a"; // xanh lá
+                                        }
 
-                                            return (
-                                              <>
-                                                {/* Cây 1 */}
-                                                <circle
-                                                  cx={treeX - 8 + offsetX}
-                                                  cy={treeY - 10 + offsetY}
-                                                  r="7"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX - 10 + offsetX}
-                                                  y={treeY + offsetY}
-                                                  width="4"
-                                                  height="10"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây 2 */}
-                                                <circle
-                                                  cx={treeX - 2 + offsetX}
-                                                  cy={treeY - 8 + offsetY}
-                                                  r="6"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX - 4 + offsetX}
-                                                  y={treeY + offsetY}
-                                                  width="4"
-                                                  height="8"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây 3 */}
-                                                <circle
-                                                  cx={treeX + 4 + offsetX}
-                                                  cy={treeY - 10 + offsetY}
-                                                  r="7"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX + 2 + offsetX}
-                                                  y={treeY + offsetY}
-                                                  width="4"
-                                                  height="10"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây 4 */}
-                                                <circle
-                                                  cx={treeX + 10 + offsetX}
-                                                  cy={treeY - 7 + offsetY}
-                                                  r="6"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX + 8 + offsetX}
-                                                  y={treeY + offsetY}
-                                                  width="4"
-                                                  height="8"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây 5 */}
-                                                <circle
-                                                  cx={treeX + 1 + offsetX}
-                                                  cy={treeY - 12 + offsetY}
-                                                  r="5"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX - 1 + offsetX}
-                                                  y={treeY + offsetY}
-                                                  width="4"
-                                                  height="7"
-                                                  fill="#8b4513"
-                                                />
-                                              </>
-                                            );
-                                          } else if (caySize === "small") {
-                                            // Cây bụi / Cây cỏ / Thân leo (Mão) - nhóm cây nhỏ gần nhau
-                                            return (
-                                              <>
-                                                {/* Cây bụi 1 */}
-                                                <circle
-                                                  cx={treeX - 3}
-                                                  cy={treeY - 5}
-                                                  r="4"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX - 4}
-                                                  y={treeY}
-                                                  width="2"
-                                                  height="4"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây bụi 2 */}
-                                                <circle
-                                                  cx={treeX}
-                                                  cy={treeY - 6}
-                                                  r="5"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX - 1}
-                                                  y={treeY}
-                                                  width="2"
-                                                  height="5"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Cây bụi 3 */}
-                                                <circle
-                                                  cx={treeX + 3}
-                                                  cy={treeY - 5}
-                                                  r="4"
-                                                  fill={cayColor}
-                                                />
-                                                <rect
-                                                  x={treeX + 2}
-                                                  y={treeY}
-                                                  width="2"
-                                                  height="4"
-                                                  fill="#8b4513"
-                                                />
-                                                {/* Thêm một số cây cỏ nhỏ */}
-                                                <circle
-                                                  cx={treeX - 1}
-                                                  cy={treeY - 3}
-                                                  r="2"
-                                                  fill={cayColor}
-                                                  opacity="0.8"
-                                                />
-                                                <circle
-                                                  cx={treeX + 2}
-                                                  cy={treeY - 2}
-                                                  r="2"
-                                                  fill={cayColor}
-                                                  opacity="0.8"
-                                                />
-                                              </>
-                                            );
-                                          } else {
-                                            // Cây to thân gỗ (Dần) - cây lớn đơn lẻ
-                                            const treeRadius = 12;
-                                            const trunkWidth = 5;
-                                            const trunkHeight = 10;
-                                            return (
-                                              <>
-                                                {/* Tán lá chính */}
-                                                <circle
-                                                  cx={treeX}
-                                                  cy={treeY - trunkHeight}
-                                                  r={treeRadius}
-                                                  fill={cayColor}
-                                                />
-                                                {/* Tán lá phụ (tạo độ sâu) */}
-                                                <circle
-                                                  cx={treeX - 3}
-                                                  cy={treeY - trunkHeight - 2}
-                                                  r={treeRadius - 2}
-                                                  fill={cayColor}
-                                                  opacity="0.7"
-                                                />
-                                                <circle
-                                                  cx={treeX + 3}
-                                                  cy={treeY - trunkHeight - 2}
-                                                  r={treeRadius - 2}
-                                                  fill={cayColor}
-                                                  opacity="0.7"
-                                                />
-                                                {/* Thân cây */}
-                                                <rect
-                                                  x={treeX - trunkWidth / 2}
-                                                  y={treeY}
-                                                  width={trunkWidth}
-                                                  height={trunkHeight}
-                                                  fill="#8b4513"
-                                                />
-                                              </>
-                                            );
+                                        // Hàm vẽ SVG ngôi nhà và cây
+                                        const renderHouseWithTree = (
+                                          viTri,
+                                          loaiCay,
+                                          caySize,
+                                          cayColor
+                                        ) => {
+                                          const svgSize = 140; // Kích thước SVG lớn hơn để có không gian cho cây, đặc biệt là rừng cây
+                                          const houseSize = 32;
+                                          const houseX =
+                                            svgSize / 2 - houseSize / 2;
+                                          const houseY =
+                                            svgSize / 2 - houseSize / 2;
+
+                                          // Xác định vị trí cây (nhìn từ trên xuống, đảo ngược so với nhìn từ trong nhà ra ngoài)
+                                          // Điều chỉnh khoảng cách dựa trên loại cây (rừng cây cần nhiều không gian hơn)
+                                          const treeDistance =
+                                            caySize === "multiple" ? 25 : 20;
+                                          let treeX = 0;
+                                          let treeY = 0;
+                                          if (viTri === "Bên trái") {
+                                            // Bên trái (từ trong nhà) = Bên phải (nhìn từ trên xuống)
+                                            treeX =
+                                              houseX + houseSize + treeDistance;
+                                            treeY = houseY + houseSize / 2;
+                                          } else if (viTri === "Bên phải") {
+                                            // Bên phải (từ trong nhà) = Bên trái (nhìn từ trên xuống)
+                                            treeX = houseX - treeDistance;
+                                            treeY = houseY + houseSize / 2;
+                                          } else if (viTri === "Phía trước") {
+                                            // Phía trước (từ trong nhà) = Phía dưới (nhìn từ trên xuống)
+                                            treeX = houseX + houseSize / 2;
+                                            treeY =
+                                              houseY + houseSize + treeDistance;
                                           }
+
+                                          // Vẽ cây dựa trên loại
+                                          const renderTree = () => {
+                                            if (caySize === "multiple") {
+                                              // Rừng cây / Công viên / Lùm cây (Mùi) - nhiều cây rải rác
+                                              // Điều chỉnh vị trí để căn giữa tốt hơn
+                                              let offsetX = 0;
+                                              let offsetY = 0;
+                                              if (
+                                                viTri === "Bên trái" ||
+                                                viTri === "Bên phải"
+                                              ) {
+                                                // Khi ở bên trái/phải, căn giữa theo chiều dọc
+                                                offsetY = -5;
+                                              } else {
+                                                // Khi ở phía trước, căn giữa theo chiều ngang
+                                                offsetX = -5;
+                                              }
+
+                                              return (
+                                                <>
+                                                  {/* Cây 1 */}
+                                                  <circle
+                                                    cx={treeX - 8 + offsetX}
+                                                    cy={treeY - 10 + offsetY}
+                                                    r="7"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX - 10 + offsetX}
+                                                    y={treeY + offsetY}
+                                                    width="4"
+                                                    height="10"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây 2 */}
+                                                  <circle
+                                                    cx={treeX - 2 + offsetX}
+                                                    cy={treeY - 8 + offsetY}
+                                                    r="6"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX - 4 + offsetX}
+                                                    y={treeY + offsetY}
+                                                    width="4"
+                                                    height="8"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây 3 */}
+                                                  <circle
+                                                    cx={treeX + 4 + offsetX}
+                                                    cy={treeY - 10 + offsetY}
+                                                    r="7"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX + 2 + offsetX}
+                                                    y={treeY + offsetY}
+                                                    width="4"
+                                                    height="10"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây 4 */}
+                                                  <circle
+                                                    cx={treeX + 10 + offsetX}
+                                                    cy={treeY - 7 + offsetY}
+                                                    r="6"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX + 8 + offsetX}
+                                                    y={treeY + offsetY}
+                                                    width="4"
+                                                    height="8"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây 5 */}
+                                                  <circle
+                                                    cx={treeX + 1 + offsetX}
+                                                    cy={treeY - 12 + offsetY}
+                                                    r="5"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX - 1 + offsetX}
+                                                    y={treeY + offsetY}
+                                                    width="4"
+                                                    height="7"
+                                                    fill="#8b4513"
+                                                  />
+                                                </>
+                                              );
+                                            } else if (caySize === "small") {
+                                              // Cây bụi / Cây cỏ / Thân leo (Mão) - nhóm cây nhỏ gần nhau
+                                              return (
+                                                <>
+                                                  {/* Cây bụi 1 */}
+                                                  <circle
+                                                    cx={treeX - 3}
+                                                    cy={treeY - 5}
+                                                    r="4"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX - 4}
+                                                    y={treeY}
+                                                    width="2"
+                                                    height="4"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây bụi 2 */}
+                                                  <circle
+                                                    cx={treeX}
+                                                    cy={treeY - 6}
+                                                    r="5"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX - 1}
+                                                    y={treeY}
+                                                    width="2"
+                                                    height="5"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Cây bụi 3 */}
+                                                  <circle
+                                                    cx={treeX + 3}
+                                                    cy={treeY - 5}
+                                                    r="4"
+                                                    fill={cayColor}
+                                                  />
+                                                  <rect
+                                                    x={treeX + 2}
+                                                    y={treeY}
+                                                    width="2"
+                                                    height="4"
+                                                    fill="#8b4513"
+                                                  />
+                                                  {/* Thêm một số cây cỏ nhỏ */}
+                                                  <circle
+                                                    cx={treeX - 1}
+                                                    cy={treeY - 3}
+                                                    r="2"
+                                                    fill={cayColor}
+                                                    opacity="0.8"
+                                                  />
+                                                  <circle
+                                                    cx={treeX + 2}
+                                                    cy={treeY - 2}
+                                                    r="2"
+                                                    fill={cayColor}
+                                                    opacity="0.8"
+                                                  />
+                                                </>
+                                              );
+                                            } else {
+                                              // Cây to thân gỗ (Dần) - cây lớn đơn lẻ
+                                              const treeRadius = 12;
+                                              const trunkWidth = 5;
+                                              const trunkHeight = 10;
+                                              return (
+                                                <>
+                                                  {/* Tán lá chính */}
+                                                  <circle
+                                                    cx={treeX}
+                                                    cy={treeY - trunkHeight}
+                                                    r={treeRadius}
+                                                    fill={cayColor}
+                                                  />
+                                                  {/* Tán lá phụ (tạo độ sâu) */}
+                                                  <circle
+                                                    cx={treeX - 3}
+                                                    cy={treeY - trunkHeight - 2}
+                                                    r={treeRadius - 2}
+                                                    fill={cayColor}
+                                                    opacity="0.7"
+                                                  />
+                                                  <circle
+                                                    cx={treeX + 3}
+                                                    cy={treeY - trunkHeight - 2}
+                                                    r={treeRadius - 2}
+                                                    fill={cayColor}
+                                                    opacity="0.7"
+                                                  />
+                                                  {/* Thân cây */}
+                                                  <rect
+                                                    x={treeX - trunkWidth / 2}
+                                                    y={treeY}
+                                                    width={trunkWidth}
+                                                    height={trunkHeight}
+                                                    fill="#8b4513"
+                                                  />
+                                                </>
+                                              );
+                                            }
+                                          };
+
+                                          return (
+                                            <svg
+                                              width={svgSize}
+                                              height={svgSize}
+                                              viewBox={`0 0 ${svgSize} ${svgSize}`}
+                                              className="border border-gray-300 rounded bg-gray-50"
+                                            >
+                                              {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
+                                              {/* Mái nhà (hình tam giác) */}
+                                              <polygon
+                                                points={`${
+                                                  houseX + houseSize / 2
+                                                },${houseY} ${houseX},${
+                                                  houseY + houseSize / 3
+                                                } ${houseX + houseSize},${
+                                                  houseY + houseSize / 3
+                                                }`}
+                                                fill="#dc2626"
+                                                stroke="#991b1b"
+                                                strokeWidth="1"
+                                              />
+                                              {/* Thân nhà (hình chữ nhật) */}
+                                              <rect
+                                                x={houseX}
+                                                y={houseY + houseSize / 3}
+                                                width={houseSize}
+                                                height={(houseSize * 2) / 3}
+                                                fill="#fbbf24"
+                                                stroke="#d97706"
+                                                strokeWidth="1"
+                                              />
+                                              {/* Cửa (ở phía dưới - phía trước khi nhìn từ trong nhà ra ngoài) */}
+                                              <rect
+                                                x={houseX + houseSize / 2 - 4}
+                                                y={houseY + houseSize - 12}
+                                                width="8"
+                                                height="12"
+                                                fill="#78350f"
+                                              />
+
+                                              {/* Vẽ cây */}
+                                              {renderTree()}
+                                            </svg>
+                                          );
                                         };
 
                                         return (
-                                          <svg
-                                            width={svgSize}
-                                            height={svgSize}
-                                            viewBox={`0 0 ${svgSize} ${svgSize}`}
-                                            className="border border-gray-300 rounded bg-gray-50"
+                                          <div
+                                            key={idx}
+                                            className="p-4 bg-blue-50 rounded-lg border border-blue-200"
                                           >
-                                            {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
-                                            {/* Mái nhà (hình tam giác) */}
-                                            <polygon
-                                              points={`${
-                                                houseX + houseSize / 2
-                                              },${houseY} ${houseX},${
-                                                houseY + houseSize / 3
-                                              } ${houseX + houseSize},${
-                                                houseY + houseSize / 3
-                                              }`}
-                                              fill="#dc2626"
-                                              stroke="#991b1b"
-                                              strokeWidth="1"
-                                            />
-                                            {/* Thân nhà (hình chữ nhật) */}
-                                            <rect
-                                              x={houseX}
-                                              y={houseY + houseSize / 3}
-                                              width={houseSize}
-                                              height={(houseSize * 2) / 3}
-                                              fill="#fbbf24"
-                                              stroke="#d97706"
-                                              strokeWidth="1"
-                                            />
-                                            {/* Cửa (ở phía dưới - phía trước khi nhìn từ trong nhà ra ngoài) */}
-                                            <rect
-                                              x={houseX + houseSize / 2 - 4}
-                                              y={houseY + houseSize - 12}
-                                              width="8"
-                                              height="12"
-                                              fill="#78350f"
-                                            />
-
-                                            {/* Vẽ cây */}
-                                            {renderTree()}
-                                          </svg>
-                                        );
-                                      };
-
-                                      return (
-                                        <div
-                                          key={idx}
-                                          className="p-4 bg-blue-50 rounded-lg border border-blue-200"
-                                        >
-                                          <p className="font-semibold mb-2">
-                                            Cây {idx + 1}: Hào {cay.hao} (
-                                            {cay.canChi})
-                                          </p>
-
-                                          {/* Bước 2: Vị trí */}
-                                          <div className="mb-3">
-                                            <p className="font-semibold text-sm mb-1">
-                                              Bước 2: Vị trí của cây
+                                            <p className="font-semibold mb-2">
+                                              Cây {idx + 1}: Hào {cay.hao} (
+                                              {cay.canChi})
                                             </p>
-                                            <div className="flex items-center gap-4">
-                                              <p className="text-sm text-gray-700">
-                                                <strong>Lục Thú:</strong>{" "}
-                                                {cay.lucTu} →{" "}
-                                                <strong className="text-blue-700">
-                                                  {viTri}
-                                                </strong>{" "}
-                                                (tính từ trong nhà nhìn ra
-                                                ngoài)
+
+                                            {/* Bước 2: Vị trí */}
+                                            <div className="mb-3">
+                                              <p className="font-semibold text-sm mb-1">
+                                                Bước 2: Vị trí của cây
                                               </p>
-                                              <div className="flex-shrink-0">
-                                                {renderHouseWithTree(
-                                                  viTri,
-                                                  loaiCay,
-                                                  caySize,
-                                                  cayColor
-                                                )}
+                                              <div className="flex items-center gap-4">
+                                                <p className="text-sm text-gray-700">
+                                                  <strong>Lục Thú:</strong>{" "}
+                                                  {cay.lucTu} →{" "}
+                                                  <strong className="text-blue-700">
+                                                    {viTri}
+                                                  </strong>{" "}
+                                                  (tính từ trong nhà nhìn ra
+                                                  ngoài)
+                                                </p>
+                                                <div className="flex-shrink-0">
+                                                  {renderHouseWithTree(
+                                                    viTri,
+                                                    loaiCay,
+                                                    caySize,
+                                                    cayColor
+                                                  )}
+                                                </div>
                                               </div>
                                             </div>
-                                          </div>
 
-                                          {/* Bước 3: Loại cây */}
-                                          <div>
-                                            <p className="font-semibold text-sm mb-1">
-                                              Bước 3: Loại cây
-                                            </p>
-                                            <p className="text-sm text-gray-700">
-                                              <strong>Địa Chi:</strong>{" "}
-                                              {cay.diaChi} →{" "}
-                                              <strong className="text-green-700">
-                                                {loaiCay}
-                                              </strong>
-                                            </p>
+                                            {/* Bước 3: Loại cây */}
+                                            <div>
+                                              <p className="font-semibold text-sm mb-1">
+                                                Bước 3: Loại cây
+                                              </p>
+                                              <p className="text-sm text-gray-700">
+                                                <strong>Địa Chi:</strong>{" "}
+                                                {cay.diaChi} →{" "}
+                                                <strong className="text-green-700">
+                                                  {loaiCay}
+                                                </strong>
+                                              </p>
+                                            </div>
                                           </div>
-                                        </div>
-                                      );
-                                    })}
-                                  </div>
-                                );
-                              })()}
-                            </div>
-                          </div>
-                        </Card>
-                      </div>
+                                        );
+                                      })}
+                                    </div>
+                                  );
+                                })()}
+                              </div>
+                            )
+                          }
+                        ]}
+                      />
                     </div>
                   </div>
                 </div>
