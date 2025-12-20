@@ -3,7 +3,7 @@ import { Card, Tooltip, Modal } from "antd";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import Line from "./Line";
-import { getHexagramMeaning } from "../data/hexagramMeanings";
+import { getHexagramMeaningCached, useHexagramMeanings } from "../hooks/useHexagramMeanings";
 import { getHexagramOmen } from "../data/hexagramOmens";
 import { useHexagramLines } from "../hooks/useHexagramLines";
 
@@ -41,7 +41,9 @@ export default function HexagramColumn({
   // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
   const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
   const omen = getHexagramOmen(hexagramKey);
-  const meaning = getHexagramMeaning(hexagramKey);
+  // Load hexagram meanings and get from cache
+  const meaningsReady = useHexagramMeanings();
+  const meaning = meaningsReady ? getHexagramMeaningCached(hexagramKey) : null;
 
   // State for modal
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,0 +1,48 @@
+{
+    "LUC_TU_CODES": {
+        "Thanh Long": "TL",
+        "Chu Tước": "CT",
+        "Câu Trần": "CTr",
+        "Đằng Xà": "DX",
+        "Bạch Hổ": "BH",
+        "Huyền Vũ": "HV"
+    },
+    "LUC_TU_NAMES": {
+        "TL": "Thanh Long",
+        "CT": "Chu Tước",
+        "CTr": "Câu Trần",
+        "DX": "Đằng Xà",
+        "ĐX": "Đằng Xà",
+        "DH": "Đằng Xà",
+        "BH": "Bạch Hổ",
+        "HV": "Huyền Vũ"
+    },
+    "LUC_THAN_CODES": {
+        "Phụ Mẫu": "PM",
+        "Huynh Đệ": "HD",
+        "Tử Tôn": "TT",
+        "Thê Tài": "TTi",
+        "Quan Quỷ": "QQ"
+    },
+    "LUC_THAN_NAMES": {
+        "PM": "Phụ Mẫu",
+        "HD": "Huynh Đệ",
+        "TT": "Tử Tôn",
+        "TTi": "Thê Tài",
+        "QQ": "Quan Quỷ"
+    },
+    "LUC_THAN_SINH_MAP": {
+        "Phụ Mẫu": "Huynh Đệ",
+        "Huynh Đệ": "Tử Tôn",
+        "Tử Tôn": "Thê Tài",
+        "Thê Tài": "Quan Quỷ",
+        "Quan Quỷ": "Phụ Mẫu"
+    },
+    "LUC_THAN_KHAC_MAP": {
+        "Phụ Mẫu": "Tử Tôn",
+        "Tử Tôn": "Quan Quỷ",
+        "Quan Quỷ": "Huynh Đệ",
+        "Huynh Đệ": "Thê Tài",
+        "Thê Tài": "Phụ Mẫu"
+    }
+}

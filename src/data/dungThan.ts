@@ -1,7 +1,11 @@
 /**
  * Dụng Thần (Useful God) data
  * Contains detailed information about each dụng thần
+ * 
+ * Data được lưu trong file JSON riêng để tách biệt với source code
  */
+
+import dungThanData from "./dungThan.json";
 
 export interface DungThanInfo {
   value: string;
@@ -17,73 +21,8 @@ export interface DungThanInfo {
   triTheKhongCat: string;
 }
 
-export const DUNG_THAN_DATA: Record<string, DungThanInfo> = {
-  'Phụ Mẫu': {
-    value: 'Phụ Mẫu',
-    label: 'Phụ Mẫu',
-    description: 'Dụng thần Phụ Mẫu',
-    vaiVe: 'Ông bà (nội ngoại), Cha mẹ (nội ngoại), cô dì chú bác, thầy cô giáo… Những người thân thích ngang hàng với bố mẹ hoặc cao hơn nữa. Là bề trên của mình thì đều là Phụ Mẫu. Kể cả là cha mẹ nuôi, cha mẹ kế, hoặc những người mình luôn coi họ là bố mẹ, trưởng bối, người già, v.v… thì đều dùng Phụ Mẫu. Theo một số sách còn xét kỹ hơn cả các chủ thể bên lề: VD chồng của cô, dì, chồng của dì, mợ, cậu… Người ở, người giúp việc (ô-sin) xem cho Chủ nhân cũng dùng hào Phụ Mẫu làm dụng thần',
-    doDung: 'Áo mưa, dù, quần áo, giày mũ, vải vóc, khăn đội đầu, khẩu trang. Xe cộ, thuyền bè, xe đạp, xe hơi, xe lửa, thuyền, máy bay, ngồi nhà, trường học, đơn vị công tác, đệm chăn, phòng điều trị, bệnh viện, kiến trúc, phòng ốc, tường bao, thành trì',
-    mangTinhChat: 'Nhà cửa, đất đai, mồ mả, sổ đỏ, sổ hồng, giấy chứng nhận quyền sử dụng đất, bằng lái xe, giấy tờ đăng ký kết hôn, hợp đồng, thông tin, báo cáo, tín hiệu, tin tức, văn thư, văn kiện, văn chương, khế ước, sách vở, giấy báo, thư tín. Nhà cửa để ở mang tính chất bao bọc, che chở nắng mưa cũng là Phụ Mẫu',
-    thoiTiet: 'Mưa, tuyết, trời đất',
-    coThe: 'Trên phần mặt, đầu, ngực, lưng, bụng, mông',
-    suVat: 'Sự vật thực tế rất nhiều, nên phải dựa vào sự biến thông của tuỳ từng người xem quẻ',
-    triTheCat: 'Học hành thi cử tốt, dễ lên lớp, dễ được điểm cao, dễ giành được giải thưởng, bằng khen, học vấn. Dễ có tin vui dồn dập, tiền bạc tìm đến mình',
-    triTheKhongCat: 'Tượng vất vả, khó nhọc, tâm trạng phiền muội, dễ áp lực về tiền bạc, khắc về mặt con cái, khó gần với con cái, khó cho chuyện có con, khó sinh nở'
-  },
-  'Huynh Đệ': {
-    value: 'Huynh Đệ',
-    label: 'Huynh Đệ',
-    description: 'Dụng thần Huynh Đệ - Ngang hàng, tương đồng với mình',
-    vaiVe: 'Anh chị em ruột, anh chị em cô dì trong họ, anh em rể, anh em kết nghĩa, bạn bè, đồng nghiệp, v.v… thì đều dùng Huynh Đệ. Theo một số sách có viết. Xem cho anh chị em họ mà dùng hào Huynh Đệ làm dụng thần mà không linh nghiệm, thì lấy hào Ứng làm dụng thần. Những người ngang hàng với mình đều là Huynh Đệ',
-    doDung: 'Phong thuỷ: cửa ngõ, nhà vệ sinh, vách tường',
-    mangTinhChat: 'Cản trở, cạnh tranh, phá tài, tham của, đánh bạc, cướp đoạt, tranh giành. Giao lưu quan hệ với bạn bè, đồng nghiệp thì lại rất tốt, nhưng…',
-    thoiTiet: 'Gió mây',
-    coThe: 'Cánh tay, chân, bàn chân, răng, dạ dày, vai, bàng quang',
-    suVat: 'Bệnh tật: ăn uống không vào, rối loạn tiêu hoá, v.v… Sự vật thực tế rất nhiều, nên phải dựa vào sự biến thông của tuỳ từng người xem quẻ',
-    triTheCat: 'Giao lưu bạn bè tốt, dễ mở rộng mối quan hệ đồng nghiệp, thuận lợi cho việc có con cái, nuôi dạy con cái dễ dàng',
-    triTheKhongCat: 'Khắc Tiền bạc, khó kiếm tiền, khó giữ tiền được trong người, khắc Vợ, với Nam (con trai) thì khắc tình cảm tình duyên'
-  },
-  'Tử Tôn': {
-    value: 'Tử Tôn',
-    label: 'Tử Tôn',
-    description: 'Dụng thần Tử Tôn - Ta sinh ra, nuôi dưỡng, bao bọc, che chở cho nó',
-    vaiVe: 'Con cái, cháu chắt, đồ đệ, đệ tử, thế hệ đời sau v.v… thì đều dùng Tử Tôn. Chức vụ, Địa Vị: Công an, bác sỹ, tướng tài, thầy thuốc, người xuất gia, sư sãi, đạo sĩ, binh lính, v.v… Các trường hợp khác (chưa kiểm chứng): Bùa chú, phù chú. Vai vế khác: động vật, vật nuôi, gia súc, gia cầm, chim chóc… Mình sinh ra nó, bao bọc, nuôi dưỡng nó. Thì đó là Tử Tôn. Ham chơi, vui vẻ, không lo lắng nhiều, thần chủ về Phúc Đức đều là Tử Tôn',
-    doDung: 'Thiên nhiên: Mặt trời, mặt trăng, sao, thiên thể',
-    mangTinhChat: 'Hình tượng: uống rượu, vui vẻ, giải trí, không lo lắng. Kinh doanh: Nguồn vốn, nguồn tiền dự trữ',
-    thoiTiet: 'Trời nắng',
-    coThe: 'Đường hô hấp, khí quản, vú, mắt, tai, miệng, mũi, mạch máu, lỗ chân lông, ruột, bộ phận sinh dục, tiểu tiện, tuỷ v.v…',
-    suVat: 'Sự vật thực tế rất nhiều, nên phải dựa vào sự biến thông của tuỳ từng người xem quẻ',
-    triTheCat: 'Thần chủ về Phúc Đức, chế ngự ma quỷ, giải trừ ưu phiền. Khi kinh doanh dễ có vốn trong tay. Tính tình ít suy tính nhiều, thoải mái',
-    triTheKhongCat: 'Với người đang đi xin việc thì tỷ lệ trượt rất cao. Với người đang đương nhiệm thì dễ bãi quan, giáng chức hoặc bị điều chuyển công tác'
-  },
-  'Thê Tài': {
-    value: 'Thê Tài',
-    label: 'Thê Tài',
-    description: 'Dụng thần Thê Tài - Bị Ta khắc, điều khiển, là những thứ thiết yếu cho bản thân Ta',
-    vaiVe: 'Vợ, thê thiếp, người yêu (nữ), phụ nữ, bạn gái, đối tượng yêu đương (nữ), gay (dưới), less (dưới) v.v… thì đều dùng Thê Tài. Chức vụ, Địa Vị: nô bộc, người giúp việc, người làm thuê, nhân viên tuỳ tùng… Vợ, bạn gái, less (dưới), gay (dưới) đều là Thê Tài',
-    doDung: 'Quần áo hàng ngày, dụng cụ, nhà kho, lương thực, bếp, thực vật, hàng hoá, đồ trang sức, vàng bạc, kho tàng, của cải, châu báu',
-    mangTinhChat: 'Kinh doanh: Tài sản, tiền bạc, tiền vốn, kinh tế, giá cả, tiền tệ, tiền bạc, bổng lộc, tiền lương, thu nhập, thù lao',
-    thoiTiet: 'Trời nắng',
-    coThe: 'Lông tóc, máu, hô hấp, nước mắt, phân và nước tiểu, mồ hôi, sữa, nước mũi, nước bọt, eo, hậu môn, v.v…',
-    suVat: 'Sự vật thực tế rất nhiều, nên phải dựa vào sự biến thông của tuỳ từng người xem quẻ',
-    triTheCat: 'Kinh doanh dễ có lời lãi, buôn bán có thể dễ. Lấy vợ, Nam hỏi tình cảm tình duyên thì thuận lợi',
-    triTheKhongCat: 'Giấy tờ, văn thư, hợp đồng dễ gặp trục trặc, trở ngại'
-  },
-  'Quan Quỷ': {
-    value: 'Quan Quỷ',
-    label: 'Quan Quỷ',
-    description: 'Dụng thần Quan Quỷ - Tất cả sự vật, sự việc có tính chất trói buộc, kiểm soát, khắc Ta',
-    vaiVe: 'Chồng, Đàn ông, Bạn trai, đối tượng yêu đương (nam), gay (trên), less (trên) v.v… thì đều dùng Quan Quỷ. Chức vụ, Địa Vị: Sếp, Quan lại, Quan phủ, Công an, Nhà nước, Lãnh đạo cấp trên. Chức vụ, Địa vị khác: Đạo tặc, kẻ xấu, gian thần, tù trốn trại. Công việc: Ngành tư pháp, kiện tụng, luật pháp, giám sát. Sếp, Chồng, Công việc, bạn trai, less (trên), gay (trên) đều là Quan Quỷ',
-    doDung: 'Tâm linh: Tai hoạ, khí Âm, thi thể, người chết, vong, ma, tà, quỷ',
-    mangTinhChat: 'Bệnh tật: vùng nhiễm bệnh, virus, tạp niệm, phiền não',
-    thoiTiet: 'Sấm sét, sương mù, khói',
-    coThe: 'Tim, phổi, hệ thần kinh',
-    suVat: 'Sự vật thực tế rất nhiều, nên phải dựa vào sự biến thông của tuỳ từng người xem quẻ',
-    triTheCat: 'Tiền dễ thu lợi được vào mình, dễ thăng Quan tiến Chức. Lấy chồng, Nữ hỏi tình cảm tình duyên thì thuận lợi',
-    triTheKhongCat: 'Nghi ngờ, dễ gặp bệnh, mắc bệnh, dễ dính tù ngục pháp luật, ưu phiền, ám muội'
-  }
-};
+// Import data from JSON file
+export const DUNG_THAN_DATA: Record<string, DungThanInfo> = dungThanData as Record<string, DungThanInfo>;
 
 export function getDungThanInfo(value: string): DungThanInfo | null {
   return DUNG_THAN_DATA[value] || null;

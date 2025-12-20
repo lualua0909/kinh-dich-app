@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Tooltip } from "antd";
 import { performDivination } from "./utils/divination";
 import { generateLineData } from "./data/lines";
@@ -8,6 +8,7 @@ import InterpretationTables from "./components/InterpretationTables";
 import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
+import { initializeDataMigrations } from "./utils/dataMigration";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 const nguHanhRelations = {
@@ -127,6 +128,13 @@ const getDiaChiFromCanChi = (canChi) => {
 function App() {
   const [result, setResult] = useState(null);
   const [dungThan, setDungThan] = useState(null);
+
+  // Initialize IndexedDB migrations on app start
+  useEffect(() => {
+    initializeDataMigrations().catch((error) => {
+      console.error("Failed to initialize data migrations:", error);
+    });
+  }, []);
 
   const handleDivinate = (input, dungThanValue) => {
     try {
