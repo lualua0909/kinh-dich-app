@@ -10,15 +10,7 @@ import dungThanData from "./dungThan.json";
 export interface DungThanInfo {
   value: string;
   label: string;
-  description: string;
-  vaiVe: string;
-  doDung: string;
-  mangTinhChat: string;
-  thoiTiet: string;
-  coThe: string;
-  suVat: string;
-  triTheCat: string;
-  triTheKhongCat: string;
+  content: string;
 }
 
 // Import data from JSON file
@@ -27,4 +19,3 @@ export const DUNG_THAN_DATA: Record<string, DungThanInfo> = dungThanData as Reco
 export function getDungThanInfo(value: string): DungThanInfo | null {
   return DUNG_THAN_DATA[value] || null;
 }
-

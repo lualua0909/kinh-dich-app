@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Card, Tooltip, Drawer, Modal, Collapse } from "antd";
+import { Table, Card, Tooltip, Drawer, Modal, Collapse, Button } from "antd";
 import ReactMarkdown from "react-markdown";
 import nguHanhRelations from "../data/nguHanhRelations.json";
 import { getDungThanInfo } from "../data/dungThan";
@@ -46,12 +46,6 @@ import {
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
 } from "../utils/diaChi";
-/**
- * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
- * TỨC ĐIỀU PHÁN SÀO: uses original hexagram
- * NHÂN ĐOÁN TÁO CAO: uses changed hexagram
- */
-
 
 // Helper: Extract địa chi từ canChi
 export const extractDiaChi = (canChi) => {
@@ -296,6 +290,9 @@ export default function InterpretationTables({
   // State for hexagram meaning modal
   const [hexagramModalData, setHexagramModalData] = useState(null);
 
+  // State for Lục Thân detail modal
+  const [lucThanModalData, setLucThanModalData] = useState(null);
+
   const openLucTuDrawer = (lucTu, record) => {
     if (!lucTu) return;
     const lucTuName = getLucTuName(lucTu);
@@ -484,54 +481,16 @@ export default function InterpretationTables({
     );
   };
 
-  const renderLucThanTooltip = (lucThan, record) => {
+  const renderLucThan = (lucThan, record) => {
     const fullLucThan = getLucThanName(lucThan);
     const info = getDungThanInfo(fullLucThan);
-    if (!info) return fullLucThan;
+
+    if (!info) return <span className="font-semibold">{fullLucThan}</span>;
 
     let childOrderInfo = null;
     if (fullLucThan === "Tử Tôn" && record?.canChi) {
       const diaChi = extractDiaChi(record.canChi);
-      const diaChiOrder = {
-        Tý: 1,
-        Sửu: 2,
-        Dần: 3,
-        Mão: 4,
-        Thìn: 5,
-        Tỵ: 6,
-        Ngọ: 7,
-        Mùi: 8,
-        Thân: 9,
-        Dậu: 10,
-        Tuất: 11,
-        Hợi: 12,
-        // Map codes too just in case
-        TY: 1,
-        SU: 2,
-        DN: 3,
-        MA: 4,
-        TH: 5,
-        TI: 6,
-        NG: 7,
-        MU: 8,
-        TN: 9,
-        DA: 10,
-        TU: 11,
-        HO: 12,
-      };
-
-      // Ensure we lookup by name or code properly. extractDiaChi returns Name usually (e.g. "Tý")
-      // But if it returns code, the map handles it.
-      // Better to normalize to Code first to be safe, but map is easy here.
-      const code = DIA_CHI_CODES[diaChi] || diaChi; // Try to get code
-      // If diaChi is "Tý" -> code is "TY". If "TY" -> code is "TY".
-      // Let's use the code (or name if code not found) to lookup order.
-      // Actually, my map above handles names directly.
-      // But let's be robust:
-      // const order = diaChiOrder[diaChi] || diaChiOrder[DIA_CHI_CODES[diaChi]];
-
-      // Simplest robust way: 
-      const normalizedCode = DIA_CHI_CODES[diaChi] || diaChi; // e.g. "TY"
+      const normalizedCode = DIA_CHI_CODES[diaChi] || diaChi;
       const mapCodeToOrder = {
         TY: 1, SU: 2, DN: 3, MA: 4, TH: 5, TI: 6,
         NG: 7, MU: 8, TN: 9, DA: 10, TU: 11, HO: 12
@@ -541,7 +500,7 @@ export default function InterpretationTables({
 
       if (order) {
         childOrderInfo = (
-          <div className="pt-2 border-t border-gray-300">
+          <div className="pt-2 border-t border-gray-300 mt-2">
             <span className="font-semibold text-purple-600">
               Luận đoán thứ bậc con:
             </span>
@@ -555,23 +514,21 @@ export default function InterpretationTables({
       }
     }
 
+    const handleClick = () => {
+      setLucThanModalData({
+        title: info.label,
+        content: info.content,
+        extra: childOrderInfo
+      });
+    };
+
     return (
-      <div className="max-w-xs text-xs space-y-2">
-        <div className="font-bold mb-1 text-sm">{info.label}</div>
-        <div>
-          <span className="font-semibold">Mô tả:</span>{" "}
-          <span>{info.description}</span>
-        </div>
-        <div>
-          <span className="font-semibold">Vai vế / quan hệ:</span>{" "}
-          <span>{info.vaiVe}</span>
-        </div>
-        <div>
-          <span className="font-semibold">Mang tính chất:</span>{" "}
-          <span>{info.mangTinhChat}</span>
-        </div>
-        {childOrderInfo}
-      </div>
+      <span
+        className={`font-semibold text-blue-700 cursor-pointer underline decoration-dotted ${record?.extraClassName || ""}`}
+        onClick={handleClick}
+      >
+        {fullLucThan}
+      </span>
     );
   };
 
@@ -653,23 +610,9 @@ export default function InterpretationTables({
       width: 100,
       align: "center",
       render: (lucThan, record) => {
-        const fullLucThan = getLucThanName(lucThan);
         const isDungThanHao = dungThanHaos1.has(record.hao);
-        return (
-          <Tooltip
-            title={renderLucThanTooltip(lucThan, record)}
-            placement="top"
-            overlayClassName="tooltip-custom"
-          >
-            <span
-              className={
-                dungThan && isDungThanHao ? "text-green-600 font-bold" : ""
-              }
-            >
-              {fullLucThan}
-            </span>
-          </Tooltip>
-        );
+        const extraClassName = dungThan && isDungThanHao ? "text-green-600 font-bold" : "";
+        return renderLucThan(lucThan, { ...record, extraClassName });
       },
     },
     {
@@ -727,15 +670,7 @@ export default function InterpretationTables({
 
         return (
           <div className="flex flex-col items-center gap-1">
-            <Tooltip
-              title={renderLucThanTooltip(lucThanCode, { canChi: diaChi })}
-              placement="top"
-              overlayClassName="tooltip-custom"
-            >
-              <span className={isDungThan ? "text-green-600 font-bold" : ""}>
-                {fullLucThan}
-              </span>
-            </Tooltip>
+            {renderLucThan(lucThanCode, { canChi: diaChi, extraClassName: isDungThan ? "text-green-600 font-bold" : "" })}
             <div className="flex items-center gap-1">
               <Tooltip
                 title={renderDiaChiTooltip(diaChi)}
@@ -821,23 +756,9 @@ export default function InterpretationTables({
       width: 100,
       align: "center",
       render: (lucThan, record) => {
-        const fullLucThan = getLucThanName(lucThan);
         const isDungThanHao = dungThanHaos2.has(record.hao);
-        return (
-          <Tooltip
-            title={renderLucThanTooltip(lucThan, record)}
-            placement="top"
-            overlayClassName="tooltip-custom"
-          >
-            <span
-              className={
-                dungThan && isDungThanHao ? "text-green-600 font-bold" : ""
-              }
-            >
-              {fullLucThan}
-            </span>
-          </Tooltip>
-        );
+        const extraClassName = dungThan && isDungThanHao ? "text-green-600 font-bold" : "";
+        return renderLucThan(lucThan, { ...record, extraClassName });
       },
     },
     {
@@ -1016,6 +937,24 @@ export default function InterpretationTables({
       >
         {renderLucTuDrawerContent()}
       </Drawer>
+
+      {/* Modal hiển thị chi tiết Lục Thân */}
+      <Modal
+        title={lucThanModalData?.title || "Chi tiết Lục Thân"}
+        open={!!lucThanModalData}
+        onCancel={() => setLucThanModalData(null)}
+        footer={[
+          <Button key="close" onClick={() => setLucThanModalData(null)}>
+            Đóng
+          </Button>
+        ]}
+        width={600}
+      >
+        <div className="prose prose-sm prose-amber max-w-none">
+          <ReactMarkdown>{lucThanModalData?.content || ""}</ReactMarkdown>
+          {lucThanModalData?.extra}
+        </div>
+      </Modal>
 
       {/* Modal hiển thị thông tin quẻ */}
       <Modal
@@ -2128,29 +2067,17 @@ export default function InterpretationTables({
                                     Xác định Dụng Thần
                                   </p>
                                   {dungThan && dungThanInfo ? (
-                                    <div className="space-y-2">
-                                      <p>
-                                        <strong>Dụng Thần đã chọn:</strong>{" "}
-                                        {dungThanInfo.label}
-                                      </p>
-                                      <p>
-                                        <strong>Vai vế:</strong>{" "}
-                                        {dungThanInfo.vaiVe}
-                                      </p>
-                                      <p>
-                                        <strong>Đồ dùng:</strong>{" "}
-                                        {dungThanInfo.doDung}
-                                      </p>
-                                      <p>
-                                        <strong>Mang tính chất:</strong>{" "}
-                                        {dungThanInfo.mangTinhChat}
-                                      </p>
+                                    <div className="space-y-4">
+                                      <div className="p-4 bg-white rounded-lg border border-parchment-200 shadow-sm leading-relaxed">
+                                        <ReactMarkdown>{dungThanInfo.content}</ReactMarkdown>
+                                      </div>
                                       {dungThanHao && (
-                                        <p>
-                                          <strong>Hào Dụng Thần:</strong> Hào{" "}
-                                          {dungThanHao.hao} (
-                                          {dungThanHao.canChi})
-                                        </p>
+                                        <div className="p-3 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-2">
+                                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                          <p className="m-0 text-sm">
+                                            <strong>Hào Dụng Thần:</strong> Hào {dungThanHao.hao} ({dungThanHao.canChi})
+                                          </p>
+                                        </div>
                                       )}
                                     </div>
                                   ) : (

@@ -9,11 +9,13 @@ import {
   Card,
   Radio,
   Switch,
+  Modal,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { getDungThanInfo } from "../data/dungThan";
 import { LunarCalendar } from "@dqcai/vn-lunar";
 import { TRIGRAMS } from "../data/trigrams";
+import ReactMarkdown from "react-markdown";
 
 const { Option } = Select;
 
@@ -24,6 +26,7 @@ export default function DivinationForm({ onDivinate }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedDungThan, setSelectedDungThan] = useState(null);
+  const [isDungThanModalVisible, setIsDungThanModalVisible] = useState(false);
   const [mode, setMode] = useState("serial"); // 'serial' | 'manual' | 'datetime'
 
   // Effect to parse URL on mount
@@ -66,7 +69,7 @@ export default function DivinationForm({ onDivinate }) {
       form.setFieldsValue({ dungThan: dungThanParam });
       setSelectedDungThan(getDungThanInfo(dungThanParam));
     }
-  }, []); // Run only on mount
+  }, [form]); // Added form as dependency
 
   // Effect to handle mode changes
   useEffect(() => {
@@ -86,11 +89,6 @@ export default function DivinationForm({ onDivinate }) {
         });
       }
     }
-
-    // We don't want to reset dungThan automatically when switching tabs manually
-    // but the previous version did. Let's keep it if that was intended, 
-    // but usually users might want to keep the dungThan selection.
-    // However, to keep it simple and fix the bug: 
   }, [mode, form]);
 
   const dungThanOptions = [
@@ -105,58 +103,31 @@ export default function DivinationForm({ onDivinate }) {
     setSelectedDungThan(value ? getDungThanInfo(value) : null);
   };
 
-  const renderDungThanTooltip = () => {
+  const showDungThanModal = () => {
     if (selectedDungThan) {
-      return (
-        <div className="max-w-md text-xs space-y-2">
-          <div className="font-bold mb-2 text-sm">{selectedDungThan.label}</div>
-          <div>
-            <span className="font-semibold">Mô tả:</span>{" "}
-            <span>{selectedDungThan.description}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Vai vế / quan hệ:</span>{" "}
-            <span>{selectedDungThan.vaiVe}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Đồ dùng:</span>{" "}
-            <span>{selectedDungThan.doDung}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Mang tính chất:</span>{" "}
-            <span>{selectedDungThan.mangTinhChat}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Thời tiết:</span>{" "}
-            <span>{selectedDungThan.thoiTiet}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Cơ thể:</span>{" "}
-            <span>{selectedDungThan.coThe}</span>
-          </div>
-          <div>
-            <span className="font-semibold">Sự vật:</span>{" "}
-            <span>{selectedDungThan.suVat}</span>
-          </div>
-          <div className="pt-2 border-t border-gray-300">
-            <span className="font-semibold text-green-600">Trị thế cát:</span>{" "}
-            <span>{selectedDungThan.triTheCat}</span>
-          </div>
-          <div>
-            <span className="font-semibold text-red-600">
-              Trị thế không cát:
-            </span>{" "}
-            <span>{selectedDungThan.triTheKhongCat}</span>
-          </div>
-        </div>
-      );
+      setIsDungThanModalVisible(true);
+    } else {
+      message.info("Vui lòng chọn Dụng Thần để xem chi tiết");
     }
-    return (
-      <div className="text-xs">
-        Chọn dụng thần để xem thông tin chi tiết về ý nghĩa và ứng dụng
-      </div>
-    );
   };
+
+  const renderDungThanModal = () => (
+    <Modal
+      title={selectedDungThan?.label || "Thông tin Dụng Thần"}
+      open={isDungThanModalVisible}
+      onCancel={() => setIsDungThanModalVisible(false)}
+      footer={[
+        <Button key="close" onClick={() => setIsDungThanModalVisible(false)}>
+          Đóng
+        </Button>
+      ]}
+      width={600}
+    >
+      <div className="prose prose-sm prose-amber max-w-none">
+        <ReactMarkdown>{selectedDungThan?.content || ""}</ReactMarkdown>
+      </div>
+    </Modal>
+  );
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -177,44 +148,26 @@ export default function DivinationForm({ onDivinate }) {
 
         // Convert to Lunar
         const lunarObj = LunarCalendar.fromSolar(day, month, year);
-        // Access nested lunarDate object
         const lunarDate = lunarObj.lunarDate;
-
         const lunarYear = lunarDate.year;
         const lunarMonth = lunarDate.month;
         const lunarDay = lunarDate.day;
 
-        // Year Branch (Chi Năm): 1=Tý..12=Hợi
-        // Formula: (year - 4) % 12 + 1.
-        // 1984 (Giáp Tý) -> (1984-4)%12 = 0 -> +1 = 1 (Tý). Correct.
         const yearBranch = ((lunarYear - 4) % 12) + 1;
-
-        // Hour Branch (Chi Giờ): 23-01=Tý(1).
-        // 23:00 - 00:59 => Tý (1)
-        // 01:00 - 02:59 => Sửu (2)
-        // ...
-        // Formula: floor((hour + 1) / 2) % 12 + 1
-        // Test: 23 => (24/2)%12 + 1 = 0+1 = 1.
-        // Test: 0 => (1/2)%12 + 1 = 0+1 = 1.
-        // Test: 1 => (2/2)%12 + 1 = 1+1 = 2 (Sửu). Correct.
         const hourBranch = (Math.floor((hour + 1) / 2) % 12) + 1;
 
-        // Thượng quái: (Năm + Tháng + Ngày) % 8
         const upperSum = yearBranch + lunarMonth + lunarDay;
         let upperRemainder = upperSum % 8;
         if (upperRemainder === 0) upperRemainder = 8;
 
-        // Hạ quái: (Năm + Tháng + Ngày + Giờ) % 8
         const lowerSum = upperSum + hourBranch;
         let lowerRemainder = lowerSum % 8;
         if (lowerRemainder === 0) lowerRemainder = 8;
 
-        // Hào động: (Năm + Tháng + Ngày + Giờ) % 6
         const movingSum = lowerSum;
         let movingRemainder = movingSum % 6;
         if (movingRemainder === 0) movingRemainder = 6;
 
-        // Map Remainder to ID (0=Khôn, 1-7 match)
         const mapRemainderToId = (r) => (r === 8 ? 0 : r);
         const upperId = mapRemainderToId(upperRemainder);
         const lowerId = mapRemainderToId(lowerRemainder);
@@ -223,22 +176,10 @@ export default function DivinationForm({ onDivinate }) {
         const lowerTrigram = TRIGRAMS[lowerId];
 
         if (!upperTrigram || !lowerTrigram) {
-          console.error("Invalid Trigrams:", {
-            upperId,
-            lowerId,
-            TRIGRAMS,
-            upperSum,
-            upperRemainder,
-            lowerSum,
-            lowerRemainder,
-          });
-          throw new Error(
-            "Không thể tính được quẻ. Vui lòng kiểm tra lại ngày giờ."
-          );
+          throw new Error("Không thể tính được quẻ. Vui lòng kiểm tra lại ngày giờ.");
         }
 
         const lines = [...lowerTrigram.lines, ...upperTrigram.lines];
-
         const selectedDate = new Date(year, month - 1, day, hour, minute);
 
         await onDivinate(
@@ -251,11 +192,9 @@ export default function DivinationForm({ onDivinate }) {
           values.dungThan
         );
       } else {
-        // Manual mode: collect six lines and moving line
         const lines = [];
         for (let i = 1; i <= 6; i++) {
-          const key = `line${i}`;
-          const val = values[key];
+          const val = values[`line${i}`];
           if (val !== 0 && val !== 1) {
             message.error("Vui lòng chọn đủ Âm/Dương cho 6 hào");
             setLoading(false);
@@ -264,11 +203,9 @@ export default function DivinationForm({ onDivinate }) {
           lines.push(val);
         }
 
-        // Determine moving line from switches
         const movingLines = [];
         for (let i = 1; i <= 6; i++) {
-          const movingKey = `moving${i}`;
-          if (values[movingKey]) {
+          if (values[`moving${i}`]) {
             movingLines.push(i);
           }
         }
@@ -356,14 +293,10 @@ export default function DivinationForm({ onDivinate }) {
               label={
                 <span className="font-semibold text-gray-700 flex items-center gap-2">
                   Dụng Thần:
-                  <Tooltip
-                    title={renderDungThanTooltip()}
-                    placement="right"
-                    overlayClassName="tooltip-custom"
-                    overlayStyle={{ maxWidth: "500px" }}
-                  >
-                    <InfoCircleOutlined className="text-blue-500 cursor-help" />
-                  </Tooltip>
+                  <InfoCircleOutlined
+                    className="text-blue-500 cursor-help"
+                    onClick={showDungThanModal}
+                  />
                 </span>
               }
               className="min-w-[180px]"
@@ -375,37 +308,11 @@ export default function DivinationForm({ onDivinate }) {
                 className="w-full"
                 onChange={handleDungThanChange}
               >
-                {dungThanOptions.map((option) => {
-                  const info = getDungThanInfo(option.value);
-                  return (
-                    <Option
-                      key={option.value}
-                      value={option.value}
-                      title={
-                        info
-                          ? `${info.label}: ${info.description}`
-                          : option.label
-                      }
-                    >
-                      <Tooltip
-                        title={
-                          info ? (
-                            <div className="max-w-md">
-                              <div className="font-bold mb-2">{info.label}</div>
-                              {/* ... info details ... */}
-                            </div>
-                          ) : (
-                            option.label
-                          )
-                        }
-                        placement="right"
-                        overlayStyle={{ maxWidth: "500px" }}
-                      >
-                        <span>{option.label}</span>
-                      </Tooltip>
-                    </Option>
-                  );
-                })}
+                {dungThanOptions.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item>
@@ -488,14 +395,10 @@ export default function DivinationForm({ onDivinate }) {
                 label={
                   <span className="font-semibold text-gray-700 flex items-center gap-2">
                     Dụng Thần:
-                    <Tooltip
-                      title={renderDungThanTooltip()}
-                      placement="right"
-                      overlayClassName="tooltip-custom"
-                      overlayStyle={{ maxWidth: "500px" }}
-                    >
-                      <InfoCircleOutlined className="text-blue-500 cursor-help" />
-                    </Tooltip>
+                    <InfoCircleOutlined
+                      className="text-blue-500 cursor-help"
+                      onClick={showDungThanModal}
+                    />
                   </span>
                 }
                 className="min-w-[180px]"
@@ -615,14 +518,10 @@ export default function DivinationForm({ onDivinate }) {
               label={
                 <span className="font-semibold text-gray-700 flex items-center gap-2">
                   Dụng Thần:
-                  <Tooltip
-                    title={renderDungThanTooltip()}
-                    placement="right"
-                    overlayClassName="tooltip-custom"
-                    overlayStyle={{ maxWidth: "500px" }}
-                  >
-                    <InfoCircleOutlined className="text-blue-500 cursor-help" />
-                  </Tooltip>
+                  <InfoCircleOutlined
+                    className="text-blue-500 cursor-help"
+                    onClick={showDungThanModal}
+                  />
                 </span>
               }
               className="min-w-[180px]"
@@ -634,22 +533,11 @@ export default function DivinationForm({ onDivinate }) {
                 className="w-full"
                 onChange={handleDungThanChange}
               >
-                {dungThanOptions.map((option) => {
-                  const info = getDungThanInfo(option.value);
-                  return (
-                    <Option
-                      key={option.value}
-                      value={option.value}
-                      title={
-                        info
-                          ? `${info.label}: ${info.description}`
-                          : option.label
-                      }
-                    >
-                      <span>{option.label}</span>
-                    </Option>
-                  );
-                })}
+                {dungThanOptions.map((option) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
               </Select>
             </Form.Item>
 
@@ -667,6 +555,7 @@ export default function DivinationForm({ onDivinate }) {
           </>
         )}
       </Form>
+      {renderDungThanModal()}
     </div>
   );
 }
