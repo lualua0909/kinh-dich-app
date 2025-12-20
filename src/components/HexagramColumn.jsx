@@ -3,7 +3,10 @@ import { Card, Tooltip, Modal } from "antd";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import Line from "./Line";
-import { getHexagramMeaningCached, useHexagramMeanings } from "../hooks/useHexagramMeanings";
+import {
+  getHexagramMeaningCached,
+  useHexagramMeanings,
+} from "../hooks/useHexagramMeanings";
 import { getHexagramOmen } from "../data/hexagramOmens";
 import { useHexagramLines } from "../hooks/useHexagramLines";
 
@@ -20,7 +23,7 @@ export default function HexagramColumn({
   title,
   movingLine = null,
   dungThan = null,
-  scale = 1
+  scale = 1,
 }) {
   if (!hexagram) {
     return (
@@ -70,10 +73,7 @@ export default function HexagramColumn({
       >
         <div className="text-center space-y-3">
           {/* Hexagram Name */}
-          <Tooltip
-            title="Click để xem chi tiết"
-            placement="top"
-          >
+          <Tooltip title="Click để xem chi tiết" placement="top">
             <motion.div
               className="text-2xl font-bold text-gray-900 mb-4 cursor-pointer hover:text-blue-600 transition-colors"
               initial={{ opacity: 0 }}
@@ -81,7 +81,7 @@ export default function HexagramColumn({
               transition={{ delay: 0.2 }}
               onClick={openModal}
             >
-              {hexagram.vietnameseName}
+              {hexagram.name}
             </motion.div>
           </Tooltip>
 
@@ -128,12 +128,10 @@ export default function HexagramColumn({
         title={
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-800 m-0">
-              {hexagram.vietnameseName}
+              {hexagram.name}
             </h2>
             {omen && (
-              <p className="text-sm text-amber-700 mt-2 italic">
-                Điềm: {omen}
-              </p>
+              <p className="text-sm text-amber-700 mt-2 italic">Điềm: {omen}</p>
             )}
           </div>
         }

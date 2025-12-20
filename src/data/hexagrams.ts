@@ -8,7 +8,6 @@ import { TRIGRAMS } from "./trigrams";
 export interface Hexagram {
   id: number;
   name: string;
-  vietnameseName: string;
   upperTrigram: number;
   lowerTrigram: number;
   lines: [number, number, number, number, number, number]; // bottom to top (hào 1 to hào 6)
@@ -97,7 +96,7 @@ export const HEXAGRAM_NAME_BY_KEY: Record<string, string> = {
   "0-4": "ĐỊA LÔI PHỤC",
   "0-5": "ĐỊA PHONG THĂNG",
   "0-6": "ĐỊA THỦY SƯ",
-  "0-7": "ĐỊA SƠN KHIÊM"
+  "0-7": "ĐỊA SƠN KHIÊM",
 };
 
 // Reverse lookup: từ tên quẻ → key "upper-lower"
@@ -133,7 +132,7 @@ function generateHexagrams(): Record<string, Hexagram> {
         lowerTrigram.lines[2], // hào 3
         upperTrigram.lines[0], // hào 4
         upperTrigram.lines[1], // hào 5
-        upperTrigram.lines[2] // hào 6
+        upperTrigram.lines[2], // hào 6
       ];
 
       // Determine family (Họ quẻ) based on upper trigram
@@ -145,21 +144,20 @@ function generateHexagrams(): Record<string, Hexagram> {
         5: "HỌ TỐN",
         6: "HỌ KHẢM",
         7: "HỌ CẤN",
-        0: "HỌ KHÔN"
+        0: "HỌ KHÔN",
       };
 
       // Generate name: if not in predefined list, use trigram combination
-      const defaultName = `${upperTrigram.vietnameseName} ${lowerTrigram.vietnameseName}`;
+      const defaultName = `${upperTrigram.name} ${lowerTrigram.name}`;
       const hexagramName = HEXAGRAM_NAME_BY_KEY[key] || defaultName;
 
       hexagrams[key] = {
         id: id++,
         name: hexagramName,
-        vietnameseName: hexagramName,
         upperTrigram: upperKey,
         lowerTrigram: lowerKey,
         lines,
-        family: familyMap[upperKey] || "HỌ CÀN"
+        family: familyMap[upperKey] || "HỌ CÀN",
       };
     }
   }

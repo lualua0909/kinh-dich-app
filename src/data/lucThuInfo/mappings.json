@@ -32,17 +32,17 @@
         "QQ": "Quan Quỷ"
     },
     "LUC_THAN_SINH_MAP": {
-        "Phụ Mẫu": "Huynh Đệ",
-        "Huynh Đệ": "Tử Tôn",
-        "Tử Tôn": "Thê Tài",
-        "Thê Tài": "Quan Quỷ",
-        "Quan Quỷ": "Phụ Mẫu"
+        "PM": "HD",
+        "HD": "TT",
+        "TT": "TTi",
+        "TTi": "QQ",
+        "QQ": "PM"
     },
     "LUC_THAN_KHAC_MAP": {
-        "Phụ Mẫu": "Tử Tôn",
-        "Tử Tôn": "Quan Quỷ",
-        "Quan Quỷ": "Huynh Đệ",
-        "Huynh Đệ": "Thê Tài",
-        "Thê Tài": "Phụ Mẫu"
+        "PM": "TT",
+        "TT": "QQ",
+        "QQ": "HD",
+        "HD": "TTi",
+        "TTi": "PM"
     }
 }

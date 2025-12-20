@@ -839,6 +839,8 @@ export default function InterpretationTables({
     const info = lucTuInfo[code];
     const lucThan = record?.lucThan;
     const lucThanName = getLucThanName(lucThan);
+    // Chuyển đổi tên đầy đủ sang code rút gọn để truy cập JSON
+    const lucThanCode = LUC_THAN_CODES[lucThanName] || lucThan || "";
 
     const clsThan = getClassification(lucTu, lucThan);
     const clsDiaChi = getClassificationDiaChi(lucTu, record?.canChi);
@@ -847,18 +849,20 @@ export default function InterpretationTables({
     if (record?.canChi) {
       const parts = record.canChi.split(" ");
       const diaChi = parts[parts.length - 1];
+      // Chuyển đổi địa chi từ tên đầy đủ sang code rút gọn để truy cập JSON
+      const diaChiCode = diaChiCodeMap[diaChi] || diaChi || "";
       if (lucTuName === "Thanh Long") {
-        diaChiExtraText = thanhLongDiaChiInfo[diaChi] || null;
+        diaChiExtraText = thanhLongDiaChiInfo[diaChiCode] || null;
       } else if (lucTuName === "Bạch Hổ") {
-        diaChiExtraText = bachHoDiaChiInfo[diaChi] || null;
+        diaChiExtraText = bachHoDiaChiInfo[diaChiCode] || null;
       } else if (lucTuName === "Câu Trần") {
-        diaChiExtraText = cauTranDiaChiInfo[diaChi] || null;
+        diaChiExtraText = cauTranDiaChiInfo[diaChiCode] || null;
       } else if (lucTuName === "Chu Tước") {
-        diaChiExtraText = chuTuocDiaChiInfo[diaChi] || null;
+        diaChiExtraText = chuTuocDiaChiInfo[diaChiCode] || null;
       } else if (lucTuName === "Đằng Xà") {
-        diaChiExtraText = dangXaDiaChiInfo[diaChi] || null;
+        diaChiExtraText = dangXaDiaChiInfo[diaChiCode] || null;
       } else if (lucTuName === "Huyền Vũ") {
-        diaChiExtraText = huyenVuDiaChiInfo[diaChi] || null;
+        diaChiExtraText = huyenVuDiaChiInfo[diaChiCode] || null;
       }
     }
 
@@ -879,57 +883,57 @@ export default function InterpretationTables({
                 <div className="flex items-center justify-between gap-2">
                   <span>{clsThan.label}</span>
                 </div>
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Thanh Long" &&
-                  thanhLongLucThanInfo[lucThanName] && (
+                  thanhLongLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {thanhLongLucThanInfo[lucThanName]}
+                        {thanhLongLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Bạch Hổ" &&
-                  bachHoLucThanInfo[lucThanName] && (
+                  bachHoLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {bachHoLucThanInfo[lucThanName]}
+                        {bachHoLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Câu Trần" &&
-                  cauTranLucThanInfo[lucThanName] && (
+                  cauTranLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {cauTranLucThanInfo[lucThanName]}
+                        {cauTranLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Chu Tước" &&
-                  chuTuocLucThanInfo[lucThanName] && (
+                  chuTuocLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {chuTuocLucThanInfo[lucThanName]}
+                        {chuTuocLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Đằng Xà" &&
-                  dangXaLucThanInfo[lucThanName] && (
+                  dangXaLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {dangXaLucThanInfo[lucThanName]}
+                        {dangXaLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
-                {lucThanName &&
+                {lucThanCode &&
                   lucTuName === "Huyền Vũ" &&
-                  huyenVuLucThanInfo[lucThanName] && (
+                  huyenVuLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
-                        {huyenVuLucThanInfo[lucThanName]}
+                        {huyenVuLucThanInfo[lucThanCode]}
                       </ReactMarkdown>
                     </div>
                   )}
@@ -1018,7 +1022,7 @@ export default function InterpretationTables({
                 const key = `${originalHexagram.upperTrigram}-${originalHexagram.lowerTrigram}`;
                 openHexagramModal(
                   key,
-                  originalHexagram.vietnameseName,
+                  originalHexagram.name,
                   getHexagramOmen(key)
                 );
               }}
@@ -1057,7 +1061,7 @@ export default function InterpretationTables({
                   const key = `${changedHexagram.upperTrigram}-${changedHexagram.lowerTrigram}`;
                   openHexagramModal(
                     key,
-                    changedHexagram.vietnameseName,
+                    changedHexagram.name,
                     getHexagramOmen(key)
                   );
                 }
@@ -2015,21 +2019,6 @@ export default function InterpretationTables({
                 className="bg-parchment-50 border-2 border-parchment-300"
               >
                 <div className="space-y-6">
-                  {/* Công thức giải quẻ */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
-                      Công Thức Giải Quẻ
-                    </h3>
-                    <div className="bg-white p-4 rounded-lg border border-parchment-200">
-                      <div className="prose prose-sm max-w-none text-gray-700">
-                        {/* Nội dung công thức sẽ được thêm vào đây */}
-                        <p className="text-gray-500 italic">
-                          Công thức giải quẻ sẽ được hiển thị tại đây...
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
                   {/* Các bước giải quẻ */}
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
@@ -3533,6 +3522,252 @@ export default function InterpretationTables({
                           },
                           {
                             key: "3",
+                            label: "Luận Chồng Đã Từng Kết Hôn",
+                            children: (
+                              <div className="bg-white p-4 rounded-lg border border-amber-200">
+                                {(() => {
+                                  // Bước 1: Tìm hào Quan Quỷ trong quẻ chính
+                                  const quanQuyHao = lineData1.find(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) ===
+                                      "Quan Quỷ"
+                                  );
+
+                                  if (!quanQuyHao) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Quan Quỷ trong quẻ
+                                        chính
+                                      </p>
+                                    );
+                                  }
+
+                                  // Xác định quái của hào Quan Quỷ
+                                  const quanQuyTrigram =
+                                    quanQuyHao.hao <= 3 ? "lower" : "upper";
+
+                                  // Tìm các hào Phụ Mẫu trong quẻ chính
+                                  const phuMauHaos = lineData1.filter(
+                                    (line) =>
+                                      getLucThanName(line.lucThan) === "Phụ Mẫu"
+                                  );
+
+                                  if (phuMauHaos.length === 0) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Phụ Mẫu trong quẻ
+                                        chính
+                                      </p>
+                                    );
+                                  }
+
+                                  // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Quan Quỷ không
+                                  const phuMauCungQuai = phuMauHaos.find(
+                                    (line) => {
+                                      const phuMauTrigram =
+                                        line.hao <= 3 ? "lower" : "upper";
+                                      return phuMauTrigram === quanQuyTrigram;
+                                    }
+                                  );
+
+                                  if (!phuMauCungQuai) {
+                                    return (
+                                      <div className="space-y-2">
+                                        <p className="text-gray-500 italic">
+                                          Không tìm thấy hào Phụ Mẫu cùng quái
+                                          với hào Quan Quỷ
+                                        </p>
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                          <p className="font-semibold mb-2">
+                                            Bước 1: Kiểm tra hào Quan Quỷ và Phụ
+                                            Mẫu cùng quái
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Hào Quan Quỷ: Hào {quanQuyHao.hao}{" "}
+                                            ({quanQuyHao.canChi}) - Thuộc{" "}
+                                            {quanQuyTrigram === "lower"
+                                              ? "Hạ quái"
+                                              : "Thượng quái"}
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Các hào Phụ Mẫu tìm thấy:{" "}
+                                            {phuMauHaos
+                                              .map(
+                                                (pm) =>
+                                                  `Hào ${pm.hao} (${pm.canChi})`
+                                              )
+                                              .join(", ")}
+                                          </p>
+                                          <p className="text-sm text-red-600 mt-2">
+                                            → Không có hào Phụ Mẫu nào cùng quái
+                                            với hào Quan Quỷ
+                                          </p>
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+
+                                  // Bước 2: Tìm hào tương ứng trong quẻ biến
+                                  const phuMauIndex = lineData1.findIndex(
+                                    (line) => line.hao === phuMauCungQuai.hao
+                                  );
+                                  const phuMauBienHao =
+                                    phuMauIndex >= 0 &&
+                                    phuMauIndex < lineData2.length
+                                      ? lineData2[phuMauIndex]
+                                      : null;
+
+                                  if (!phuMauBienHao) {
+                                    return (
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào tương ứng trong quẻ
+                                        biến
+                                      </p>
+                                    );
+                                  }
+
+                                  // Kiểm tra Lục Thú có phải Câu Trần không
+                                  const lucTuName = getLucTuName(
+                                    phuMauBienHao.lucTu
+                                  );
+                                  const laCauTran = lucTuName === "Câu Trần";
+
+                                  // Kiểm tra tuanKhong = "K"
+                                  const coTuanKhong =
+                                    phuMauBienHao.tuanKhong === "K";
+
+                                  // Kết luận
+                                  const coKhaNangTungKetHon =
+                                    laCauTran && coTuanKhong;
+
+                                  return (
+                                    <div className="space-y-3">
+                                      <div>
+                                        <p className="font-semibold mb-2">
+                                          Hào Quan Quỷ: Hào {quanQuyHao.hao} (
+                                          {quanQuyHao.canChi}) - Thuộc{" "}
+                                          {quanQuyTrigram === "lower"
+                                            ? "Hạ quái"
+                                            : "Thượng quái"}
+                                        </p>
+                                      </div>
+
+                                      <div className="space-y-2">
+                                        <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                          <p className="font-semibold mb-2">
+                                            Bước 1: Kiểm tra hào Quan Quỷ và Phụ
+                                            Mẫu cùng quái
+                                          </p>
+                                          <p className="text-green-700 mb-1">
+                                            ✓ Tìm thấy hào Phụ Mẫu cùng quái với
+                                            hào Quan Quỷ
+                                          </p>
+                                          <p className="text-sm text-gray-600">
+                                            • Hào Phụ Mẫu: Hào{" "}
+                                            {phuMauCungQuai.hao} (
+                                            {phuMauCungQuai.canChi}) - Thuộc{" "}
+                                            {phuMauCungQuai.hao <= 3
+                                              ? "Hạ quái"
+                                              : "Thượng quái"}
+                                          </p>
+                                        </div>
+
+                                        <div
+                                          className={`p-3 rounded border-l-4 ${
+                                            laCauTran && coTuanKhong
+                                              ? "bg-green-50 border-green-500"
+                                              : "bg-gray-50 border-gray-300"
+                                          }`}
+                                        >
+                                          <p className="font-semibold mb-2">
+                                            Bước 2: Kiểm tra hào Phụ Mẫu trong
+                                            quẻ biến
+                                          </p>
+                                          <p className="text-sm text-gray-600 mb-1">
+                                            Hào Phụ Mẫu trong quẻ biến: Hào{" "}
+                                            {phuMauBienHao.hao} (
+                                            {phuMauBienHao.canChi})
+                                          </p>
+                                          <div className="space-y-1 mt-2">
+                                            <p
+                                              className={
+                                                laCauTran
+                                                  ? "text-green-700"
+                                                  : "text-red-700"
+                                              }
+                                            >
+                                              {laCauTran ? "✓" : "✗"} Lục Thú:{" "}
+                                              {lucTuName}
+                                              {laCauTran
+                                                ? " (Câu Trần - đại diện cho phía trước, thời gian trước đây)"
+                                                : ""}
+                                            </p>
+                                            <p
+                                              className={
+                                                coTuanKhong
+                                                  ? "text-green-700"
+                                                  : "text-red-700"
+                                              }
+                                            >
+                                              {coTuanKhong ? "✓" : "✗"} Tuần
+                                              không:{" "}
+                                              {phuMauBienHao.tuanKhong ||
+                                                "Không có"}
+                                              {coTuanKhong ? ' (= "K")' : ""}
+                                            </p>
+                                          </div>
+                                        </div>
+
+                                        {coKhaNangTungKetHon && (
+                                          <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
+                                            <p className="font-bold text-lg mb-2">
+                                              Kết luận:
+                                            </p>
+                                            <p className="text-blue-800 font-bold text-lg">
+                                              ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
+                                              TRƯỚC ĐÂY
+                                            </p>
+                                            <p className="text-sm text-blue-700 mt-2">
+                                              Hào Phụ Mẫu cùng quái với hào Quan
+                                              Quỷ có Lục Thú là Câu Trần (đại
+                                              diện cho phía trước, thời gian
+                                              trước đây) và có Tuần không = "K",
+                                              cho thấy có khả năng chồng đã từng
+                                              kết hôn trước đây.
+                                            </p>
+                                          </div>
+                                        )}
+
+                                        {!coKhaNangTungKetHon && (
+                                          <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                            <p className="font-semibold mb-2">
+                                              Kết luận:
+                                            </p>
+                                            <p className="text-gray-700">
+                                              Không đủ điều kiện để kết luận đã
+                                              từng kết hôn trước đây.
+                                            </p>
+                                            {!laCauTran && (
+                                              <p className="text-sm text-red-600 mt-1">
+                                                • Lục Thú không phải Câu Trần
+                                              </p>
+                                            )}
+                                            {!coTuanKhong && (
+                                              <p className="text-sm text-red-600 mt-1">
+                                                • Không có Tuần không = "K"
+                                              </p>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })()}
+                              </div>
+                            ),
+                          },
+                          {
+                            key: "4",
                             label: "Luận Cây Trước Nhà",
                             children: (
                               <div className="bg-white p-4 rounded-lg border border-amber-200">

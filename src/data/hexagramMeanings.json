@@ -1,67 +1,258 @@
 {
-  "1-1": "CHÍNH YẾU. Cứng mạnh, khô, lớn, khỏe mạnh, đức không nghỉ. Nguyên động lực, mạnh mẽ, dẻo dai, bền bỉ, chính yếu, cao lớn, liền lạc, tròn đày, ngay đúng, nghiêm chỉnh, khô cứng, trong sáng, hiện rõ, hoàn thành, như nhiên.",
-  "2-2": "Duyệt dã. VUI MỪNG. Vui mừng, hân hoan, vui vẻ, hứng khởi, phấn khởi, hân hạnh.",
-  "3-3": "Ly dã. SÁNG SỦA. Sáng sủa, rõ ràng, minh bạch, trong sáng, sáng tỏ, rực rỡ.",
-  "4-4": "Động dã. CHẤN ĐỘNG. Chấn động, rung động, lay động, dao động, chuyển động, động đất.",
-  "5-5": "Nhập dã. VÀO TRONG. Vào trong, thâm nhập, xâm nhập, đi vào, tiến vào, nhập cuộc.",
-  "6-6": "Hiểm dã. NGUY HIỂM. Nguy hiểm, hiểm trở, khó khăn, nguy nan, hiểm họa, rủi ro.",
-  "7-7": "Chỉ dã. DỪNG LẠI. Dừng lại, ngừng lại, đình chỉ, tạm dừng, nghỉ ngơi, yên tĩnh.",
-  "0-0": "Thuận dã. NHU THUẬN. Thuận tòng, mềm dẻo, theo đường mà được lợi, hòa theo lẽ, chịu lấy. Nhu tĩnh, trống không, đứt đoạn, phụ trợ, mềm yếu, tối thấp, lạnh nhạt, chưa xong, tiềm ẩn, đi theo, hứng chịu, bình thường, nhỏ nhặt, ướt át, rời rã.",
-  "1-2": "Lễ dã. LỘ HÀNH. Nghi lễ, có chừng mực, khuôn phép, dẫm lên, không cho đi sai, có ý chận đường sái quá, hệ thống, pháp lý. Di chuyển, đường đi, hệ thống, quy củ, khuôn phép, chừng mực, lễ nghi, pháp lý, chặn đường, dẫm đạp.",
-  "1-3": "Thân dã. THÂN THIỆN. Trên dưới cùng lòng, cùng người ưa thích, cùng một bọn người. Giống nhau, gần nhau, cùng nhau, thống nhất, đồng thời, thành một, quen thuộc, quen hơi.",
-  "1-4": "Thiên tai dã. XÂM LẤN. Tai vạ, lỗi bậy bạ, không lề lối, không quy củ, càn đại, chống đối, khứng chịu. Tai hoạ từ trên, từ ngoài đến, xâm lấn, xâm lăng, càn đại, không quy củ, hứng chịu, đi ẩu, càn bậy, bậy bạ, không mong được.",
-  "1-5": "Ngộ dã. TƯƠNG NGỘ. Gặp gỡ, cấu kết, liên kết, kết hợp, móc nối, mềm gặp cứng. Gặp gỡ thình lình, ít khi...",
-  "1-6": "Tranh dã. TRANH CÃI. Tranh cãi, kiện tụng, tranh luận, cãi nhau, đối đầu, đối kháng, đối lập, đối nghịch.",
-  "1-7": "Thoái dã. CÁO THOÁI. Lui, ẩn, phía sau, từ chối, mất dấu, vắng bóng, nhường nhịn, nhốt vào trong, giữ gìn.",
-  "1-0": "Tắc dã. BẾ TẮC. Bế tắc, không thông, đóng kín, ngăn chặn, không lưu thông, tắc nghẽn.",
-  "2-1": "Quyết dã. QUYẾT ĐỊNH. Quyết định, quyết đoán, cắt đứt, phân ly, tách rời, quyết liệt.",
-  "2-3": "**Cách dã.** CẢI CÁCH. Cải cách, thay đổi, đổi mới, cách mạng, biến đổi, thay thế.",
-  "2-4": "Tùy dã. TÙY THEO. Tùy theo, theo sau, phụ thuộc, tùy thuộc, đi theo, hưởng ứng.",
-  "2-5": "Quá dã. QUÁ ĐỘ. Quá độ, vượt quá, quá mức, quá nhiều, quá lớn, vượt ngưỡng.",
-  "2-6": "Khốn dã. KHỐN KHỔ. Khốn khổ, khó khăn, bế tắc, khốn đốn, cùng quẫn, khó xử.",
-  "2-7": "Cảm dã. CẢM ỨNG. Cảm ứng, cảm động, cảm xúc, tương cảm, hấp dẫn, thu hút.",
-  "2-0": "Tụy dã. TỤ HỌP. Tụ họp, tập hợp, hội tụ, quy tụ, tụ lại, hội họp.",
-  "3-1": "Hữu dã. CÓ ĐƯỢC. Có được, sở hữu, giàu có, đầy đủ, phong phú, dư dả.",
-  "3-2": "Ly dã. LY TÁN. Ly tán, chia lìa, tách rời, phân ly, xa cách, không hợp.",
-  "3-4": "Hạp dã. HỢP LẠI. Hợp lại, kết hợp, liên kết, gắn bó, hòa hợp, thống nhất.",
-  "3-5": "Đỉnh dã. ĐỈNH CAO. Đỉnh cao, cao nhất, tột đỉnh, đỉnh điểm, cao vời.",
-  "3-6": "Tế dã. CHƯA XONG. Chưa xong, chưa hoàn thành, dang dở, chưa trọn vẹn, chưa đạt.",
-  "3-7": "Lữ dã. ĐI XA. Đi xa, du lịch, lữ hành, xa nhà, tha hương, lưu lạc.",
-  "3-0": "Tấn dã. TIẾN LÊN. Tiến lên, thăng tiến, phát triển, tiến bộ, thăng cấp, thăng hạng.",
-  "4-1": "Tráng dã. MẠNH MẼ. Mạnh mẽ, cường tráng, hùng mạnh, mạnh dạn, dũng cảm.",
-  "4-2": "Quy dã. VỀ NHÀ. Về nhà, quy tụ, trở về, hồi hương, quy hồi.",
-  "4-3": "Phong dã. PHONG PHÚ. Phong phú, đầy đủ, dồi dào, sung túc, giàu có, thịnh vượng.",
-  "4-5": "Hằng dã. BỀN LÂU. Bền lâu, lâu dài, thường xuyên, liên tục, bền vững, ổn định.",
-  "4-6": "Giải dã. GIẢI QUYẾT. Giải quyết, giải tỏa, tháo gỡ, cởi mở, giải phóng, giải thoát.",
-  "4-7": "Quá dã. QUÁ NHỎ. Quá nhỏ, vượt quá một chút, quá mức nhẹ, vượt ngưỡng nhỏ.",
-  "4-0": "Dự dã. VUI VẺ. Vui vẻ, hân hoan, vui mừng, hứng khởi, phấn khởi, hân hạnh.",
-  "5-1": "Súc dã. TÍCH TRỮ. Tích trữ, dự trữ, cất giữ, thu thập, gom góp, tích lũy.",
-  "5-2": "Phu dã. TRUNG THỰC. Trung thực, chân thành, thành thật, trung tín, đáng tin.",
-  "5-3": "Gia dã. GIA ĐÌNH. Gia đình, nhà cửa, nội bộ, trong nhà, thân thuộc, ruột thịt.",
-  "5-4": "Ích dã. CÓ LỢI. Có lợi, ích lợi, bổ ích, hữu ích, có ích, lợi ích.",
-  "5-6": "Hoán dã. TAN RÃ. Tan rã, phân tán, rời rạc, tản mạn, phân ly, ly tán.",
-  "5-7": "Tiệm dã. DẦN DẦN. Dần dần, từ từ, tiệm tiến, tuần tự, lần lượt, từng bước.",
-  "5-0": "Quan dã. QUAN SÁT. Quan sát, xem xét, nhìn ngắm, chiêm ngưỡng, tham quan, xem.",
-  "6-1": "Nhu dã. CHỜ ĐỢI. Chờ đợi, đợi chờ, kiên nhẫn, nhẫn nại, chờ thời cơ.",
-  "6-2": "Tiết dã. TIẾT CHẾ. Tiết chế, kiềm chế, hạn chế, giới hạn, điều độ, có chừng mực.",
-  "6-3": "Tế dã. HOÀN THÀNH. Hoàn thành, xong xuôi, đạt được, thành công, viên mãn.",
-  "6-4": "Truân dã. KHÓ KHĂN. Khó khăn, gian nan, vất vả, trắc trở, khốn khó, bế tắc.",
-  "6-5": "Tỉnh dã. GIẾNG NƯỚC. Giếng nước, nguồn nước, cố định, ổn định, không đổi.",
-  "6-7": "Kiển dã. GIAN NAN. Gian nan, khó khăn, trắc trở, vất vả, khốn khó, bế tắc.",
-  "6-0": "Tụy dã. TỤ HỌP. Tụ họp, tập hợp, hội tụ, quy tụ, tụ lại, hội họp.",
-  "7-1": "Súc dã. TÍCH LŨY. Tích lũy, dự trữ, cất giữ, thu thập, gom góp, tích tụ.",
-  "7-2": "Tổn dã. TỔN HẠI. Tổn hại, thiệt hại, mất mát, hao tổn, giảm sút, suy giảm.",
-  "7-3": "Bí dã. TRANG SỨC. Trang sức, làm đẹp, tô điểm, trang hoàng, sửa sang, chỉnh trang.",
-  "7-4": "Di dã. DỊU DÀNG. Dịu dàng, nhẹ nhàng, êm ái, mềm mại, thanh nhã, tao nhã.",
-  "7-5": "Cổ dã. CŨ KỸ. Cũ kỹ, lỗi thời, cổ xưa, xưa cũ, lạc hậu, không mới.",
-  "7-6": "Mông dã. MƠ HỒ. Mơ hồ, không rõ, mờ mịt, tối tăm, không sáng, mù mịt.",
-  "7-0": "Khiêm dã. KHIÊM TỐN. Khiêm tốn, nhún nhường, khiêm từ, cáo thoái, từ giã, lui vào trong.",
-  "0-1": "Thái dã. THỊNH VƯỢNG. Thịnh vượng, phồn thịnh, hưng thịnh, phát đạt, thịnh đạt.",
-  "0-2": "Lâm dã. ĐẾN GẦN. Đến gần, tiếp cận, gần kề, sắp đến, sắp tới, gần sát.",
-  "0-3": "Di dã. TỐI TĂM. Tối tăm, mờ mịt, không sáng, u ám, tăm tối, mù mịt.",
-  "0-4": "Phục dã. TRỞ LẠI. Trở lại, quay về, phục hồi, khôi phục, trở về, hồi phục.",
-  "0-5": "Thăng dã. THĂNG TIẾN. Thăng tiến, thăng cấp, thăng hạng, tiến lên, phát triển.",
-  "0-6": "Sư dã. QUÂN ĐỘI. Quân đội, binh lính, quân sự, chiến tranh, đấu tranh, tranh đấu.",
-  "0-7": "Khiêm dã. KHIÊM TỐN. Khiêm tốn, nhún nhường, khiêm từ, cáo thoái, từ giã, lui vào trong, giữ gìn, nhốt vào trong."
+  "1-1": {
+    "meaning": "CHÍNH YẾU. Cứng mạnh, khô, lớn, khỏe mạnh, đức không nghỉ. Nguyên động lực, mạnh mẽ, dẻo dai, bền bỉ, chính yếu, cao lớn, liền lạc, tròn đày, ngay đúng, nghiêm chỉnh, khô cứng, trong sáng, hiện rõ, hoàn thành, như nhiên.",
+    "omen": "Khốn Long đắc thủy"
+  },
+  "2-2": {
+    "meaning": "Duyệt dã. VUI MỪNG. Vui mừng, hân hoan, vui vẻ, hứng khởi, phấn khởi, hân hạnh.",
+    "omen": "Chẩn thuỷ hoà nê"
+  },
+  "3-3": {
+    "meaning": "Ly dã. SÁNG SỦA. Sáng sủa, rõ ràng, minh bạch, trong sáng, sáng tỏ, rực rỡ.",
+    "omen": "Thiên quan tứ phúc"
+  },
+  "4-4": {
+    "meaning": "Động dã. CHẤN ĐỘNG. Chấn động, rung động, lay động, dao động, chuyển động, động đất.",
+    "omen": "Thiên hạ dương danh"
+  },
+  "5-5": {
+    "meaning": "Nhập dã. VÀO TRONG. Vào trong, thâm nhập, xâm nhập, đi vào, tiến vào, nhập cuộc.",
+    "omen": "Cô chu đắc thủy"
+  },
+  "6-6": {
+    "meaning": "Hiểm dã. NGUY HIỂM. Nguy hiểm, hiểm trở, khó khăn, nguy nan, hiểm họa, rủi ro.",
+    "omen": "Khảm vi thủy"
+  },
+  "7-7": {
+    "meaning": "Chỉ dã. DỪNG LẠI. Dừng lại, ngừng lại, đình chỉ, tạm dừng, nghỉ ngơi, yên tĩnh.",
+    "omen": "Sơn trạch trùng điệp"
+  },
+  "0-0": {
+    "meaning": "Thuận dã. NHU THUẬN. Thuận tòng, mềm dẻo, theo đường mà được lợi, hòa theo lẽ, chịu lấy. Nhu tĩnh, trống không, đứt đoạn, phụ trợ, mềm yếu, tối thấp, lạnh nhạt, chưa xong, tiềm ẩn, đi theo, hứng chịu, bình thường, nhỏ nhặt, ướt át, rời rã.",
+    "omen": "Nga hồ đắc thục"
+  },
+  "1-2": {
+    "meaning": "Lễ dã. LỘ HÀNH. Nghi lễ, có chừng mực, khuôn phép, dẫm lên, không cho đi sai, có ý chận đường sái quá, hệ thống, pháp lý. Di chuyển, đường đi, hệ thống, quy củ, khuôn phép, chừng mực, lễ nghi, pháp lý, chặn đường, dẫm đạp.",
+    "omen": "Phượng minh Kỳ Sơn"
+  },
+  "1-3": {
+    "meaning": "Thân dã. THÂN THIỆN. Trên dưới cùng lòng, cùng người ưa thích, cùng một bọn người. Giống nhau, gần nhau, cùng nhau, thống nhất, đồng thời, thành một, quen thuộc, quen hơi.",
+    "omen": "Tiên nhân chỉ lộ"
+  },
+  "1-4": {
+    "meaning": "Thiên tai dã. XÂM LẤN. Tai vạ, lỗi bậy bạ, không lề lối, không quy củ, càn đại, chống đối, khứng chịu. Tai hoạ từ trên, từ ngoài đến, xâm lấn, xâm lăng, càn đại, không quy củ, hứng chịu, đi ẩu, càn bậy, bậy bạ, không mong được.",
+    "omen": "Điểu bị lũng lao"
+  },
+  "1-5": {
+    "meaning": "Ngộ dã. TƯƠNG NGỘ. Gặp gỡ, cấu kết, liên kết, kết hợp, móc nối, mềm gặp cứng. Gặp gỡ thình lình, ít khi...",
+    "omen": "Tha hưởng ngộ hữu"
+  },
+  "1-6": {
+    "meaning": "Tranh dã. TRANH CÃI. Tranh cãi, kiện tụng, tranh luận, cãi nhau, đối đầu, đối kháng, đối lập, đối nghịch.",
+    "omen": "Nhị nhân tranh lộ"
+  },
+  "1-7": {
+    "meaning": "Thoái dã. CÁO THOÁI. Lui, ẩn, phía sau, từ chối, mất dấu, vắng bóng, nhường nhịn, nhốt vào trong, giữ gìn.",
+    "omen": "Nùng vân tế nhật"
+  },
+  "1-0": {
+    "meaning": "Tắc dã. BẾ TẮC. Bế tắc, không thông, đóng kín, ngăn chặn, không lưu thông, tắc nghẽn.",
+    "omen": "Hổ lạc hàm khanh"
+  },
+  "2-1": {
+    "meaning": "Quyết dã. QUYẾT ĐỊNH. Quyết định, quyết đoán, cắt đứt, phân ly, tách rời, quyết liệt.",
+    "omen": "Du phong thoát vong"
+  },
+  "2-3": {
+    "meaning": "**Cách dã.** CẢI CÁCH. Cải cách, thay đổi, đổi mới, cách mạng, biến đổi, thay thế.",
+    "omen": "Kim bảng đề danh"
+  },
+  "2-4": {
+    "meaning": "Tùy dã. TÙY THEO. Tùy theo, theo sau, phụ thuộc, tùy thuộc, đi theo, hưởng ứng.",
+    "omen": "Bộ bộ đăng cao"
+  },
+  "2-5": {
+    "meaning": "Quá dã. QUÁ ĐỘ. Quá độ, vượt quá, quá mức, quá nhiều, quá lớn, vượt ngưỡng.",
+    "omen": "Dạ mộng kim ngân"
+  },
+  "2-6": {
+    "meaning": "Khốn dã. KHỐN KHỔ. Khốn khổ, khó khăn, bế tắc, khốn đốn, cùng quẫn, khó xử.",
+    "omen": "Loát hãn du thê"
+  },
+  "2-7": {
+    "meaning": "Cảm dã. CẢM ỨNG. Cảm ứng, cảm động, cảm xúc, tương cảm, hấp dẫn, thu hút.",
+    "omen": "Nanh Nha xuất thổ"
+  },
+  "2-0": {
+    "meaning": "Tụy dã. TỤ HỌP. Tụ họp, tập hợp, hội tụ, quy tụ, tụ lại, hội họp.",
+    "omen": "Ngự hóa vi Long"
+  },
+  "3-1": {
+    "meaning": "Hữu dã. CÓ ĐƯỢC. Có được, sở hữu, giàu có, đầy đủ, phong phú, dư dả.",
+    "omen": "Nhuyển mộc nộ tước"
+  },
+  "3-2": {
+    "meaning": "Ly dã. LY TÁN. Ly tán, chia lìa, tách rời, phân ly, xa cách, không hợp.",
+    "omen": "Thái công bất ngộ"
+  },
+  "3-4": {
+    "meaning": "Hạp dã. HỢP LẠI. Hợp lại, kết hợp, liên kết, gắn bó, hòa hợp, thống nhất.",
+    "omen": "Cô nhân ngộ thực"
+  },
+  "3-5": {
+    "meaning": "Đỉnh dã. ĐỈNH CAO. Đỉnh cao, cao nhất, tột đỉnh, đỉnh điểm, cao vời.",
+    "omen": "Ngư ông đắc lợi"
+  },
+  "3-6": {
+    "meaning": "Tế dã. CHƯA XONG. Chưa xong, chưa hoàn thành, dang dở, chưa trọn vẹn, chưa đạt.",
+    "omen": "Tiêu hồ ngật tế"
+  },
+  "3-7": {
+    "meaning": "Lữ dã. ĐI XA. Đi xa, du lịch, lữ hành, xa nhà, tha hương, lưu lạc.",
+    "omen": "Tức điều phán sào"
+  },
+  "3-0": {
+    "meaning": "Tấn dã. TIẾN LÊN. Tiến lên, thăng tiến, phát triển, tiến bộ, thăng cấp, thăng hạng.",
+    "omen": "Sử địa đắc kim"
+  },
+  "4-1": {
+    "meaning": "Tráng dã. MẠNH MẼ. Mạnh mẽ, cường tráng, hùng mạnh, mạnh dạn, dũng cảm.",
+    "omen": "Cộng sự đắc mộc"
+  },
+  "4-2": {
+    "meaning": "Quy dã. VỀ NHÀ. Về nhà, quy tụ, trở về, hồi hương, quy hồi.",
+    "omen": "Duyên Mộc câu ngư"
+  },
+  "4-3": {
+    "meaning": "Phong dã. PHONG PHÚ. Phong phú, đầy đủ, dồi dào, sung túc, giàu có, thịnh vượng.",
+    "omen": "Cổ kính trùng minh"
+  },
+  "4-5": {
+    "meaning": "Hằng dã. BỀN LÂU. Bền lâu, lâu dài, thường xuyên, liên tục, bền vững, ổn định.",
+    "omen": "Ngư lai chòng võng"
+  },
+  "4-6": {
+    "meaning": "Giải dã. GIẢI QUYẾT. Giải quyết, giải tỏa, tháo gỡ, cởi mở, giải phóng, giải thoát.",
+    "omen": "Ngũ quan thoát nạn"
+  },
+  "4-7": {
+    "meaning": "Quá dã. QUÁ NHỎ. Quá nhỏ, vượt quá một chút, quá mức nhẹ, vượt ngưỡng nhỏ.",
+    "omen": "Phi điểu di âm"
+  },
+  "4-0": {
+    "meaning": "Dự dã. VUI VẺ. Vui vẻ, hân hoan, vui mừng, hứng khởi, phấn khởi, hân hạnh.",
+    "omen": "Thanh Long đắc vị"
+  },
+  "5-1": {
+    "meaning": "Súc dã. TÍCH TRỮ. Tích trữ, dự trữ, cất giữ, thu thập, gom góp, tích lũy.",
+    "omen": "Mật vân bất vũ"
+  },
+  "5-2": {
+    "meaning": "Phu dã. TRUNG THỰC. Trung thực, chân thành, thành thật, trung tín, đáng tin.",
+    "omen": "Hành tẩu bạc bằng"
+  },
+  "5-3": {
+    "meaning": "Gia dã. GIA ĐÌNH. Gia đình, nhà cửa, nội bộ, trong nhà, thân thuộc, ruột thịt.",
+    "omen": "Quan Thủ lân chi"
+  },
+  "5-4": {
+    "meaning": "Ích dã. CÓ LỢI. Có lợi, ích lợi, bổ ích, hữu ích, có ích, lợi ích.",
+    "omen": "Khô mộc khai hoa"
+  },
+  "5-6": {
+    "meaning": "Hoán dã. TAN RÃ. Tan rã, phân tán, rời rạc, tản mạn, phân ly, ly tán.",
+    "omen": "Cách hà vọng kim"
+  },
+  "5-7": {
+    "meaning": "Tiệm dã. DẦN DẦN. Dần dần, từ từ, tiệm tiến, tuần tự, lần lượt, từng bước.",
+    "omen": "Hồng nhạn cao phi"
+  },
+  "5-0": {
+    "meaning": "Quan dã. QUAN SÁT. Quan sát, xem xét, nhìn ngắm, chiêm ngưỡng, tham quan, xem.",
+    "omen": "Hạn Bồng Phùng Hà"
+  },
+  "6-1": {
+    "meaning": "Nhu dã. CHỜ ĐỢI. Chờ đợi, đợi chờ, kiên nhẫn, nhẫn nại, chờ thời cơ.",
+    "omen": "Minh châu xuất thổ"
+  },
+  "6-2": {
+    "meaning": "Tiết dã. TIẾT CHẾ. Tiết chế, kiềm chế, hạn chế, giới hạn, điều độ, có chừng mực.",
+    "omen": "Hải đề lao nguyệt"
+  },
+  "6-3": {
+    "meaning": "Tế dã. HOÀN THÀNH. Hoàn thành, xong xuôi, đạt được, thành công, viên mãn.",
+    "omen": "Loạn tu vô đầu"
+  },
+  "6-4": {
+    "meaning": "Truân dã. KHÓ KHĂN. Khó khăn, gian nan, vất vả, trắc trở, khốn khó, bế tắc.",
+    "omen": "Loạn ti vô đầu"
+  },
+  "6-5": {
+    "meaning": "Tỉnh dã. GIẾNG NƯỚC. Giếng nước, nguồn nước, cố định, ổn định, không đổi.",
+    "omen": "Khê tĩnh sinh tuyền"
+  },
+  "6-7": {
+    "meaning": "Kiển dã. GIAN NAN. Gian nan, khó khăn, trắc trở, vất vả, khốn khó, bế tắc.",
+    "omen": "Vũ tuyết tài đổ"
+  },
+  "6-0": {
+    "meaning": "Tụy dã. TỤ HỌP. Tụ họp, tập hợp, hội tụ, quy tụ, tụ lại, hội họp.",
+    "omen": "Thuyền đắc thuận phong"
+  },
+  "7-1": {
+    "meaning": "Súc dã. TÍCH LŨY. Tích lũy, dự trữ, cất giữ, thu thập, gom góp, tích tụ.",
+    "omen": "Hỉ khí doanh môn"
+  },
+  "7-2": {
+    "meaning": "Tổn dã. TỔN HẠI. Tổn hại, thiệt hại, mất mát, hao tổn, giảm sút, suy giảm.",
+    "omen": "Tổn kỷ lợi nhân"
+  },
+  "7-3": {
+    "meaning": "Bí dã. TRANG SỨC. Trang sức, làm đẹp, tô điểm, trang hoàng, sửa sang, chỉnh trang.",
+    "omen": "Trần thế đắc khai"
+  },
+  "7-4": {
+    "meaning": "Di dã. DỊU DÀNG. Dịu dàng, nhẹ nhàng, êm ái, mềm mại, thanh nhã, tao nhã.",
+    "omen": "Vị thủy phong hiền"
+  },
+  "7-5": {
+    "meaning": "Cổ dã. CŨ KỸ. Cũ kỹ, lỗi thời, cổ xưa, xưa cũ, lạc hậu, không mới.",
+    "omen": "Súy ma phân dao"
+  },
+  "7-6": {
+    "meaning": "Mông dã. MƠ HỒ. Mơ hồ, không rõ, mờ mịt, tối tăm, không sáng, mù mịt.",
+    "omen": "Tiêu quỷ thần tiên"
+  },
+  "7-0": {
+    "meaning": "Khiêm dã. KHIÊM TỐN. Khiêm tốn, nhún nhường, khiêm từ, cáo thoái, từ giã, lui vào trong.",
+    "omen": "Ứng thuộc đông lâm"
+  },
+  "0-1": {
+    "meaning": "Thái dã. THỊNH VƯỢNG. Thịnh vượng, phồn thịnh, hưng thịnh, phát đạt, thịnh đạt.",
+    "omen": "Hỉ báo tam nguyên"
+  },
+  "0-2": {
+    "meaning": "Lâm dã. ĐẾN GẦN. Đến gần, tiếp cận, gần kề, sắp đến, sắp tới, gần sát.",
+    "omen": "Phát chính thi nhân"
+  },
+  "0-3": {
+    "meaning": "Di dã. TỐI TĂM. Tối tăm, mờ mịt, không sáng, u ám, tăm tối, mù mịt.",
+    "omen": "Cổ kính trùng minh"
+  },
+  "0-4": {
+    "meaning": "Phục dã. TRỞ LẠI. Trở lại, quay về, phục hồi, khôi phục, trở về, hồi phục.",
+    "omen": "Phu thê phản mục"
+  },
+  "0-5": {
+    "meaning": "Thăng dã. THĂNG TIẾN. Thăng tiến, thăng cấp, thăng hạng, tiến lên, phát triển.",
+    "omen": "Chỉ nhật cao thăng"
+  },
+  "0-6": {
+    "meaning": "Sư dã. QUÂN ĐỘI. Quân đội, binh lính, quân sự, chiến tranh, đấu tranh, tranh đấu.",
+    "omen": "Mã đáo thành công"
+  },
+  "0-7": {
+    "meaning": "Khiêm dã. KHIÊM TỐN. Khiêm tốn, nhún nhường, khiêm từ, cáo thoái, từ giã, lui vào trong, giữ gìn, nhốt vào trong.",
+    "omen": "Nhị nhân phân kim"
+  }
 }
-

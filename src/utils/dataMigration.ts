@@ -9,6 +9,7 @@ import {
   STORES,
 } from "./indexedDB";
 import hexagramMeaningsData from "../data/hexagramMeanings.json";
+import { HexagramData } from "../data/hexagramMeanings";
 
 /**
  * Migrate hexagram meanings to IndexedDB
@@ -23,9 +24,11 @@ export async function migrateHexagramMeanings(): Promise<void> {
     }
 
     // Convert hexagramMeaningsData to array of entries
-    const entries = Object.entries(hexagramMeaningsData as Record<string, string>).map(([key, value]) => ({
+    // Extract only meaning for backward compatibility with IndexedDB structure
+    const data = hexagramMeaningsData as Record<string, HexagramData>;
+    const entries = Object.entries(data).map(([key, value]) => ({
       key,
-      value,
+      value: value.meaning || "",
     }));
 
     // Store in IndexedDB

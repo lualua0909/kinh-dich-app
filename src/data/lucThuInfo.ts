@@ -104,24 +104,29 @@ export const LUC_THAN_KHAC_MAP = mappingsData.LUC_THAN_KHAC_MAP as Record<
   string
 >;
 
-// Helper: chuẩn hoá input (code hoặc tên) về tên Lục Thân đầy đủ
-const normalizeLucThan = (value: string): string => {
+// Helper: chuẩn hoá input (code hoặc tên) về code Lục Thân rút gọn
+const normalizeLucThanToCode = (value: string): string => {
   if (!value) return "";
-  return getLucThanName(value);
+  // Nếu đã là code (có trong LUC_THAN_NAMES), trả về luôn
+  if (LUC_THAN_NAMES[value]) {
+    return value;
+  }
+  // Nếu là tên đầy đủ, chuyển sang code
+  return LUC_THAN_CODES[value] || value;
 };
 
 // Kiểm tra A sinh B? (chỉ xét 1 chiều, không xét sinh ngược lại)
 export const isLucThanSinh = (from: string, to: string): boolean => {
-  const a = normalizeLucThan(from);
-  const b = normalizeLucThan(to);
+  const a = normalizeLucThanToCode(from);
+  const b = normalizeLucThanToCode(to);
   if (!a || !b) return false;
   return LUC_THAN_SINH_MAP[a] === b;
 };
 
 // Kiểm tra A khắc B? (chỉ xét 1 chiều, không xét khắc ngược lại)
 export const isLucThanKhac = (from: string, to: string): boolean => {
-  const a = normalizeLucThan(from);
-  const b = normalizeLucThan(to);
+  const a = normalizeLucThanToCode(from);
+  const b = normalizeLucThanToCode(to);
   if (!a || !b) return false;
   return LUC_THAN_KHAC_MAP[a] === b;
 };

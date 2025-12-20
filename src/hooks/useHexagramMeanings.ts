@@ -6,7 +6,7 @@
 import { useEffect, useState } from "react";
 import { getAllValues, STORES } from "../utils/indexedDB";
 import hexagramMeaningsData from "../data/hexagramMeanings.json";
-import { getHexagramMeaningSync } from "../data/hexagramMeanings";
+import { getHexagramMeaningSync, HexagramData } from "../data/hexagramMeanings";
 
 let globalCache: Record<string, string> | null = null;
 let isLoading = false;
@@ -32,14 +32,22 @@ async function loadMeaningsIntoCache(): Promise<void> {
         globalCache = meanings;
       } else {
         // Fallback to memory if IndexedDB is empty
-        globalCache = hexagramMeaningsData as Record<string, string>;
+        // Convert new structure to old format for backward compatibility
+        const data = hexagramMeaningsData as Record<string, HexagramData>;
+        globalCache = Object.fromEntries(
+          Object.entries(data).map(([key, value]) => [key, value.meaning || ""])
+        ) as Record<string, string>;
       }
     } catch (error) {
       console.warn(
         "Failed to load from IndexedDB, using memory fallback:",
         error
       );
-      globalCache = hexagramMeaningsData as Record<string, string>;
+      // Convert new structure to old format for backward compatibility
+      const data = hexagramMeaningsData as Record<string, HexagramData>;
+      globalCache = Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [key, value.meaning || ""])
+      ) as Record<string, string>;
     } finally {
       isLoading = false;
     }
