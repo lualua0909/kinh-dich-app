@@ -1,29 +1,34 @@
 {
   "Mộc": {
+    "icon": "🌿",
     "sinh": "Hỏa",
     "duocSinh": "Thủy",
     "khac": "Thổ",
     "biKhac": "Kim"
   },
   "Hỏa": {
+    "icon": "🔥",
     "sinh": "Thổ",
     "duocSinh": "Mộc",
     "khac": "Kim",
     "biKhac": "Thủy"
   },
   "Thổ": {
+    "icon": "🌍",
     "sinh": "Kim",
     "duocSinh": "Hỏa",
     "khac": "Thủy",
     "biKhac": "Mộc"
   },
   "Kim": {
+    "icon": "⚔️",
     "sinh": "Thủy",
     "duocSinh": "Thổ",
     "khac": "Mộc",
     "biKhac": "Hỏa"
   },
   "Thủy": {
+    "icon": "💧",
     "sinh": "Mộc",
     "duocSinh": "Kim",
     "khac": "Hỏa",

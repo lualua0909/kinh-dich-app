@@ -26,20 +26,71 @@ export default function DivinationForm({ onDivinate }) {
   const [selectedDungThan, setSelectedDungThan] = useState(null);
   const [mode, setMode] = useState("serial"); // 'serial' | 'manual' | 'datetime'
 
+  // Effect to parse URL on mount
   useEffect(() => {
-    if (mode === "datetime") {
-      const now = new Date();
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("t");
+    const query = params.get("q");
+    const movingLineParam = params.get("ml");
+    const datetimeParam = params.get("dt");
+    const dungThanParam = params.get("dtu");
+
+    if (type === "s" && query) {
+      setMode("serial");
+      form.setFieldsValue({ serial: query });
+    } else if (type === "m" && query) {
+      setMode("manual");
+      const lines = query.split("");
+      const formLines = {};
+      lines.forEach((line, index) => {
+        formLines[`line${index + 1}`] = Number(line);
+      });
+      if (movingLineParam) {
+        formLines[`moving${movingLineParam}`] = true;
+      }
+      form.setFieldsValue(formLines);
+    }
+
+    if (datetimeParam) {
+      const dt = new Date(datetimeParam);
       form.setFieldsValue({
-        day: now.getDate(),
-        month: now.getMonth() + 1,
-        year: now.getFullYear(),
-        hour: now.getHours(),
-        minute: now.getMinutes(),
+        day: dt.getDate(),
+        month: dt.getMonth() + 1,
+        year: dt.getFullYear(),
+        hour: dt.getHours(),
+        minute: dt.getMinutes(),
       });
     }
-    // Reset selected dụng thần khi chuyển chế độ
-    setSelectedDungThan(null);
-    form.setFieldsValue({ dungThan: undefined });
+
+    if (dungThanParam) {
+      form.setFieldsValue({ dungThan: dungThanParam });
+      setSelectedDungThan(getDungThanInfo(dungThanParam));
+    }
+  }, []); // Run only on mount
+
+  // Effect to handle mode changes
+  useEffect(() => {
+    if (mode === "datetime") {
+      const params = new URLSearchParams(window.location.search);
+      const datetimeParam = params.get("dt");
+
+      // Only set current time if not loading from URL
+      if (!datetimeParam) {
+        const now = new Date();
+        form.setFieldsValue({
+          day: now.getDate(),
+          month: now.getMonth() + 1,
+          year: now.getFullYear(),
+          hour: now.getHours(),
+          minute: now.getMinutes(),
+        });
+      }
+    }
+
+    // We don't want to reset dungThan automatically when switching tabs manually
+    // but the previous version did. Let's keep it if that was intended, 
+    // but usually users might want to keep the dungThan selection.
+    // However, to keep it simple and fix the bug: 
   }, [mode, form]);
 
   const dungThanOptions = [
@@ -492,14 +543,14 @@ export default function DivinationForm({ onDivinate }) {
                       {hao === 6
                         ? "Thượng"
                         : hao === 5
-                        ? "Ngũ"
-                        : hao === 4
-                        ? "Tứ"
-                        : hao === 3
-                        ? "Tam"
-                        : hao === 2
-                        ? "Nhị"
-                        : "Sơ"}
+                          ? "Ngũ"
+                          : hao === 4
+                            ? "Tứ"
+                            : hao === 3
+                              ? "Tam"
+                              : hao === 2
+                                ? "Nhị"
+                                : "Sơ"}
                       :
                     </div>
                     <Form.Item
@@ -545,14 +596,14 @@ export default function DivinationForm({ onDivinate }) {
                       {hao === 6
                         ? "Lần gieo 6"
                         : hao === 5
-                        ? "Lần gieo 5"
-                        : hao === 4
-                        ? "Lần gieo 4"
-                        : hao === 3
-                        ? "Lần gieo 3"
-                        : hao === 2
-                        ? "Lần gieo 2"
-                        : "Lần gieo 1"}
+                          ? "Lần gieo 5"
+                          : hao === 4
+                            ? "Lần gieo 4"
+                            : hao === 3
+                              ? "Lần gieo 3"
+                              : hao === 2
+                                ? "Lần gieo 2"
+                                : "Lần gieo 1"}
                     </div>
                   </React.Fragment>
                 ))}

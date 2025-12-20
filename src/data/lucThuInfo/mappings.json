@@ -7,6 +7,14 @@
         "Bạch Hổ": "BH",
         "Huyền Vũ": "HV"
     },
+    "LUC_TU_ICONS": {
+        "TL": "🐉",
+        "CT": "🐦",
+        "CTr": "🐂",
+        "DX": "🐍",
+        "BH": "🐯",
+        "HV": "🐢"
+    },
     "LUC_TU_NAMES": {
         "TL": "Thanh Long",
         "CT": "Chu Tước",

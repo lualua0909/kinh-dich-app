@@ -17,6 +17,7 @@ import {
   chuTuocDiaChiInfo,
   cauTranDiaChiInfo,
   LUC_TU_CODES,
+  LUC_TU_ICONS,
   LUC_THAN_CODES,
   getLucTuName,
   getLucThanName,
@@ -257,7 +258,10 @@ export default function InterpretationTables({
 
     return (
       <div className="max-w-xs text-xs space-y-2">
-        <div className="font-bold mb-1 text-sm">{nguHanhName}</div>
+        <div className="font-bold mb-1 text-sm flex items-center gap-1">
+          <span>{rel.icon}</span>
+          <span>{nguHanhName}</span>
+        </div>
         <div>
           <span className="font-semibold text-green-600">Tương sinh:</span>
           <div className="ml-2 mt-1">
@@ -467,9 +471,10 @@ export default function InterpretationTables({
         {nguHanh && (
           <Tooltip title={renderNguHanhTooltip(nguHanh.name)} placement="top">
             <span
-              className={`text-xs px-2 py-0.5 rounded ${nguHanh.color} font-semibold cursor-help`}
+              className={`text-xs px-2 py-0.5 rounded ${nguHanh.color} font-semibold cursor-help flex items-center gap-1`}
             >
-              {nguHanh.name}
+              <span>{nguHanhRelations[nguHanh.name]?.icon}</span>
+              <span>{nguHanh.name}</span>
             </span>
           </Tooltip>
         )}
@@ -574,15 +579,17 @@ export default function InterpretationTables({
     if (!lucTu) return "-";
     const fullLucTu = getLucTuName(lucTu);
     const code = LUC_TU_CODES[fullLucTu] || lucTu;
+    const icon = LUC_TU_ICONS[code] || "";
     const info = lucTuInfo[code];
 
     return (
       <span
-        className={`cursor-pointer underline decoration-dotted ${info ? "text-blue-700" : ""
+        className={`cursor-pointer underline decoration-dotted flex items-center justify-center gap-1 ${info ? "text-blue-700" : ""
           }`}
         onClick={() => openLucTuDrawer(lucTu, record)}
       >
-        {fullLucTu}
+        {icon && <span>{icon}</span>}
+        <span>{fullLucTu}</span>
       </span>
     );
   };

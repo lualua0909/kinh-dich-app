@@ -75,6 +75,7 @@ export const cauTranDiaChiInfo = cauTranDiaChiInfoData as Record<
 // Import mappings from JSON
 export const LUC_TU_CODES = mappingsData.LUC_TU_CODES as Record<string, string>;
 export const LUC_TU_NAMES = mappingsData.LUC_TU_NAMES as Record<string, string>;
+export const LUC_TU_ICONS = mappingsData.LUC_TU_ICONS as Record<string, string>;
 export const LUC_THAN_CODES = mappingsData.LUC_THAN_CODES as Record<
   string,
   string

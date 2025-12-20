@@ -38,7 +38,10 @@ const renderNguHanhTooltip = (nguHanhName) => {
 
   return (
     <div className="max-w-xs text-xs space-y-2">
-      <div className="font-bold mb-1 text-sm">{nguHanhName}</div>
+      <div className="font-bold mb-1 text-sm flex items-center gap-1">
+        <span>{rel.icon}</span>
+        <span>{nguHanhName}</span>
+      </div>
       <div>
         <span className="font-semibold text-green-600">Tương sinh:</span>
         <div className="ml-2 mt-1">
@@ -85,9 +88,10 @@ const renderCanChiWithNguHanh = (canChi) => {
           overlayClassName="tooltip-custom"
         >
           <span
-            className={`ml-2 text-xs px-2 py-0.5 rounded ${nguHanh.color} font-semibold cursor-help`}
+            className={`ml-2 text-xs px-2 py-0.5 rounded ${nguHanh.color} font-semibold cursor-help flex items-center gap-1`}
           >
-            {nguHanh.name}
+            <span>{nguHanhRelations[nguHanh.name]?.icon}</span>
+            <span>{nguHanh.name}</span>
           </span>
         </Tooltip>
       )}
@@ -110,13 +114,42 @@ function App() {
     initializeDataMigrations().catch((error) => {
       console.error("Failed to initialize data migrations:", error);
     });
+
+    // Parse URL on load
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("t"); // 's' for serial, 'm' for manual
+    const query = params.get("q"); // serial or lines
+    const movingLineParam = params.get("ml");
+    const datetimeParam = params.get("dt");
+    const dungThanParam = params.get("dtu");
+
+    if (type && query) {
+      const input = {};
+      if (type === "s") {
+        input.type = "serial";
+        input.serial = query;
+      } else if (type === "m") {
+        input.type = "manual";
+        input.lines = query.split("").map(Number);
+      }
+
+      if (movingLineParam) {
+        input.movingLine = Number(movingLineParam);
+      }
+
+      if (datetimeParam) {
+        input.datetime = new Date(datetimeParam);
+      }
+
+      handleDivinate(input, dungThanParam, true);
+    }
   }, []);
 
-  const handleDivinate = (input, dungThanValue) => {
+  const handleDivinate = (input, dungThanValue, isInitialLoad = false) => {
     try {
       const divinationResult =
         input.type === "serial"
-          ? performDivination(input.serial)
+          ? performDivination(input.serial, undefined, undefined, input.datetime)
           : performDivination(
             undefined,
             input.lines,
@@ -125,8 +158,35 @@ function App() {
           );
       setResult(divinationResult);
       setDungThan(dungThanValue || null);
+
+      // Update URL if not from initial load
+      if (!isInitialLoad) {
+        const params = new URLSearchParams();
+        if (input.type === "serial") {
+          params.set("t", "s");
+          params.set("q", input.serial);
+        } else {
+          params.set("t", "m");
+          params.set("q", input.lines.join(""));
+        }
+
+        if (input.movingLine) {
+          params.set("ml", input.movingLine);
+        }
+
+        if (input.datetime) {
+          params.set("dt", input.datetime.toISOString());
+        }
+
+        if (dungThanValue) {
+          params.set("dtu", dungThanValue);
+        }
+
+        window.history.pushState({}, "", `?${params.toString()}`);
+      }
     } catch (error) {
-      throw error;
+      if (!isInitialLoad) throw error;
+      console.error("Failed to perform initial divination from URL:", error);
     }
   };
 
