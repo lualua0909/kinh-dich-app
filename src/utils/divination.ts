@@ -115,8 +115,6 @@ function createMutualHexagram(originalHexagram: Hexagram): Hexagram | null {
  * Find trigram ID by its three lines
  */
 function findTrigramByLines(lines: [number, number, number]): number | null {
-  console.log("lines = ", lines);
-
   for (let i = 0; i <= 7; i++) {
     const key = i === 0 ? 0 : i;
     const trigram = getTrigramByRemainder(key);
@@ -125,7 +123,6 @@ function findTrigramByLines(lines: [number, number, number]): number | null {
       trigram.lines[1] === lines[1] &&
       trigram.lines[2] === lines[2]
     ) {
-      console.log("trigram = ", trigram);
       return key;
     }
   }

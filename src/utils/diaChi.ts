@@ -44,6 +44,21 @@ export const DIA_CHI_CODES: Record<string, DiaChi> = {
   "Hợi": "HO"
 };
 
+export const DIA_CHI_ICONS: Record<DiaChi, string> = {
+  "TY": "🐭",
+  "SU": "🐮",
+  "DN": "🐯",
+  "MA": "🐱",
+  "TH": "🐲",
+  "TI": "🐍",
+  "NG": "🐴",
+  "MU": "🐐",
+  "TN": "🐒",
+  "DA": "🐔",
+  "TU": "🐶",
+  "HO": "🐷"
+}
+
 // Danh sách cặp Nhị Hợp
 // Danh sách cặp Nhị Hợp
 export const NHI_HOP_DIA_CHI_PAIRS: [DiaChi, DiaChi][] = [

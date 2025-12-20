@@ -95,7 +95,6 @@ const renderCanChiWithNguHanh = (canChi) => {
 const getDiaChiFromCanChi = (canChi) => {
   if (!canChi) return null;
   const parts = canChi.split(" ");
-  console.log("p parts", parts[1]);
   return parts[1];
 };
 
@@ -116,11 +115,11 @@ function App() {
         input.type === "serial"
           ? performDivination(input.serial)
           : performDivination(
-              undefined,
-              input.lines,
-              input.movingLine,
-              input.datetime
-            );
+            undefined,
+            input.lines,
+            input.movingLine,
+            input.datetime
+          );
       setResult(divinationResult);
       setDungThan(dungThanValue || null);
     } catch (error) {
@@ -242,11 +241,10 @@ function App() {
         {result && (
           <div className="mb-8">
             <div
-              className={`grid gap-6 ${
-                result.movingLine
+              className={`grid gap-6 ${result.movingLine
                   ? "grid-cols-1 sm:grid-cols-3"
                   : "grid-cols-1 sm:grid-cols-2"
-              }`}
+                }`}
             >
               {/* Quẻ Gốc (Original Hexagram) */}
               <HexagramColumn

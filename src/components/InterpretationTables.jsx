@@ -29,6 +29,7 @@ import {
   useHexagramMeanings,
 } from "../hooks/useHexagramMeanings";
 import { UserOutlined } from "@ant-design/icons";
+import lucTuInfo from "../data/lucTuInfo.json";
 import { useHexagramLines } from "../hooks/useHexagramLines";
 import {
   getNhiHopOf,
@@ -40,6 +41,8 @@ import {
   isNhiHopDiaChi,
   DIA_CHI_CODES,
   DIA_CHI_NAMES,
+  isNhiXungDiaChi,
+  hasFullTamHinhGroup,
 } from "../utils/diaChi";
 /**
  * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
@@ -327,7 +330,7 @@ export default function InterpretationTables({
     if (!diaChi) return null;
 
     const tuName = getLucTuName(lucTu);
-    
+
     // Đảm bảo có code
     const tuCode = LUC_TU_CODES[tuName] || lucTu;
     const chiCode = DIA_CHI_CODES[diaChi];
@@ -351,19 +354,19 @@ export default function InterpretationTables({
 
     const nhiHopCode = getNhiHopOf(diaChi);
     const nhiXungCode = getNhiXungOf(diaChi);
-    
+
     // getTamHopGroupOf trả về mảng codes (VD: ["HO", "MA", "MU"])
     const tamHopGroupCodes = getTamHopGroupOf(diaChi);
-    
+
     // Khi lọc partner, cần lưu ý diaChi đầu vào có thể là Tên (Tý) hoặc Code (TY).
     // getTamHopGroupOf đã tự xử lý input là Tên/Code và trả về Code chuẩn.
     // Nên ta cần convert input `diaChi` sang Code để so sánh loại trừ chính nó.
     const currentDiaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
-    
+
     const tamHopPartners = tamHopGroupCodes
       ? tamHopGroupCodes
-          .filter((code) => code !== currentDiaChiCode)
-          .map(getName)
+        .filter((code) => code !== currentDiaChiCode)
+        .map(getName)
       : [];
 
     const nhapMoCode = getNhapMoOf(diaChi);
@@ -455,10 +458,76 @@ export default function InterpretationTables({
     );
   };
 
-  const renderLucThanTooltip = (lucThan) => {
+  const renderLucThanTooltip = (lucThan, record) => {
     const fullLucThan = getLucThanName(lucThan);
     const info = getDungThanInfo(fullLucThan);
     if (!info) return fullLucThan;
+
+    let childOrderInfo = null;
+    if (fullLucThan === "Tử Tôn" && record?.canChi) {
+      const diaChi = extractDiaChi(record.canChi);
+      const diaChiOrder = {
+        Tý: 1,
+        Sửu: 2,
+        Dần: 3,
+        Mão: 4,
+        Thìn: 5,
+        Tỵ: 6,
+        Ngọ: 7,
+        Mùi: 8,
+        Thân: 9,
+        Dậu: 10,
+        Tuất: 11,
+        Hợi: 12,
+        // Map codes too just in case
+        TY: 1,
+        SU: 2,
+        DN: 3,
+        MA: 4,
+        TH: 5,
+        TI: 6,
+        NG: 7,
+        MU: 8,
+        TN: 9,
+        DA: 10,
+        TU: 11,
+        HO: 12,
+      };
+
+      // Ensure we lookup by name or code properly. extractDiaChi returns Name usually (e.g. "Tý")
+      // But if it returns code, the map handles it.
+      // Better to normalize to Code first to be safe, but map is easy here.
+      const code = DIA_CHI_CODES[diaChi] || diaChi; // Try to get code
+      // If diaChi is "Tý" -> code is "TY". If "TY" -> code is "TY".
+      // Let's use the code (or name if code not found) to lookup order.
+      // Actually, my map above handles names directly.
+      // But let's be robust:
+      // const order = diaChiOrder[diaChi] || diaChiOrder[DIA_CHI_CODES[diaChi]];
+
+      // Simplest robust way: 
+      const normalizedCode = DIA_CHI_CODES[diaChi] || diaChi; // e.g. "TY"
+      const mapCodeToOrder = {
+        TY: 1, SU: 2, DN: 3, MA: 4, TH: 5, TI: 6,
+        NG: 7, MU: 8, TN: 9, DA: 10, TU: 11, HO: 12
+      };
+
+      const order = mapCodeToOrder[normalizedCode];
+
+      if (order) {
+        childOrderInfo = (
+          <div className="pt-2 border-t border-gray-300">
+            <span className="font-semibold text-purple-600">
+              Luận đoán thứ bậc con:
+            </span>
+            <div className="ml-2 mt-1">
+              <span>
+                Là con thứ <strong>{order}</strong>
+              </span>
+            </div>
+          </div>
+        );
+      }
+    }
 
     return (
       <div className="max-w-xs text-xs space-y-2">
@@ -475,37 +544,12 @@ export default function InterpretationTables({
           <span className="font-semibold">Mang tính chất:</span>{" "}
           <span>{info.mangTinhChat}</span>
         </div>
+        {childOrderInfo}
       </div>
     );
   };
 
-  // Lục Thú meanings (simplified; có thể mở rộng thêm sau)
-  const lucTuInfo = {
-    TL: {
-      content:
-        "**Thanh Long** thuộc Mộc, tính Dương, là vị thần phò tá rất chung thủy, cao quý, có liêm sỉ, công minh, chính trực. Ứng về hôn nhân, lễ tiệc vui mừng, mai mối, thai sản, các việc vui tốt. Đắc địa thì phú quý cao sang; khắc hào Thế thì do ăn uống, rượu thịt, hoặc giao hợp quá độ mà hao tài, sinh bệnh. **Về người** là hạng người quý phái, quan văn, người học thức, thanh lịch, chàng rể. **Về bệnh** là bệnh tim, hoa mắt chóng mặt, đau lưng, nhức đầu, tay chân tê mỏi, bại liệt.",
-    },
-    CT: {
-      content:
-        "**Chu Tước** bản vị tại Bính Ngọ, thuộc Dương Hỏa, hướng chính Nam, cung Ly, là nơi tột bậc của khí Dương và là nơi bắt đầu sinh khởi khí Âm; được vượng khí trong mùa Hạ. Chu Tước chuyên ứng về các việc văn thư, biện thuyết, lời nói, tin tức, khẩu thiệt. Đắc địa thì ứng về văn chương, ấn tín, sắc lệnh, đến công phủ nhận sắc lệnh, các việc thi cử, văn sách, nộp đơn xin việc làm, trao đổi hồ sơ, công văn giấy tờ.\n\nThất địa thì ứng điều hung như khẩu thiệt, cãi vã, sự nóng giận như điên như dại, việc kiện tụng, lạc mất văn thư, tổn thất tiền tài cùng vật dụng. Có sự tranh cãi rất ầm ĩ, huyên náo, tranh đấu nhau bằng lời lẽ, miệng lưỡi rất hung hăng, dữ tợn. Chu Tước khắc hào Thế thì gặp khẩu thiệt, tranh cãi, lòng dạ bất an không yên ổn, dễ bị quan trên khiển trách, trách mắng.\n\n**Về người:** Chu Tước là hạng chạy giấy tờ, công chức làm việc giấy tờ, thư ký, nhân viên văn phòng, người đưa công văn, thư tín; cũng là người đàn bà kinh cuồng khổ sở, kẻ nóng ác sân hận. **Về bệnh:** bệnh tim, bệnh bụng, nôn mửa, nghẹt mũi, lùng bùng lỗ tai, bệnh huyết áp. Luận thực vật là hột của ngũ cốc; luận về thú là loại có cánh bay; luận về sắc là màu đỏ có lẫn đen; về số là số 9. **Về vật loại:** thuộc lông cánh, tin tức, văn chương, thư tín (thời xưa dùng lông chim làm bút, dùng chim đưa thư).",
-    },
-    DX: {
-      content:
-        "**Đằng Xà** bản vị tại Tỵ, thuộc âm Hỏa, phương Đông Nam, được vượng khí trong mùa Hạ. Đằng Xà chuyên ứng việc ưu tư lo lắng, quan tụng, khẩu thiệt, các việc gây tranh cãi, nghi ngờ, kinh hãi, bất an, hao tán, bất thành; sự việc thường có mờ ám, khuất tất, giấu diếm, che đậy, tin đồn nhảm, thị phi gian trá, điều kinh sợ vu vơ, mộng mị quỷ quái, danh dự không thật.\n\nGặp Đằng Xà là điềm nằm mộng thấy ma quỷ, tâm lo sợ không yên, bệnh thần kinh, có tranh đấu, khẩu thiệt, quan tụng, dễ mắc bệnh tật quái lạ. Đằng Xà khắc hào Thế là bị kẻ tiểu nhân đố kỵ ganh ghét, kẻ tâm địa hẹp hòi nhỏ mọn gây khó dễ, có phao tin đồn nhảm, thị phi gian trá, hoặc bị bệnh tinh thần.\n\n**Về người:** Đằng Xà là kẻ tiểu nhân, người có tâm địa độc ác, nhỏ mọn, hiềm thù, hạng đàn bà điên cuồng rồ dại, thần kinh hoảng hốt, làm lụng vất vả nhọc nhằn, hạng tiểu nhân ti tiện. **Về bệnh:** chứng bệnh thần kinh, nhức đầu, tay chân sưng, chảy máu. **Về ngũ cốc** là loại đậu; **về thú** là loại rắn; **về vật thực** là món ăn có mùi rất khó ăn. **Về sắc** là đỏ hồng, **về số** là số 4, **về vật** là kim hỏa sáng tốt, khi biến dị là loại kim hỏa thành tinh.",
-    },
-    CTr: {
-      content:
-        "**Câu Trần** bản vị tại Mậu Thìn, thuộc Dương Thổ, là Thổ trung ương, được vượng khí trong Tứ quý, chứa đầy sát khí và giữ chức tướng quân. Đắc địa thì được bề trên ban quyền lệnh, thụ ấn tước, bội tinh, huân chương của vua hay chính phủ tùy cấp bậc; thất địa thì ứng về hạng binh lính giữ cửa, kẻ bất kham, tranh đấu nhau.\n\nCâu Trần chuyên ứng các sự việc lưu trì, chậm trễ, dây dưa kéo dài; việc tranh chấp nhà cửa, ruộng vườn, động đất cát, ra đi lâu về, tai nạn dây dưa tổn thất tiền bạc; các việc binh trận, quan tụng, tranh chấp kéo dài, lâu năm, cũ; việc tụ tập đông người, huyên náo, rối loạn. Đối với dân thường là tranh chấp đất đai, kiện tụng về cầm cố tài sản. Câu Trần khắc hào Thế thì khó biện bạch lý phải trái, lý chính đáng của mình, là điềm tai họa vấn vương, việc công hay việc tư đều kéo dài lâu ngày chẳng lúc nào tạm an nhàn.\n\n**Về người:** Câu Trần ứng là người quen cũ, người làm nghề nhà binh, bộ đội, công an, người đàn bà xấu xí, kẻ hai mặt, hay chất chứa hai lòng, ưa tranh cãi kiện tụng. **Luận về bệnh:** chứng đau tim, đau bụng, nóng lạnh, ung thũng có máu. **Luận về ngũ cốc** là trái cây; **luận về thú** là động vật dưới nước; **luận về sự biến dị** là những thứ cũ nát, hư tổn, xưa cũ, đồ cổ; **luận về sắc** là màu đen; **luận về số** là số 5.",
-    },
-    BH: {
-      content:
-        "**Bạch Hổ** bản vị tại Thân Dậu, thuộc Dương Kim, phương Tây, là Bạch Đế Kim tinh chuyên quyền sát phạt, được vượng khí trong mùa Thu. Bạch Hổ chuyên ứng việc bệnh tật, tang chế, tổn hại cốt nhục, chôn cất, khóc kể, việc hung ác, chém giết, khẩu thiệt, tù ngục, cầm cố, ẩu đả, tranh đấu, huyên náo, ám muội, oán thù, kinh sợ, hình phạt, máu lửa. Cũng ứng tin tức, đi đường, quan tụng, binh lính, việc đông người, việc ở dọc đường.\n\n**Đối với quan quyền:** Bạch Hổ ứng mất chức, đổi quan, kinh sợ, có khi bị lưu huyết, thanh toán. **Đối với thường dân:** dễ bị thương tổn, thân thể sa sút, thời vận suy vi, điên đảo. Bạch Hổ đắc địa thì có oai quyền, làm việc mau chóng thành tựu, có khả năng điều khiển đại sự. Bạch Hổ khắc hào Thế là bị kẻ hung bạo gây khó dễ, có thù oán tranh cạnh, hoặc bệnh tật mệt mỏi, đau ốm đột ngột.\n\n**Về người:** hạng có uy quyền, có đao gươm, mang súng; người khỏe mạnh, cương cường, hung dữ, lỗ mãng, thích sát phạt; hoặc người có bệnh, người đang có tang. **Về bệnh:** bệnh về máu, xương cốt. **Về ngũ cốc:** lúa mạch, mè. **Về thú:** vượn, đười ươi, hổ, báo. **Về sắc:** màu trắng. **Về số:** số 7. **Về vật:** kiếm, thương, đao.",
-    },
-    HV: {
-      content:
-        "**Huyền Vũ** bản vị tại Hợi, thuộc âm Thủy, phương Tây Bắc, được vượng khí trong mùa Đông. Trên trời sao Huyền Vũ làm chức Hậu quân, vị thần làm khổ vũ (mưa trái thời tiết hoặc mưa quá nhiều sinh khổ hại). Huyền Vũ là tột bậc của Âm, chứa đầy tà khí, làm cho vạn vật tổn hại đến mức cuối cùng.\n\nHuyền Vũ chuyên ứng việc mờ ám, bất thường, thất lạc, hao tài, sai hẹn, trốn mất, cầu cạnh, việc chẳng minh bạch. Cũng ứng việc mưu tính âm thầm, việc tư riêng, cầu hoạch tài, các điều gian trá, thất ước, tật bệnh, trốn tránh, quỷ ám, mộng tưởng, những việc hao thoát, gian trá không thiết thực.\n\n**Đối với quân tử, quan nhân,** Huyền Vũ thường ứng mất xe ngựa, tôi tớ trốn đi; **đối với thường dân** thì dễ bị phá nhà cửa hoặc xảy ra chuyện dâm đãng lôi thôi. Huyền Vũ khắc hào Thế là gặp kẻ mua bán hoặc gian đạo đang mưu tính hại mình, là điềm hao phá tiền bạc, dính líu quan tụng, vụ trốn tránh, thiếu sót.\n\n**Về người:** bọn giặc cướp, trộm cắp, người gian tà tiểu tâm, hạng thông minh mà gian trá, lanh lợi mà mưu trí, có tài văn chương, hay cầu ước tài vật, thích giao du với quý nhân, người giàu. Cũng chủ tiểu nhân, đàn bà, con gái. **Về bệnh:** bệnh thủng ruột, sưng ruột. **Về thú:** heo, thủy trùng, loài có vẩy; cũng ứng các vật loại văn chương. **Về sắc:** màu đen. **Về số:** số 4. **Về hình chất:** vật hư rỗng, âm hộ của phụ nữ.",
-    },
-  };
+  // Lục Thú meanings (moved to lucTuInfo.json)
 
   const renderLucTu = (lucTu, record) => {
     if (!lucTu) return "-";
@@ -515,9 +559,8 @@ export default function InterpretationTables({
 
     return (
       <span
-        className={`cursor-pointer underline decoration-dotted ${
-          info ? "text-blue-700" : ""
-        }`}
+        className={`cursor-pointer underline decoration-dotted ${info ? "text-blue-700" : ""
+          }`}
         onClick={() => openLucTuDrawer(lucTu, record)}
       >
         {fullLucTu}
@@ -586,7 +629,7 @@ export default function InterpretationTables({
         const isDungThanHao = dungThanHaos1.has(record.hao);
         return (
           <Tooltip
-            title={renderLucThanTooltip(lucThan)}
+            title={renderLucThanTooltip(lucThan, record)}
             placement="top"
             overlayClassName="tooltip-custom"
           >
@@ -657,7 +700,7 @@ export default function InterpretationTables({
         return (
           <div className="flex flex-col items-center gap-1">
             <Tooltip
-              title={renderLucThanTooltip(lucThanCode)}
+              title={renderLucThanTooltip(lucThanCode, { canChi: diaChi })}
               placement="top"
               overlayClassName="tooltip-custom"
             >
@@ -754,7 +797,7 @@ export default function InterpretationTables({
         const isDungThanHao = dungThanHaos2.has(record.hao);
         return (
           <Tooltip
-            title={renderLucThanTooltip(lucThan)}
+            title={renderLucThanTooltip(lucThan, record)}
             placement="top"
             overlayClassName="tooltip-custom"
           >
@@ -799,11 +842,11 @@ export default function InterpretationTables({
   const renderLucTuDrawerContent = () => {
     if (!lucTuDrawerData) return null;
     const { lucTu, record } = lucTuDrawerData;
-    
+
     // lucTu passed here is likely the Name (e.g. "Đằng Xà") from openLucTuDrawer logic
     const lucTuName = getLucTuName(lucTu);
     const lucTuCode = LUC_TU_CODES[lucTuName] || lucTu; // Normalize to Code (e.g. "DX")
-    
+
     const info = lucTuInfo[lucTuCode];
     const lucThan = record?.lucThan;
     const lucThanName = getLucThanName(lucThan);
@@ -837,90 +880,91 @@ export default function InterpretationTables({
       <div className="space-y-4 text-sm">
         {info && (
           <>
+            {(clsThan || clsDiaChi) && (
+              <div className="pt-4 border-t border-gray-300 space-y-3">
+                {clsThan && (
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-semibold">{clsThan.label}</span>
+                    </div>
+                    {lucThanCode &&
+                      lucTuCode === "TL" &&
+                      thanhLongLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {thanhLongLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    {lucThanCode &&
+                      lucTuCode === "BH" &&
+                      bachHoLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {bachHoLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    {lucThanCode &&
+                      lucTuCode === "CTr" &&
+                      cauTranLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {cauTranLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    {lucThanCode &&
+                      lucTuCode === "CT" &&
+                      chuTuocLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {chuTuocLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    {lucThanCode &&
+                      lucTuCode === "DX" &&
+                      dangXaLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {dangXaLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    {lucThanCode &&
+                      lucTuCode === "HV" &&
+                      huyenVuLucThanInfo[lucThanCode] && (
+                        <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                          <ReactMarkdown>
+                            {huyenVuLucThanInfo[lucThanCode]}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                  </div>
+                )}
+
+                {clsDiaChi && (
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-semibold">{clsDiaChi.label}</span>
+                    </div>
+                    {diaChiExtraText && (
+                      <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
+                        <ReactMarkdown>{diaChiExtraText}</ReactMarkdown>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="leading-relaxed text-gray-800 prose prose-sm max-w-none">
               <ReactMarkdown>{info.content}</ReactMarkdown>
             </div>
           </>
         )}
 
-        {(clsThan || clsDiaChi) && (
-          <div className="pt-4 border-t border-gray-300 space-y-3">
-            {clsThan && (
-              <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span>{clsThan.label}</span>
-                </div>
-                {lucThanCode &&
-                  lucTuCode === "TL" &&
-                  thanhLongLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {thanhLongLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                {lucThanCode &&
-                  lucTuCode === "BH" &&
-                  bachHoLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {bachHoLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                {lucThanCode &&
-                  lucTuCode === "CTr" &&
-                  cauTranLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {cauTranLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                {lucThanCode &&
-                  lucTuCode === "CT" &&
-                  chuTuocLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {chuTuocLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                {lucThanCode &&
-                  lucTuCode === "DX" &&
-                  dangXaLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {dangXaLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-                {lucThanCode &&
-                  lucTuCode === "HV" &&
-                  huyenVuLucThanInfo[lucThanCode] && (
-                    <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                      <ReactMarkdown>
-                        {huyenVuLucThanInfo[lucThanCode]}
-                      </ReactMarkdown>
-                    </div>
-                  )}
-              </div>
-            )}
 
-            {clsDiaChi && (
-              <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span>{clsDiaChi.label}</span>
-                </div>
-                {diaChiExtraText && (
-                  <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
-                    <ReactMarkdown>{diaChiExtraText}</ReactMarkdown>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
       </div>
     );
   };
@@ -963,17 +1007,17 @@ export default function InterpretationTables({
         <div className="prose prose-sm max-w-none text-gray-700">
           {hexagramModalData?.hexagramKey
             ? (() => {
-                const meaning = meaningsReady
-                  ? getHexagramMeaningCached(hexagramModalData.hexagramKey)
-                  : null;
-                return meaning ? (
-                  <ReactMarkdown>{meaning}</ReactMarkdown>
-                ) : (
-                  <p className="text-gray-500 italic">
-                    Ý nghĩa quẻ này đang được cập nhật...
-                  </p>
-                );
-              })()
+              const meaning = meaningsReady
+                ? getHexagramMeaningCached(hexagramModalData.hexagramKey)
+                : null;
+              return meaning ? (
+                <ReactMarkdown>{meaning}</ReactMarkdown>
+              ) : (
+                <p className="text-gray-500 italic">
+                  Ý nghĩa quẻ này đang được cập nhật...
+                </p>
+              );
+            })()
             : null}
         </div>
       </Modal>
@@ -1992,6 +2036,50 @@ export default function InterpretationTables({
                       Các Bước Giải Quẻ
                     </h3>
                     {(() => {
+                      // Logic: Luận Vợ Đã Từng Kết Hôn
+                      let voDaTungKetHonResult = null;
+                      // 1. Tìm hào Thê Tài trong quẻ chính
+                      const theTaiLines = lineData1.filter(l => getLucThanName(l.lucThan) === "Thê Tài");
+
+                      for (const ttLine of theTaiLines) {
+                        const isUpper = ttLine.hao >= 4; // Hào 4, 5, 6 là thượng quái
+                        // 2. Tìm hào Phụ Mẫu cùng quái với hào Thê Tài
+                        const phuMauLines = lineData1.filter(l => {
+                          const isLUpper = l.hao >= 4;
+                          return getLucThanName(l.lucThan) === "Phụ Mẫu" && isLUpper === isUpper;
+                        });
+
+                        for (const pmLine of phuMauLines) {
+                          // 3. Kiểm tra hào tương ứng vị trí với hào Phụ Mẫu trong quẻ biến
+                          const pmIndex = lineData1.findIndex(l => l.hao === pmLine.hao);
+                          const pmChangedLine = lineData2[pmIndex];
+
+                          // Tuần không phải bằng "K"
+                          if (pmChangedLine && pmChangedLine.tuanKhong === "K") {
+
+                            // 4. Kiểm tra hào tương ứng vị trí với hào Thê Tài trong quẻ biến
+                            const ttIndex = lineData1.findIndex(l => l.hao === ttLine.hao);
+                            const ttChangedLine = lineData2[ttIndex];
+
+                            // Lục thú bằng Chu Tước
+                            const lucTuVal = ttChangedLine.lucTu;
+                            const lucTuName = getLucTuName(lucTuVal);
+                            const lucTuCode = LUC_TU_CODES[lucTuName] || lucTuVal;
+
+                            if (lucTuCode === "CT") {
+                              voDaTungKetHonResult = {
+                                matched: true,
+                                description: "Thỏa mãn các điều kiện: Hào Phụ Mẫu cùng quái với Thê Tài biến Tuần Không, và Thê Tài biến lâm Chu Tước.",
+                                theTaiHao: ttLine.hao,
+                                phuMauHao: pmLine.hao
+                              };
+                              break;
+                            }
+                          }
+                        }
+                        if (voDaTungKetHonResult) break;
+                      }
+
                       const collapseItems = [
                         {
                           key: "1",
@@ -2058,9 +2146,9 @@ export default function InterpretationTables({
                                     Dụng Thần
                                   </p>
                                   {theHao &&
-                                  dungThanHao &&
-                                  theDiaChi &&
-                                  dungThanDiaChi ? (
+                                    dungThanHao &&
+                                    theDiaChi &&
+                                    dungThanDiaChi ? (
                                     <div className="space-y-2">
                                       <p>
                                         <strong>Hào Thế:</strong> Hào{" "}
@@ -2104,13 +2192,11 @@ export default function InterpretationTables({
                         },
                         {
                           key: "3",
-                          label: `Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá${
-                            (thaiTue || tuePha) && dungThanDiaChi && yearDiaChi
-                              ? ` (${
-                                  buoc3ThaiTueDiem > 0 ? "+" : ""
-                                }${buoc3ThaiTueDiem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá${(thaiTue || tuePha) && dungThanDiaChi && yearDiaChi
+                            ? ` (${buoc3ThaiTueDiem > 0 ? "+" : ""
+                            }${buoc3ThaiTueDiem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2194,13 +2280,11 @@ export default function InterpretationTables({
                       if (dungThanDiaChi && monthDiaChi) {
                         collapseItems.push({
                           key: "3b",
-                          label: `Bước 3: Xét mối tương quan Dụng Thần và Tháng${
-                            buoc3Diem !== undefined && buoc3Diem !== null
-                              ? ` (${
-                                  buoc3Diem > 0 ? "+" : ""
-                                }${buoc3Diem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 3: Xét mối tương quan Dụng Thần và Tháng${buoc3Diem !== undefined && buoc3Diem !== null
+                            ? ` (${buoc3Diem > 0 ? "+" : ""
+                            }${buoc3Diem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2225,15 +2309,14 @@ export default function InterpretationTables({
                                         {buoc3Results.map((result, index) => (
                                           <div
                                             key={index}
-                                            className={`p-3 rounded border-l-4 ${
-                                              result.matched
-                                                ? result.diem > 0
-                                                  ? "bg-green-50 border-green-500"
-                                                  : result.diem < 0
+                                            className={`p-3 rounded border-l-4 ${result.matched
+                                              ? result.diem > 0
+                                                ? "bg-green-50 border-green-500"
+                                                : result.diem < 0
                                                   ? "bg-red-50 border-red-500"
                                                   : "bg-orange-50 border-orange-500"
-                                                : "bg-gray-50 border-gray-300"
-                                            }`}
+                                              : "bg-gray-50 border-gray-300"
+                                              }`}
                                           >
                                             <div className="flex items-start justify-between">
                                               <div className="flex-1">
@@ -2255,10 +2338,10 @@ export default function InterpretationTables({
                                                   )}
                                                   {buoc3DungTai ===
                                                     result.step && (
-                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                      Dừng tại đây
-                                                    </span>
-                                                  )}
+                                                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                        Dừng tại đây
+                                                      </span>
+                                                    )}
                                                 </div>
                                                 <p className="text-sm text-gray-600 mt-1">
                                                   {result.description}
@@ -2309,13 +2392,11 @@ export default function InterpretationTables({
                       if (dungThanDiaChi && dayDiaChi) {
                         collapseItems.push({
                           key: "4",
-                          label: `Bước 4: Xét mối tương quan Dụng Thần và Ngày${
-                            buoc4Diem !== undefined && buoc4Diem !== null
-                              ? ` (${
-                                  buoc4Diem > 0 ? "+" : ""
-                                }${buoc4Diem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 4: Xét mối tương quan Dụng Thần và Ngày${buoc4Diem !== undefined && buoc4Diem !== null
+                            ? ` (${buoc4Diem > 0 ? "+" : ""
+                            }${buoc4Diem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2340,15 +2421,14 @@ export default function InterpretationTables({
                                         {buoc4Results.map((result, index) => (
                                           <div
                                             key={index}
-                                            className={`p-3 rounded border-l-4 ${
-                                              result.matched
-                                                ? result.diem > 0
-                                                  ? "bg-green-50 border-green-500"
-                                                  : result.diem < 0
+                                            className={`p-3 rounded border-l-4 ${result.matched
+                                              ? result.diem > 0
+                                                ? "bg-green-50 border-green-500"
+                                                : result.diem < 0
                                                   ? "bg-red-50 border-red-500"
                                                   : "bg-orange-50 border-orange-500"
-                                                : "bg-gray-50 border-gray-300"
-                                            }`}
+                                              : "bg-gray-50 border-gray-300"
+                                              }`}
                                           >
                                             <div className="flex items-start justify-between">
                                               <div className="flex-1">
@@ -2370,10 +2450,10 @@ export default function InterpretationTables({
                                                   )}
                                                   {buoc4DungTai ===
                                                     result.step && (
-                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                      Dừng tại đây
-                                                    </span>
-                                                  )}
+                                                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                        Dừng tại đây
+                                                      </span>
+                                                    )}
                                                 </div>
                                                 <p className="text-sm text-gray-600 mt-1">
                                                   {result.description}
@@ -2424,13 +2504,11 @@ export default function InterpretationTables({
                       if (theDiaChi && yearDiaChi) {
                         collapseItems.push({
                           key: "5",
-                          label: `Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá${
-                            (thaiTueThe || tuePhaThe) && theDiaChi && yearDiaChi
-                              ? ` (${
-                                  buoc5ThaiTueDiem > 0 ? "+" : ""
-                                }${buoc5ThaiTueDiem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá${(thaiTueThe || tuePhaThe) && theDiaChi && yearDiaChi
+                            ? ` (${buoc5ThaiTueDiem > 0 ? "+" : ""
+                            }${buoc5ThaiTueDiem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2504,13 +2582,11 @@ export default function InterpretationTables({
                       if (theDiaChi && monthDiaChi) {
                         collapseItems.push({
                           key: "5b",
-                          label: `Bước 5: Xét mối tương quan Hào Thế và Tháng${
-                            buoc5Diem !== undefined && buoc5Diem !== null
-                              ? ` (${
-                                  buoc5Diem > 0 ? "+" : ""
-                                }${buoc5Diem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 5: Xét mối tương quan Hào Thế và Tháng${buoc5Diem !== undefined && buoc5Diem !== null
+                            ? ` (${buoc5Diem > 0 ? "+" : ""
+                            }${buoc5Diem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2535,15 +2611,14 @@ export default function InterpretationTables({
                                         {buoc5Results.map((result, index) => (
                                           <div
                                             key={index}
-                                            className={`p-3 rounded border-l-4 ${
-                                              result.matched
-                                                ? result.diem > 0
-                                                  ? "bg-green-50 border-green-500"
-                                                  : result.diem < 0
+                                            className={`p-3 rounded border-l-4 ${result.matched
+                                              ? result.diem > 0
+                                                ? "bg-green-50 border-green-500"
+                                                : result.diem < 0
                                                   ? "bg-red-50 border-red-500"
                                                   : "bg-orange-50 border-orange-500"
-                                                : "bg-gray-50 border-gray-300"
-                                            }`}
+                                              : "bg-gray-50 border-gray-300"
+                                              }`}
                                           >
                                             <div className="flex items-start justify-between">
                                               <div className="flex-1">
@@ -2565,10 +2640,10 @@ export default function InterpretationTables({
                                                   )}
                                                   {buoc5DungTai ===
                                                     result.step && (
-                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                      Dừng tại đây
-                                                    </span>
-                                                  )}
+                                                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                        Dừng tại đây
+                                                      </span>
+                                                    )}
                                                 </div>
                                                 <p className="text-sm text-gray-600 mt-1">
                                                   {result.description}
@@ -2619,13 +2694,11 @@ export default function InterpretationTables({
                       if (theDiaChi && dayDiaChi) {
                         collapseItems.push({
                           key: "6",
-                          label: `Bước 6: Xét mối tương quan Hào Thế và Ngày${
-                            buoc6Diem !== undefined && buoc6Diem !== null
-                              ? ` (${
-                                  buoc6Diem > 0 ? "+" : ""
-                                }${buoc6Diem.toFixed(2)} điểm)`
-                              : ""
-                          }`,
+                          label: `Bước 6: Xét mối tương quan Hào Thế và Ngày${buoc6Diem !== undefined && buoc6Diem !== null
+                            ? ` (${buoc6Diem > 0 ? "+" : ""
+                            }${buoc6Diem.toFixed(2)} điểm)`
+                            : ""
+                            }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2650,15 +2723,14 @@ export default function InterpretationTables({
                                         {buoc6Results.map((result, index) => (
                                           <div
                                             key={index}
-                                            className={`p-3 rounded border-l-4 ${
-                                              result.matched
-                                                ? result.diem > 0
-                                                  ? "bg-green-50 border-green-500"
-                                                  : result.diem < 0
+                                            className={`p-3 rounded border-l-4 ${result.matched
+                                              ? result.diem > 0
+                                                ? "bg-green-50 border-green-500"
+                                                : result.diem < 0
                                                   ? "bg-red-50 border-red-500"
                                                   : "bg-orange-50 border-orange-500"
-                                                : "bg-gray-50 border-gray-300"
-                                            }`}
+                                              : "bg-gray-50 border-gray-300"
+                                              }`}
                                           >
                                             <div className="flex items-start justify-between">
                                               <div className="flex-1">
@@ -2680,10 +2752,10 @@ export default function InterpretationTables({
                                                   )}
                                                   {buoc6DungTai ===
                                                     result.step && (
-                                                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                                                      Dừng tại đây
-                                                    </span>
-                                                  )}
+                                                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
+                                                        Dừng tại đây
+                                                      </span>
+                                                    )}
                                                 </div>
                                                 <p className="text-sm text-gray-600 mt-1">
                                                   {result.description}
@@ -2780,13 +2852,12 @@ export default function InterpretationTables({
                               </div>
                               <div className="mt-4">
                                 <span
-                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${
-                                    tongDiemDungThan > 0
-                                      ? "border-green-500"
-                                      : tongDiemDungThan === 0
+                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${tongDiemDungThan > 0
+                                    ? "border-green-500"
+                                    : tongDiemDungThan === 0
                                       ? "border-blue-500"
                                       : "border-red-500"
-                                  }`}
+                                    }`}
                                 >
                                   {ketLuanDungThan}
                                 </span>
@@ -2862,13 +2933,12 @@ export default function InterpretationTables({
                               </div>
                               <div className="mt-4">
                                 <span
-                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${
-                                    tongDiemHaoThe > 0
-                                      ? "border-green-500"
-                                      : tongDiemHaoThe === 0
+                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${tongDiemHaoThe > 0
+                                    ? "border-green-500"
+                                    : tongDiemHaoThe === 0
                                       ? "border-blue-500"
                                       : "border-red-500"
-                                  }`}
+                                    }`}
                                 >
                                   {ketLuanHaoThe}
                                 </span>
@@ -3101,11 +3171,10 @@ export default function InterpretationTables({
 
                                       <div className="space-y-2">
                                         <div
-                                          className={`p-3 rounded border-l-4 ${
-                                            tamHinhCheck.hasFullGroup
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-green-50 border-green-500"
-                                          }`}
+                                          className={`p-3 rounded border-l-4 ${tamHinhCheck.hasFullGroup
+                                            ? "bg-red-50 border-red-500"
+                                            : "bg-green-50 border-green-500"
+                                            }`}
                                         >
                                           <p className="font-semibold mb-1">
                                             Điều kiện 1: Kiểm tra Tam Hình
@@ -3135,11 +3204,10 @@ export default function InterpretationTables({
                                         </div>
 
                                         <div
-                                          className={`p-3 rounded border-l-4 ${
-                                            dieuKien2
-                                              ? "bg-red-50 border-red-500"
-                                              : "bg-green-50 border-green-500"
-                                          }`}
+                                          className={`p-3 rounded border-l-4 ${dieuKien2
+                                            ? "bg-red-50 border-red-500"
+                                            : "bg-green-50 border-green-500"
+                                            }`}
                                         >
                                           <p className="font-semibold mb-1">
                                             Điều kiện 2: Kiểm tra Không Vong /
@@ -3159,7 +3227,7 @@ export default function InterpretationTables({
                                                 )}
                                                 {isSuyNhapMo &&
                                                   suyNhapMoDetails.length >
-                                                    0 && (
+                                                  0 && (
                                                     <div>
                                                       <p>• Suy/Nhập Mộ:</p>
                                                       <ul className="list-disc list-inside ml-2">
@@ -3334,7 +3402,7 @@ export default function InterpretationTables({
                                   );
                                   const phuMauBienHao =
                                     phuMauIndex >= 0 &&
-                                    phuMauIndex < lineData2.length
+                                      phuMauIndex < lineData2.length
                                       ? lineData2[phuMauIndex]
                                       : null;
 
@@ -3394,11 +3462,10 @@ export default function InterpretationTables({
                                         </div>
 
                                         <div
-                                          className={`p-3 rounded border-l-4 ${
-                                            laCauTran && coTuanKhong
-                                              ? "bg-green-50 border-green-500"
-                                              : "bg-gray-50 border-gray-300"
-                                          }`}
+                                          className={`p-3 rounded border-l-4 ${laCauTran && coTuanKhong
+                                            ? "bg-green-50 border-green-500"
+                                            : "bg-gray-50 border-gray-300"
+                                            }`}
                                         >
                                           <p className="font-semibold mb-2">
                                             Bước 2: Kiểm tra hào Phụ Mẫu trong
@@ -3580,7 +3647,7 @@ export default function InterpretationTables({
                                   );
                                   const phuMauBienHao =
                                     phuMauIndex >= 0 &&
-                                    phuMauIndex < lineData2.length
+                                      phuMauIndex < lineData2.length
                                       ? lineData2[phuMauIndex]
                                       : null;
 
@@ -3640,11 +3707,10 @@ export default function InterpretationTables({
                                         </div>
 
                                         <div
-                                          className={`p-3 rounded border-l-4 ${
-                                            laCauTran && coTuanKhong
-                                              ? "bg-green-50 border-green-500"
-                                              : "bg-gray-50 border-gray-300"
-                                          }`}
+                                          className={`p-3 rounded border-l-4 ${laCauTran && coTuanKhong
+                                            ? "bg-green-50 border-green-500"
+                                            : "bg-gray-50 border-gray-300"
+                                            }`}
                                         >
                                           <p className="font-semibold mb-2">
                                             Bước 2: Kiểm tra hào Phụ Mẫu trong
@@ -4108,13 +4174,10 @@ export default function InterpretationTables({
                                               {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
                                               {/* Mái nhà (hình tam giác) */}
                                               <polygon
-                                                points={`${
-                                                  houseX + houseSize / 2
-                                                },${houseY} ${houseX},${
-                                                  houseY + houseSize / 3
-                                                } ${houseX + houseSize},${
-                                                  houseY + houseSize / 3
-                                                }`}
+                                                points={`${houseX + houseSize / 2
+                                                  },${houseY} ${houseX},${houseY + houseSize / 3
+                                                  } ${houseX + houseSize},${houseY + houseSize / 3
+                                                  }`}
                                                 fill="#dc2626"
                                                 stroke="#991b1b"
                                                 strokeWidth="1"
