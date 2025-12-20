@@ -1,6 +1,13 @@
 {
   "0-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -9,16 +16,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "0-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -27,16 +62,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 6
     }
   },
   "0-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -45,16 +108,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "0-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -63,16 +154,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "0-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -81,16 +200,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "0-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -99,16 +246,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "0-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -117,16 +292,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "0-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -135,16 +338,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "1-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -153,16 +384,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "1-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -171,34 +430,90 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "PM-Tý", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "PM-Tý",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "1-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
       "Nhâm Ngọ",
-      "Giáp Thìn",
+      "Giáp Tỵ",
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "1-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -207,16 +522,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "1-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -225,16 +568,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "1-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -243,16 +614,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "1-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -261,16 +660,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "1-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -279,16 +706,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "2-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -297,16 +752,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "2-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -315,16 +798,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 1
     }
   },
   "2-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -333,16 +844,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "2-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -351,16 +890,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "2-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -369,16 +936,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "2-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -387,16 +982,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "2-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -405,16 +1028,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "2-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -423,16 +1074,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "3-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -441,16 +1120,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "3-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -459,16 +1166,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "3-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -477,16 +1212,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "3-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -495,16 +1258,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "3-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -513,16 +1304,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "3-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -531,16 +1350,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 5
     }
   },
   "3-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -549,16 +1396,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 3
     }
   },
   "3-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -567,16 +1442,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "4-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -585,16 +1488,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "4-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -603,16 +1534,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 2
     }
   },
   "4-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -621,16 +1580,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "4-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -639,16 +1626,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "4-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -657,16 +1672,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "4-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -675,16 +1718,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "4-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -693,16 +1764,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "4-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -711,16 +1810,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "5-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -729,16 +1856,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "5-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -747,16 +1902,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "5-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -765,16 +1948,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "5-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -783,16 +1994,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "5-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -801,16 +2040,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "5-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -819,16 +2086,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 5
     }
   },
   "5-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -837,16 +2132,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 1
     }
   },
   "5-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -855,16 +2178,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -873,16 +2224,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -891,16 +2270,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "6-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -909,16 +2316,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "6-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -927,16 +2362,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -945,16 +2408,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "6-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -963,16 +2454,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "6-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -981,16 +2500,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "6-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -999,16 +2546,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "7-0": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1017,16 +2592,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "7-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1035,16 +2638,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "7-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1053,16 +2684,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "7-3": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1071,16 +2730,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "7-4": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1089,16 +2776,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "7-5": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1107,16 +2822,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "7-6": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1125,16 +2868,44 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 4,
       "ung": 2
     }
   },
   "7-7": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
     "canChi": [
       "Nhâm Tuất",
       "Nhâm Thân",
@@ -1143,9 +2914,30 @@
       "Giáp Dần",
       "Giáp Tý"
     ],
-    "phucThan": ["", "", "", "", "", ""],
-    "tuanKhong": ["", "", "", "", "", "K"],
-    "lucTu": ["BH", "DX", "CTr", "CT", "TL", "HV"],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "tuanKhong": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "K"
+    ],
+    "lucTu": [
+      "BH",
+      "DX",
+      "CTr",
+      "CT",
+      "TL",
+      "HV"
+    ],
     "theUng": {
       "the": 6,
       "ung": 3

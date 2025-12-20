@@ -553,6 +553,71 @@ export default function InterpretationTables({
     );
   };
 
+  const renderHoa = (index) => {
+    if (!movingLine) return "";
+
+    const record1 = lineData1[index];
+    const record2 = lineData2[index];
+
+    if (!record1 || !record2) return "";
+    if (record1.hao !== movingLine) return "";
+
+    const diaChi1 = extractDiaChi(record1.canChi);
+    const nguHanh1 = getNguHanhFromDiaChi(diaChi1);
+    const diaChi2 = extractDiaChi(record2.canChi);
+    const nguHanh2 = getNguHanhFromDiaChi(diaChi2);
+
+    if (!nguHanh1 || !nguHanh2) return "";
+
+    // Hoá Sinh: ngũ hành của hào động (1) được sinh bởi hào biến (2)
+    // Hoá Khắc: ngũ hành của hào động (1) bị khắc bởi hào biến (2)
+    // Hoá Hợp: địa chi của hào động (1) và hào biến (2) nhị hợp
+    // Hoá Xung: địa chi của hào động (1) và hào biến (2) nhị xung
+    const relation = getNguHanhRelation(nguHanh1.name, nguHanh2.name);
+    if (relation === "duocSinh") {
+      return <span className="text-green-600 font-bold">SINH</span>;
+    }
+    if (relation === "biKhac") {
+      return <span className="text-red-600 font-bold">KHẮC</span>;
+    }
+    if (isNhiHopDiaChi(diaChi1, diaChi2)) {
+      return <span className="text-blue-600 font-bold">HỢP</span>;
+    }
+    if (isNhiXungDiaChi(diaChi1, diaChi2)) {
+      return <span className="text-orange-600 font-bold">XUNG</span>;
+    }
+
+    // Hoá Tiến/Thoái Thần: cùng ngũ hành
+    if (nguHanh1.name === nguHanh2.name) {
+      const diaChiList = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+      const idx1 = diaChiList.indexOf(diaChi1);
+      const idx2 = diaChiList.indexOf(diaChi2);
+      if (idx1 !== -1 && idx2 !== -1) {
+        if (idx2 > idx1) {
+          return <span className="text-purple-600 font-bold">TIẾN</span>;
+        } else if (idx2 < idx1) {
+          return <span className="text-gray-500 font-bold">THOÁI</span>;
+        }
+      }
+    }
+
+    // Hoá Tuyệt
+    const isTuyet = (diaChi1 === "Tý" && diaChi2 === "Tỵ") ||
+      (diaChi1 === "Mão" && diaChi2 === "Thân") ||
+      (diaChi1 === "Dậu" && diaChi2 === "Dần");
+
+    if (isTuyet) {
+      return <span className="text-red-400 font-bold">TUYỆT</span>;
+    }
+
+    // Hoá Mộ: địa chi hào động nhập mộ tại địa chi hào biến
+    if (getNhapMoOf(diaChi1) === (DIA_CHI_CODES[diaChi2] || diaChi2)) {
+      return <span className="text-amber-700 font-bold">MỘ</span>;
+    }
+
+    return "";
+  };
+
   // Columns for TỨC ĐIỀU PHÁN SÀO: Hào / Thế ứng / Lục thân / Can chi / Phục thần / Tuần không
   const columns1 = [
     {
@@ -731,6 +796,13 @@ export default function InterpretationTables({
       align: "center",
       render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
     },
+    {
+      title: "Hoá",
+      key: "hoa",
+      width: 100,
+      align: "center",
+      render: (text, record, index) => renderHoa(index),
+    },
   ];
 
   // Columns for NHÂN ĐOÁN TÁO CAO: Hào / Lục thân / Can chi / Lục tú / Tuần không
@@ -784,6 +856,13 @@ export default function InterpretationTables({
       width: 100,
       align: "center",
       render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
+    },
+    {
+      title: "Hoá",
+      key: "hoa",
+      width: 100,
+      align: "center",
+      render: (text, record, index) => renderHoa(index),
     },
   ];
 
