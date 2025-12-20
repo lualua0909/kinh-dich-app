@@ -41,6 +41,7 @@ import {
   isNhiHopDiaChi,
   DIA_CHI_CODES,
   DIA_CHI_NAMES,
+  DIA_CHI_ICONS,
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
 } from "../utils/diaChi";
@@ -49,6 +50,20 @@ import {
  * TỨC ĐIỀU PHÁN SÀO: uses original hexagram
  * NHÂN ĐOÁN TÁO CAO: uses changed hexagram
  */
+
+
+// Helper: Extract địa chi từ canChi
+export const extractDiaChi = (canChi) => {
+  if (!canChi) return null;
+  if (canChi.includes("-")) {
+    const parts = canChi.split("-");
+    return parts[0];
+  } else {
+    const parts = canChi.split(" ");
+    return parts[parts.length - 1];
+  }
+};
+
 export default function InterpretationTables({
   originalHexagram,
   changedHexagram,
@@ -176,17 +191,6 @@ export default function InterpretationTables({
     return nguHanhMap[diaChi] || null;
   };
 
-  // Helper: Extract địa chi từ canChi
-  const extractDiaChi = (canChi) => {
-    if (!canChi) return null;
-    if (canChi.includes("-")) {
-      const parts = canChi.split("-");
-      return parts[0];
-    } else {
-      const parts = canChi.split(" ");
-      return parts[parts.length - 1];
-    }
-  };
 
   // Helper: Xác định quan hệ tương sinh/tương khắc giữa 2 địa chi
   const getDiaChiRelation = (chi1, chi2) => {
@@ -339,8 +343,9 @@ export default function InterpretationTables({
 
     const code = `${tuCode}-${chiCode}`;
 
+    const chiIcon = DIA_CHI_ICONS[chiCode] || "";
     return {
-      label: `${tuName} lâm ${diaChi}`,
+      label: `${tuName} lâm ${chiIcon}${diaChi}`,
       code,
     };
   };
@@ -350,7 +355,11 @@ export default function InterpretationTables({
     if (!diaChi) return null;
 
     // Helper để lấy tên hiển thị từ code
-    const getName = (code) => DIA_CHI_NAMES[code] || code;
+    const getName = (code) => {
+      const name = DIA_CHI_NAMES[code] || code;
+      const icon = DIA_CHI_ICONS[code] || "";
+      return icon ? `${icon}${name}` : name;
+    };
 
     const nhiHopCode = getNhiHopOf(diaChi);
     const nhiXungCode = getNhiXungOf(diaChi);
@@ -372,9 +381,12 @@ export default function InterpretationTables({
     const nhapMoCode = getNhapMoOf(diaChi);
     const diaChiNhapMoTaiCodes = getDiaChiNhapMoTai(diaChi);
 
+    const currentCode = DIA_CHI_CODES[diaChi] || diaChi;
+    const icon = DIA_CHI_ICONS[currentCode] || "";
+
     return (
       <div className="max-w-xs text-xs space-y-2">
-        <div className="font-bold mb-2 text-sm">{diaChi}</div>
+        <div className="font-bold mb-2 text-sm">{icon}{diaChi}</div>
 
         {nhiHopCode && (
           <div>
@@ -443,7 +455,14 @@ export default function InterpretationTables({
           placement="top"
           overlayClassName="tooltip-custom"
         >
-          <span className="cursor-help">{canChi}</span>
+          <span className="cursor-help text-center flex flex-col items-center">
+            {DIA_CHI_ICONS[DIA_CHI_CODES[diaChi]] && (
+              <span className="text-lg leading-none mb-0.5" style={{ display: 'block', height: '1.2em' }}>
+                {DIA_CHI_ICONS[DIA_CHI_CODES[diaChi]]}
+              </span>
+            )}
+            <span className="leading-tight">{canChi}</span>
+          </span>
         </Tooltip>
         {nguHanh && (
           <Tooltip title={renderNguHanhTooltip(nguHanh.name)} placement="top">
@@ -2054,8 +2073,8 @@ export default function InterpretationTables({
                           const pmIndex = lineData1.findIndex(l => l.hao === pmLine.hao);
                           const pmChangedLine = lineData2[pmIndex];
 
-                          // Tuần không phải bằng "K"
-                          if (pmChangedLine && pmChangedLine.tuanKhong === "K") {
+                          // Tuần không KHÔNG ĐƯỢC bằng "K" (theo yêu cầu: must not be "K")
+                          if (pmChangedLine && pmChangedLine.tuanKhong !== "K") {
 
                             // 4. Kiểm tra hào tương ứng vị trí với hào Thê Tài trong quẻ biến
                             const ttIndex = lineData1.findIndex(l => l.hao === ttLine.hao);
@@ -2069,7 +2088,7 @@ export default function InterpretationTables({
                             if (lucTuCode === "CT") {
                               voDaTungKetHonResult = {
                                 matched: true,
-                                description: "Thỏa mãn các điều kiện: Hào Phụ Mẫu cùng quái với Thê Tài biến Tuần Không, và Thê Tài biến lâm Chu Tước.",
+                                description: "Thỏa mãn các điều kiện: Hào Phụ Mẫu cùng quái với Thê Tài biến không Tuần Không, và Thê Tài biến lâm Chu Tước.",
                                 theTaiHao: ttLine.hao,
                                 phuMauHao: pmLine.hao
                               };
@@ -2803,6 +2822,34 @@ export default function InterpretationTables({
                         });
                       }
 
+                      if (voDaTungKetHonResult) {
+                        collapseItems.push({
+                          key: "7",
+                          label: "Bước 7: Luận Vợ Đã Từng Kết Hôn",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  7
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">Luận đoán Thê Tài biến Chu Tước</p>
+                                  <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <p className="font-semibold text-blue-700 mb-1">
+                                      Kết luận: Khả năng cao vợ đã từng kết hôn hoặc có người yêu sâu đậm trước đó
+                                    </p>
+                                    <p className="text-sm text-gray-600">{voDaTungKetHonResult.description}</p>
+                                    <p className="text-xs text-gray-500 mt-2 italic">
+                                      (Hào Thê Tài {voDaTungKetHonResult.theTaiHao} và Phụ Mẫu {voDaTungKetHonResult.phuMauHao} cùng quái, Phụ Mẫu biến không Tuần Không, Thê Tài biến lâm Chu Tước)
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
+
                       return <Collapse items={collapseItems} />;
                     })()}
                   </div>
@@ -3415,11 +3462,11 @@ export default function InterpretationTables({
                                     );
                                   }
 
-                                  // Kiểm tra Lục Thú có phải Câu Trần không
+                                  // Kiểm tra Lục Thú có phải Chu Tước không
                                   const lucTuName = getLucTuName(
                                     phuMauBienHao.lucTu
                                   );
-                                  const laCauTran = lucTuName === "Câu Trần";
+                                  const laChuTuoc = lucTuName === "Chu Tước";
 
                                   // Kiểm tra tuanKhong = "K"
                                   const coTuanKhong =
@@ -3427,7 +3474,7 @@ export default function InterpretationTables({
 
                                   // Kết luận
                                   const coKhaNangTungKetHon =
-                                    laCauTran && coTuanKhong;
+                                    laChuTuoc && coTuanKhong;
 
                                   return (
                                     <div className="space-y-3">
@@ -3462,7 +3509,7 @@ export default function InterpretationTables({
                                         </div>
 
                                         <div
-                                          className={`p-3 rounded border-l-4 ${laCauTran && coTuanKhong
+                                          className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
                                             ? "bg-green-50 border-green-500"
                                             : "bg-gray-50 border-gray-300"
                                             }`}
@@ -3479,15 +3526,15 @@ export default function InterpretationTables({
                                           <div className="space-y-1 mt-2">
                                             <p
                                               className={
-                                                laCauTran
+                                                laChuTuoc
                                                   ? "text-green-700"
                                                   : "text-red-700"
                                               }
                                             >
-                                              {laCauTran ? "✓" : "✗"} Lục Thú:{" "}
+                                              {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
                                               {lucTuName}
-                                              {laCauTran
-                                                ? " (Câu Trần - đại diện cho phía trước, thời gian trước đây)"
+                                              {laChuTuoc
+                                                ? " (Chu Tước)"
                                                 : ""}
                                             </p>
                                             <p
@@ -3517,9 +3564,7 @@ export default function InterpretationTables({
                                             </p>
                                             <p className="text-sm text-blue-700 mt-2">
                                               Hào Phụ Mẫu cùng quái với hào Thê
-                                              Tài có Lục Thú là Câu Trần (đại
-                                              diện cho phía trước, thời gian
-                                              trước đây) và có Tuần không = "K",
+                                              Tài có Lục Thú là Chu Tước và có Tuần không = "K",
                                               cho thấy có khả năng vợ/chồng đã
                                               từng kết hôn trước đây.
                                             </p>
@@ -3535,9 +3580,9 @@ export default function InterpretationTables({
                                               Không đủ điều kiện để kết luận đã
                                               từng kết hôn trước đây.
                                             </p>
-                                            {!laCauTran && (
+                                            {!laChuTuoc && (
                                               <p className="text-sm text-red-600 mt-1">
-                                                • Lục Thú không phải Câu Trần
+                                                • Lục Thú không phải Chu Tước
                                               </p>
                                             )}
                                             {!coTuanKhong && (
@@ -3660,11 +3705,11 @@ export default function InterpretationTables({
                                     );
                                   }
 
-                                  // Kiểm tra Lục Thú có phải Câu Trần không
+                                  // Kiểm tra Lục Thú có phải Chu Tước không
                                   const lucTuName = getLucTuName(
                                     phuMauBienHao.lucTu
                                   );
-                                  const laCauTran = lucTuName === "Câu Trần";
+                                  const laChuTuoc = lucTuName === "Chu Tước";
 
                                   // Kiểm tra tuanKhong = "K"
                                   const coTuanKhong =
@@ -3672,7 +3717,7 @@ export default function InterpretationTables({
 
                                   // Kết luận
                                   const coKhaNangTungKetHon =
-                                    laCauTran && coTuanKhong;
+                                    laChuTuoc && coTuanKhong;
 
                                   return (
                                     <div className="space-y-3">
@@ -3707,7 +3752,7 @@ export default function InterpretationTables({
                                         </div>
 
                                         <div
-                                          className={`p-3 rounded border-l-4 ${laCauTran && coTuanKhong
+                                          className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
                                             ? "bg-green-50 border-green-500"
                                             : "bg-gray-50 border-gray-300"
                                             }`}
@@ -3724,15 +3769,15 @@ export default function InterpretationTables({
                                           <div className="space-y-1 mt-2">
                                             <p
                                               className={
-                                                laCauTran
+                                                laChuTuoc
                                                   ? "text-green-700"
                                                   : "text-red-700"
                                               }
                                             >
-                                              {laCauTran ? "✓" : "✗"} Lục Thú:{" "}
+                                              {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
                                               {lucTuName}
-                                              {laCauTran
-                                                ? " (Câu Trần - đại diện cho phía trước, thời gian trước đây)"
+                                              {laChuTuoc
+                                                ? " (Chu Tước)"
                                                 : ""}
                                             </p>
                                             <p
@@ -3762,9 +3807,7 @@ export default function InterpretationTables({
                                             </p>
                                             <p className="text-sm text-blue-700 mt-2">
                                               Hào Phụ Mẫu cùng quái với hào Quan
-                                              Quỷ có Lục Thú là Câu Trần (đại
-                                              diện cho phía trước, thời gian
-                                              trước đây) và có Tuần không = "K",
+                                              Quỷ có Lục Thú là Chu Tước và có Tuần không = "K",
                                               cho thấy có khả năng chồng đã từng
                                               kết hôn trước đây.
                                             </p>
@@ -3780,9 +3823,9 @@ export default function InterpretationTables({
                                               Không đủ điều kiện để kết luận đã
                                               từng kết hôn trước đây.
                                             </p>
-                                            {!laCauTran && (
+                                            {!laChuTuoc && (
                                               <p className="text-sm text-red-600 mt-1">
-                                                • Lục Thú không phải Câu Trần
+                                                • Lục Thú không phải Chu Tước
                                               </p>
                                             )}
                                             {!coTuanKhong && (

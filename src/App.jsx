@@ -9,7 +9,7 @@ import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
 import { initializeDataMigrations } from "./utils/dataMigration";
-import { DIA_CHI_CODES } from "./utils/diaChi";
+import { DIA_CHI_CODES, DIA_CHI_ICONS } from "./utils/diaChi";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 import nguHanhRelations from "./data/nguHanhRelations.json";
@@ -74,6 +74,9 @@ const renderCanChiWithNguHanh = (canChi) => {
 
   return (
     <span>
+      {diaChiCode && DIA_CHI_ICONS[diaChiCode] && (
+        <span className="mr-1">{DIA_CHI_ICONS[diaChiCode]}</span>
+      )}
       {canChi}
       {nguHanh && (
         <Tooltip
@@ -242,8 +245,8 @@ function App() {
           <div className="mb-8">
             <div
               className={`grid gap-6 ${result.movingLine
-                  ? "grid-cols-1 sm:grid-cols-3"
-                  : "grid-cols-1 sm:grid-cols-2"
+                ? "grid-cols-1 sm:grid-cols-3"
+                : "grid-cols-1 sm:grid-cols-2"
                 }`}
             >
               {/* Quẻ Gốc (Original Hexagram) */}

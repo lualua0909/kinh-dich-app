@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Tooltip } from "antd";
 import { getLucTuName, getLucThanName } from "../data/lucThuInfo";
+import { DIA_CHI_CODES, DIA_CHI_ICONS, } from "../utils/diaChi";
+import { extractDiaChi } from "./InterpretationTables";
 
 /**
  * Line component - renders a single hào (line)
@@ -26,7 +28,15 @@ export default function Line({
       <div className="font-bold mb-1">Hào {lineData.hao}</div>
       <div className="text-xs">Thế ứng: {lineData.theUng || ""}</div>
       <div className="text-xs">Lục Thân: {getLucThanName(lineData.lucThan)}</div>
-      <div className="text-xs">Can Chi: {lineData.canChi}</div>
+      <div className="text-xs">
+        Can Chi: {lineData.canChi}
+        {(() => {
+          const diaChi = extractDiaChi(lineData.canChi);
+          const diaChiCode = DIA_CHI_CODES[diaChi];
+          const icon = DIA_CHI_ICONS[diaChiCode];
+          return icon ? <span className="ml-1">{icon}</span> : null;
+        })()}
+      </div>
       <div className="text-xs">Lục Thú: {getLucTuName(lineData.lucTu) || ""}</div>
       <div className="text-xs">Phục thần: {lineData.phucThan || ""}</div>
       <div className="text-xs">Tuần không: {lineData.tuanKhong || ""}</div>
@@ -41,15 +51,14 @@ export default function Line({
 
   const lineContent = (
     <motion.div
-      className={`flex items-center justify-center my-2 px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer ${
-        isMoving
-          ? "bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-md"
-          : isDungThan
+      className={`flex items-center justify-center my-2 px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer ${isMoving
+        ? "bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-md"
+        : isDungThan
           ? "bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-400 shadow-md"
           : isHovered
-          ? "bg-gray-50 border border-gray-200 shadow-sm"
-          : "bg-transparent"
-      }`}
+            ? "bg-gray-50 border border-gray-200 shadow-sm"
+            : "bg-transparent"
+        }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.05 }}
@@ -60,13 +69,12 @@ export default function Line({
       {isYang ? (
         // Yang line (solid) ———
         <motion.div
-          className={`h-4 w-full max-w-[224px] rounded-full ${
-            isMoving
-              ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
-              : isDungThan
+          className={`h-4 w-full max-w-[224px] rounded-full ${isMoving
+            ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
+            : isDungThan
               ? "bg-gradient-to-r from-green-500 via-green-600 to-green-500 shadow-lg"
               : "bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 shadow-md"
-          }`}
+            }`}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
@@ -74,21 +82,20 @@ export default function Line({
             boxShadow: isMoving
               ? "0 0 20px rgba(239, 68, 68, 0.5)"
               : isDungThan
-              ? "0 0 20px rgba(34, 197, 94, 0.5)"
-              : "0 0 15px rgba(0, 0, 0, 0.3)",
+                ? "0 0 20px rgba(34, 197, 94, 0.5)"
+                : "0 0 15px rgba(0, 0, 0, 0.3)",
           }}
         />
       ) : (
         // Yin line (broken) — —
         <div className="flex gap-4 items-center w-full max-w-[224px] justify-center">
           <motion.div
-            className={`h-4 w-[40%] rounded-full ${
-              isMoving
-                ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
-                : isDungThan
+            className={`h-4 w-[40%] rounded-full ${isMoving
+              ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
+              : isDungThan
                 ? "bg-gradient-to-r from-green-500 via-green-600 to-green-500 shadow-lg"
                 : "bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 shadow-md"
-            }`}
+              }`}
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
@@ -100,13 +107,12 @@ export default function Line({
           />
           <div className="h-4 w-4 bg-transparent flex-shrink-0" />
           <motion.div
-            className={`h-4 w-[40%] rounded-full ${
-              isMoving
-                ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
-                : isDungThan
+            className={`h-4 w-[40%] rounded-full ${isMoving
+              ? "bg-gradient-to-r from-red-500 via-red-600 to-red-500 shadow-lg"
+              : isDungThan
                 ? "bg-gradient-to-r from-green-500 via-green-600 to-green-500 shadow-lg"
                 : "bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 shadow-md"
-            }`}
+              }`}
             initial={{ opacity: 0, scaleX: 0 }}
             animate={{ opacity: 1, scaleX: 1 }}
             transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
