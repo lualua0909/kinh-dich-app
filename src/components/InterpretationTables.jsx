@@ -2988,9 +2988,9 @@ export default function InterpretationTables({
 
                                 const dieuKien2 = isKhongVong || isSuyNhapMo;
 
-                                // Kết luận
+                                // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
                                 const coNguyCo =
-                                  tamHinhCheck.hasFullGroup || dieuKien2;
+                                  tamHinhCheck.hasFullGroup && dieuKien2;
 
                                 return (
                                   <div className="space-y-3">
@@ -3085,26 +3085,16 @@ export default function InterpretationTables({
                                         )}
                                       </div>
 
-                                      <div
-                                        className={`p-4 rounded-lg border-2 ${
-                                          coNguyCo
-                                            ? "bg-red-100 border-red-400"
-                                            : "bg-green-100 border-green-400"
-                                        }`}
-                                      >
-                                        <p className="font-bold text-lg mb-2">
-                                          Kết luận:
-                                        </p>
-                                        {coNguyCo ? (
+                                      {coNguyCo && (
+                                        <div className="p-4 rounded-lg border-2 bg-red-100 border-red-400">
+                                          <p className="font-bold text-lg mb-2">
+                                            Kết luận:
+                                          </p>
                                           <p className="text-red-800 font-bold text-lg">
                                             ⚠ CÓ NGUY CƠ SẢY BỎ CON
                                           </p>
-                                        ) : (
-                                          <p className="text-green-800 font-bold text-lg">
-                                            ✓ KHÔNG CÓ NGUY CƠ SẢY BỎ CON
-                                          </p>
-                                        )}
-                                      </div>
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 );
@@ -3116,9 +3106,466 @@ export default function InterpretationTables({
                               <h3 className="text-md font-semibold text-gray-800 mb-3">
                                 Luận Cây Trước Nhà
                               </h3>
-                              <p className="text-gray-500 italic">
-                                Công thức sẽ được cung cấp sau
-                              </p>
+                              {(() => {
+                                // Bước 1: Tìm cây trong quẻ
+                                const cayHaos = [];
+
+                                // Tìm các hào có địa chi Dần, Mão, hoặc Mùi trong quẻ chính
+                                lineData1.forEach((line1, index) => {
+                                  const diaChi = extractDiaChi(line1.canChi);
+                                  if (
+                                    diaChi === "Dần" ||
+                                    diaChi === "Mão" ||
+                                    diaChi === "Mùi"
+                                  ) {
+                                    // Kiểm tra hào tương ứng trong quẻ biến
+                                    if (index < lineData2.length) {
+                                      const line2 = lineData2[index];
+                                      const lucTuName = getLucTuName(
+                                        line2.lucTu
+                                      );
+                                      if (
+                                        lucTuName === "Thanh Long" ||
+                                        lucTuName === "Bạch Hổ" ||
+                                        lucTuName === "Chu Tước"
+                                      ) {
+                                        cayHaos.push({
+                                          hao: line1.hao,
+                                          diaChi: diaChi,
+                                          canChi: line1.canChi,
+                                          lucTu: lucTuName,
+                                          line1: line1,
+                                          line2: line2
+                                        });
+                                      }
+                                    }
+                                  }
+                                });
+
+                                if (cayHaos.length === 0) {
+                                  return (
+                                    <div className="space-y-2">
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy cây trong quẻ
+                                      </p>
+                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                        <p className="font-semibold mb-2">
+                                          Bước 1: Tìm cây trong quẻ
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          Điều kiện 1: Không có hào Dần, Mão,
+                                          hoặc Mùi trong quẻ chính
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          HOẶC
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          Điều kiện 2: Hào tương ứng trong quẻ
+                                          biến không có Thanh Long, Bạch Hổ,
+                                          hoặc Chu Tước
+                                        </p>
+                                      </div>
+                                    </div>
+                                  );
+                                }
+
+                                return (
+                                  <div className="space-y-4">
+                                    {/* Bước 1: Tìm cây trong quẻ */}
+                                    <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                      <p className="font-semibold mb-2">
+                                        Bước 1: Tìm cây trong quẻ
+                                      </p>
+                                      <p className="text-sm text-gray-600 mb-2">
+                                        ✓ Điều kiện 1: Tìm thấy hào có địa chi
+                                        Dần, Mão, hoặc Mùi trong quẻ chính
+                                      </p>
+                                      <p className="text-sm text-gray-600 mb-2">
+                                        ✓ Điều kiện 2: Hào tương ứng trong quẻ
+                                        biến có Thanh Long, Bạch Hổ, hoặc Chu
+                                        Tước
+                                      </p>
+                                      <div className="mt-2 space-y-1">
+                                        {cayHaos.map((cay, idx) => (
+                                          <p
+                                            key={idx}
+                                            className="text-sm font-medium text-gray-700"
+                                          >
+                                            • Hào {cay.hao} ({cay.canChi}) - Địa
+                                            Chi: <strong>{cay.diaChi}</strong> -
+                                            Lục Thú:{" "}
+                                            <strong>{cay.lucTu}</strong>
+                                          </p>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    {/* Bước 2 và 3 cho từng cây */}
+                                    {cayHaos.map((cay, idx) => {
+                                      // Bước 2: Xác định vị trí
+                                      let viTri = "";
+                                      if (cay.lucTu === "Thanh Long") {
+                                        viTri = "Bên trái";
+                                      } else if (cay.lucTu === "Bạch Hổ") {
+                                        viTri = "Bên phải";
+                                      } else if (cay.lucTu === "Chu Tước") {
+                                        viTri = "Phía trước";
+                                      }
+
+                                      // Bước 3: Xác định loại cây
+                                      let loaiCay = "";
+                                      let caySize = "medium"; // small, medium, large
+                                      let cayColor = "#22c55e"; // màu xanh lá
+                                      if (cay.diaChi === "Dần") {
+                                        loaiCay = "Cây to thân gỗ";
+                                        caySize = "large";
+                                        cayColor = "#166534"; // xanh đậm
+                                      } else if (cay.diaChi === "Mão") {
+                                        loaiCay =
+                                          "Cây cỏ hoặc thân leo hoặc bụi cây";
+                                        caySize = "small";
+                                        cayColor = "#86efac"; // xanh nhạt
+                                      } else if (cay.diaChi === "Mùi") {
+                                        loaiCay =
+                                          "Rất nhiều cây như rừng hoặc công viên hoặc lùm cây (nhập mộ của Dần/Mão)";
+                                        caySize = "multiple";
+                                        cayColor = "#16a34a"; // xanh lá
+                                      }
+
+                                      // Hàm vẽ SVG ngôi nhà và cây
+                                      const renderHouseWithTree = (
+                                        viTri,
+                                        loaiCay,
+                                        caySize,
+                                        cayColor
+                                      ) => {
+                                        const svgSize = 140; // Kích thước SVG lớn hơn để có không gian cho cây, đặc biệt là rừng cây
+                                        const houseSize = 32;
+                                        const houseX =
+                                          svgSize / 2 - houseSize / 2;
+                                        const houseY =
+                                          svgSize / 2 - houseSize / 2;
+
+                                        // Xác định vị trí cây (nhìn từ trên xuống, đảo ngược so với nhìn từ trong nhà ra ngoài)
+                                        // Điều chỉnh khoảng cách dựa trên loại cây (rừng cây cần nhiều không gian hơn)
+                                        const treeDistance =
+                                          caySize === "multiple" ? 25 : 20;
+                                        let treeX = 0;
+                                        let treeY = 0;
+                                        if (viTri === "Bên trái") {
+                                          // Bên trái (từ trong nhà) = Bên phải (nhìn từ trên xuống)
+                                          treeX =
+                                            houseX + houseSize + treeDistance;
+                                          treeY = houseY + houseSize / 2;
+                                        } else if (viTri === "Bên phải") {
+                                          // Bên phải (từ trong nhà) = Bên trái (nhìn từ trên xuống)
+                                          treeX = houseX - treeDistance;
+                                          treeY = houseY + houseSize / 2;
+                                        } else if (viTri === "Phía trước") {
+                                          // Phía trước (từ trong nhà) = Phía dưới (nhìn từ trên xuống)
+                                          treeX = houseX + houseSize / 2;
+                                          treeY =
+                                            houseY + houseSize + treeDistance;
+                                        }
+
+                                        // Vẽ cây dựa trên loại
+                                        const renderTree = () => {
+                                          if (caySize === "multiple") {
+                                            // Rừng cây / Công viên / Lùm cây (Mùi) - nhiều cây rải rác
+                                            // Điều chỉnh vị trí để căn giữa tốt hơn
+                                            let offsetX = 0;
+                                            let offsetY = 0;
+                                            if (
+                                              viTri === "Bên trái" ||
+                                              viTri === "Bên phải"
+                                            ) {
+                                              // Khi ở bên trái/phải, căn giữa theo chiều dọc
+                                              offsetY = -5;
+                                            } else {
+                                              // Khi ở phía trước, căn giữa theo chiều ngang
+                                              offsetX = -5;
+                                            }
+
+                                            return (
+                                              <>
+                                                {/* Cây 1 */}
+                                                <circle
+                                                  cx={treeX - 8 + offsetX}
+                                                  cy={treeY - 10 + offsetY}
+                                                  r="7"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 10 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="10"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 2 */}
+                                                <circle
+                                                  cx={treeX - 2 + offsetX}
+                                                  cy={treeY - 8 + offsetY}
+                                                  r="6"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 4 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="8"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 3 */}
+                                                <circle
+                                                  cx={treeX + 4 + offsetX}
+                                                  cy={treeY - 10 + offsetY}
+                                                  r="7"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 2 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="10"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 4 */}
+                                                <circle
+                                                  cx={treeX + 10 + offsetX}
+                                                  cy={treeY - 7 + offsetY}
+                                                  r="6"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 8 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="8"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 5 */}
+                                                <circle
+                                                  cx={treeX + 1 + offsetX}
+                                                  cy={treeY - 12 + offsetY}
+                                                  r="5"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 1 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="7"
+                                                  fill="#8b4513"
+                                                />
+                                              </>
+                                            );
+                                          } else if (caySize === "small") {
+                                            // Cây bụi / Cây cỏ / Thân leo (Mão) - nhóm cây nhỏ gần nhau
+                                            return (
+                                              <>
+                                                {/* Cây bụi 1 */}
+                                                <circle
+                                                  cx={treeX - 3}
+                                                  cy={treeY - 5}
+                                                  r="4"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 4}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="4"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây bụi 2 */}
+                                                <circle
+                                                  cx={treeX}
+                                                  cy={treeY - 6}
+                                                  r="5"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 1}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="5"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây bụi 3 */}
+                                                <circle
+                                                  cx={treeX + 3}
+                                                  cy={treeY - 5}
+                                                  r="4"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 2}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="4"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Thêm một số cây cỏ nhỏ */}
+                                                <circle
+                                                  cx={treeX - 1}
+                                                  cy={treeY - 3}
+                                                  r="2"
+                                                  fill={cayColor}
+                                                  opacity="0.8"
+                                                />
+                                                <circle
+                                                  cx={treeX + 2}
+                                                  cy={treeY - 2}
+                                                  r="2"
+                                                  fill={cayColor}
+                                                  opacity="0.8"
+                                                />
+                                              </>
+                                            );
+                                          } else {
+                                            // Cây to thân gỗ (Dần) - cây lớn đơn lẻ
+                                            const treeRadius = 12;
+                                            const trunkWidth = 5;
+                                            const trunkHeight = 10;
+                                            return (
+                                              <>
+                                                {/* Tán lá chính */}
+                                                <circle
+                                                  cx={treeX}
+                                                  cy={treeY - trunkHeight}
+                                                  r={treeRadius}
+                                                  fill={cayColor}
+                                                />
+                                                {/* Tán lá phụ (tạo độ sâu) */}
+                                                <circle
+                                                  cx={treeX - 3}
+                                                  cy={treeY - trunkHeight - 2}
+                                                  r={treeRadius - 2}
+                                                  fill={cayColor}
+                                                  opacity="0.7"
+                                                />
+                                                <circle
+                                                  cx={treeX + 3}
+                                                  cy={treeY - trunkHeight - 2}
+                                                  r={treeRadius - 2}
+                                                  fill={cayColor}
+                                                  opacity="0.7"
+                                                />
+                                                {/* Thân cây */}
+                                                <rect
+                                                  x={treeX - trunkWidth / 2}
+                                                  y={treeY}
+                                                  width={trunkWidth}
+                                                  height={trunkHeight}
+                                                  fill="#8b4513"
+                                                />
+                                              </>
+                                            );
+                                          }
+                                        };
+
+                                        return (
+                                          <svg
+                                            width={svgSize}
+                                            height={svgSize}
+                                            viewBox={`0 0 ${svgSize} ${svgSize}`}
+                                            className="border border-gray-300 rounded bg-gray-50"
+                                          >
+                                            {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
+                                            {/* Mái nhà (hình tam giác) */}
+                                            <polygon
+                                              points={`${
+                                                houseX + houseSize / 2
+                                              },${houseY} ${houseX},${
+                                                houseY + houseSize / 3
+                                              } ${houseX + houseSize},${
+                                                houseY + houseSize / 3
+                                              }`}
+                                              fill="#dc2626"
+                                              stroke="#991b1b"
+                                              strokeWidth="1"
+                                            />
+                                            {/* Thân nhà (hình chữ nhật) */}
+                                            <rect
+                                              x={houseX}
+                                              y={houseY + houseSize / 3}
+                                              width={houseSize}
+                                              height={(houseSize * 2) / 3}
+                                              fill="#fbbf24"
+                                              stroke="#d97706"
+                                              strokeWidth="1"
+                                            />
+                                            {/* Cửa (ở phía dưới - phía trước khi nhìn từ trong nhà ra ngoài) */}
+                                            <rect
+                                              x={houseX + houseSize / 2 - 4}
+                                              y={houseY + houseSize - 12}
+                                              width="8"
+                                              height="12"
+                                              fill="#78350f"
+                                            />
+
+                                            {/* Vẽ cây */}
+                                            {renderTree()}
+                                          </svg>
+                                        );
+                                      };
+
+                                      return (
+                                        <div
+                                          key={idx}
+                                          className="p-4 bg-blue-50 rounded-lg border border-blue-200"
+                                        >
+                                          <p className="font-semibold mb-2">
+                                            Cây {idx + 1}: Hào {cay.hao} (
+                                            {cay.canChi})
+                                          </p>
+
+                                          {/* Bước 2: Vị trí */}
+                                          <div className="mb-3">
+                                            <p className="font-semibold text-sm mb-1">
+                                              Bước 2: Vị trí của cây
+                                            </p>
+                                            <div className="flex items-center gap-4">
+                                              <p className="text-sm text-gray-700">
+                                                <strong>Lục Thú:</strong>{" "}
+                                                {cay.lucTu} →{" "}
+                                                <strong className="text-blue-700">
+                                                  {viTri}
+                                                </strong>{" "}
+                                                (tính từ trong nhà nhìn ra
+                                                ngoài)
+                                              </p>
+                                              <div className="flex-shrink-0">
+                                                {renderHouseWithTree(
+                                                  viTri,
+                                                  loaiCay,
+                                                  caySize,
+                                                  cayColor
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
+
+                                          {/* Bước 3: Loại cây */}
+                                          <div>
+                                            <p className="font-semibold text-sm mb-1">
+                                              Bước 3: Loại cây
+                                            </p>
+                                            <p className="text-sm text-gray-700">
+                                              <strong>Địa Chi:</strong>{" "}
+                                              {cay.diaChi} →{" "}
+                                              <strong className="text-green-700">
+                                                {loaiCay}
+                                              </strong>
+                                            </p>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                );
+                              })()}
                             </div>
                           </div>
                         </Card>
