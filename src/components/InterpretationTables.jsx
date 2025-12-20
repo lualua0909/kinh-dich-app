@@ -20,12 +20,12 @@ import {
   getLucTuName,
   getLucThanName,
   isLucThanSinh,
-  isLucThanKhac
+  isLucThanKhac,
 } from "../data/lucThuInfo";
 import { getHexagramOmen } from "../data/hexagramOmens";
 import {
   getHexagramMeaningCached,
-  useHexagramMeanings
+  useHexagramMeanings,
 } from "../hooks/useHexagramMeanings";
 import { UserOutlined } from "@ant-design/icons";
 import { useHexagramLines } from "../hooks/useHexagramLines";
@@ -39,7 +39,7 @@ import {
   isNhiHopDiaChi,
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
-  getTamHinhGroupOf
+  getTamHinhGroupOf,
 } from "../utils/diaChi";
 /**
  * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
@@ -51,7 +51,7 @@ export default function InterpretationTables({
   changedHexagram,
   movingLine,
   dungThan = null,
-  metadata = null
+  metadata = null,
 }) {
   if (!originalHexagram) {
     return null;
@@ -157,32 +157,32 @@ export default function InterpretationTables({
       sinh: "Hỏa",
       duocSinh: "Thủy",
       khac: "Thổ",
-      biKhac: "Kim"
+      biKhac: "Kim",
     },
     Hỏa: {
       sinh: "Thổ",
       duocSinh: "Mộc",
       khac: "Kim",
-      biKhac: "Thủy"
+      biKhac: "Thủy",
     },
     Thổ: {
       sinh: "Kim",
       duocSinh: "Hỏa",
       khac: "Thủy",
-      biKhac: "Mộc"
+      biKhac: "Mộc",
     },
     Kim: {
       sinh: "Thủy",
       duocSinh: "Thổ",
       khac: "Mộc",
-      biKhac: "Hỏa"
+      biKhac: "Hỏa",
     },
     Thủy: {
       sinh: "Mộc",
       duocSinh: "Kim",
       khac: "Hỏa",
-      biKhac: "Thổ"
-    }
+      biKhac: "Thổ",
+    },
   };
   // Function to get Ngũ Hành from Địa Chi
   const getNguHanhFromDiaChi = (diaChi) => {
@@ -198,7 +198,7 @@ export default function InterpretationTables({
       Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
       Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
       Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-      Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
+      Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
     };
     return nguHanhMap[diaChi] || null;
   };
@@ -229,7 +229,7 @@ export default function InterpretationTables({
       Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
       Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
       Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
-      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" }
+      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" },
     };
 
     const rel1 = nguHanhRelations[nguHanh1.name];
@@ -272,7 +272,7 @@ export default function InterpretationTables({
       Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
       Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
       Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
-      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" }
+      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" },
     };
 
     const rel1 = nguHanhRelations[nguHanh1];
@@ -332,7 +332,7 @@ export default function InterpretationTables({
     Thân: "TN",
     Dậu: "DA",
     Tuất: "TU",
-    Hợi: "HO"
+    Hợi: "HO",
   };
 
   // (thanhLongDiaChiInfo được định nghĩa phía dưới, sau phần lucTuInfo)
@@ -372,7 +372,7 @@ export default function InterpretationTables({
     const code = `${tuCode}-${thanCode}`;
     return {
       label: `${tuName} lâm ${thanName}`,
-      code
+      code,
     };
   };
 
@@ -389,7 +389,7 @@ export default function InterpretationTables({
 
     return {
       label: `${tuName} lâm ${diaChi}`,
-      code
+      code,
     };
   };
 
@@ -518,28 +518,28 @@ export default function InterpretationTables({
   const lucTuInfo = {
     TL: {
       content:
-        "**Thanh Long** thuộc Mộc, tính Dương, là vị thần phò tá rất chung thủy, cao quý, có liêm sỉ, công minh, chính trực. Ứng về hôn nhân, lễ tiệc vui mừng, mai mối, thai sản, các việc vui tốt. Đắc địa thì phú quý cao sang; khắc hào Thế thì do ăn uống, rượu thịt, hoặc giao hợp quá độ mà hao tài, sinh bệnh. **Về người** là hạng người quý phái, quan văn, người học thức, thanh lịch, chàng rể. **Về bệnh** là bệnh tim, hoa mắt chóng mặt, đau lưng, nhức đầu, tay chân tê mỏi, bại liệt."
+        "**Thanh Long** thuộc Mộc, tính Dương, là vị thần phò tá rất chung thủy, cao quý, có liêm sỉ, công minh, chính trực. Ứng về hôn nhân, lễ tiệc vui mừng, mai mối, thai sản, các việc vui tốt. Đắc địa thì phú quý cao sang; khắc hào Thế thì do ăn uống, rượu thịt, hoặc giao hợp quá độ mà hao tài, sinh bệnh. **Về người** là hạng người quý phái, quan văn, người học thức, thanh lịch, chàng rể. **Về bệnh** là bệnh tim, hoa mắt chóng mặt, đau lưng, nhức đầu, tay chân tê mỏi, bại liệt.",
     },
     CT: {
       content:
-        "**Chu Tước** bản vị tại Bính Ngọ, thuộc Dương Hỏa, hướng chính Nam, cung Ly, là nơi tột bậc của khí Dương và là nơi bắt đầu sinh khởi khí Âm; được vượng khí trong mùa Hạ. Chu Tước chuyên ứng về các việc văn thư, biện thuyết, lời nói, tin tức, khẩu thiệt. Đắc địa thì ứng về văn chương, ấn tín, sắc lệnh, đến công phủ nhận sắc lệnh, các việc thi cử, văn sách, nộp đơn xin việc làm, trao đổi hồ sơ, công văn giấy tờ.\n\nThất địa thì ứng điều hung như khẩu thiệt, cãi vã, sự nóng giận như điên như dại, việc kiện tụng, lạc mất văn thư, tổn thất tiền tài cùng vật dụng. Có sự tranh cãi rất ầm ĩ, huyên náo, tranh đấu nhau bằng lời lẽ, miệng lưỡi rất hung hăng, dữ tợn. Chu Tước khắc hào Thế thì gặp khẩu thiệt, tranh cãi, lòng dạ bất an không yên ổn, dễ bị quan trên khiển trách, trách mắng.\n\n**Về người:** Chu Tước là hạng chạy giấy tờ, công chức làm việc giấy tờ, thư ký, nhân viên văn phòng, người đưa công văn, thư tín; cũng là người đàn bà kinh cuồng khổ sở, kẻ nóng ác sân hận. **Về bệnh:** bệnh tim, bệnh bụng, nôn mửa, nghẹt mũi, lùng bùng lỗ tai, bệnh huyết áp. Luận thực vật là hột của ngũ cốc; luận về thú là loại có cánh bay; luận về sắc là màu đỏ có lẫn đen; về số là số 9. **Về vật loại:** thuộc lông cánh, tin tức, văn chương, thư tín (thời xưa dùng lông chim làm bút, dùng chim đưa thư)."
+        "**Chu Tước** bản vị tại Bính Ngọ, thuộc Dương Hỏa, hướng chính Nam, cung Ly, là nơi tột bậc của khí Dương và là nơi bắt đầu sinh khởi khí Âm; được vượng khí trong mùa Hạ. Chu Tước chuyên ứng về các việc văn thư, biện thuyết, lời nói, tin tức, khẩu thiệt. Đắc địa thì ứng về văn chương, ấn tín, sắc lệnh, đến công phủ nhận sắc lệnh, các việc thi cử, văn sách, nộp đơn xin việc làm, trao đổi hồ sơ, công văn giấy tờ.\n\nThất địa thì ứng điều hung như khẩu thiệt, cãi vã, sự nóng giận như điên như dại, việc kiện tụng, lạc mất văn thư, tổn thất tiền tài cùng vật dụng. Có sự tranh cãi rất ầm ĩ, huyên náo, tranh đấu nhau bằng lời lẽ, miệng lưỡi rất hung hăng, dữ tợn. Chu Tước khắc hào Thế thì gặp khẩu thiệt, tranh cãi, lòng dạ bất an không yên ổn, dễ bị quan trên khiển trách, trách mắng.\n\n**Về người:** Chu Tước là hạng chạy giấy tờ, công chức làm việc giấy tờ, thư ký, nhân viên văn phòng, người đưa công văn, thư tín; cũng là người đàn bà kinh cuồng khổ sở, kẻ nóng ác sân hận. **Về bệnh:** bệnh tim, bệnh bụng, nôn mửa, nghẹt mũi, lùng bùng lỗ tai, bệnh huyết áp. Luận thực vật là hột của ngũ cốc; luận về thú là loại có cánh bay; luận về sắc là màu đỏ có lẫn đen; về số là số 9. **Về vật loại:** thuộc lông cánh, tin tức, văn chương, thư tín (thời xưa dùng lông chim làm bút, dùng chim đưa thư).",
     },
     DX: {
       content:
-        "**Đằng Xà** bản vị tại Tỵ, thuộc âm Hỏa, phương Đông Nam, được vượng khí trong mùa Hạ. Đằng Xà chuyên ứng việc ưu tư lo lắng, quan tụng, khẩu thiệt, các việc gây tranh cãi, nghi ngờ, kinh hãi, bất an, hao tán, bất thành; sự việc thường có mờ ám, khuất tất, giấu diếm, che đậy, tin đồn nhảm, thị phi gian trá, điều kinh sợ vu vơ, mộng mị quỷ quái, danh dự không thật.\n\nGặp Đằng Xà là điềm nằm mộng thấy ma quỷ, tâm lo sợ không yên, bệnh thần kinh, có tranh đấu, khẩu thiệt, quan tụng, dễ mắc bệnh tật quái lạ. Đằng Xà khắc hào Thế là bị kẻ tiểu nhân đố kỵ ganh ghét, kẻ tâm địa hẹp hòi nhỏ mọn gây khó dễ, có phao tin đồn nhảm, thị phi gian trá, hoặc bị bệnh tinh thần.\n\n**Về người:** Đằng Xà là kẻ tiểu nhân, người có tâm địa độc ác, nhỏ mọn, hiềm thù, hạng đàn bà điên cuồng rồ dại, thần kinh hoảng hốt, làm lụng vất vả nhọc nhằn, hạng tiểu nhân ti tiện. **Về bệnh:** chứng bệnh thần kinh, nhức đầu, tay chân sưng, chảy máu. **Về ngũ cốc** là loại đậu; **về thú** là loại rắn; **về vật thực** là món ăn có mùi rất khó ăn. **Về sắc** là đỏ hồng, **về số** là số 4, **về vật** là kim hỏa sáng tốt, khi biến dị là loại kim hỏa thành tinh."
+        "**Đằng Xà** bản vị tại Tỵ, thuộc âm Hỏa, phương Đông Nam, được vượng khí trong mùa Hạ. Đằng Xà chuyên ứng việc ưu tư lo lắng, quan tụng, khẩu thiệt, các việc gây tranh cãi, nghi ngờ, kinh hãi, bất an, hao tán, bất thành; sự việc thường có mờ ám, khuất tất, giấu diếm, che đậy, tin đồn nhảm, thị phi gian trá, điều kinh sợ vu vơ, mộng mị quỷ quái, danh dự không thật.\n\nGặp Đằng Xà là điềm nằm mộng thấy ma quỷ, tâm lo sợ không yên, bệnh thần kinh, có tranh đấu, khẩu thiệt, quan tụng, dễ mắc bệnh tật quái lạ. Đằng Xà khắc hào Thế là bị kẻ tiểu nhân đố kỵ ganh ghét, kẻ tâm địa hẹp hòi nhỏ mọn gây khó dễ, có phao tin đồn nhảm, thị phi gian trá, hoặc bị bệnh tinh thần.\n\n**Về người:** Đằng Xà là kẻ tiểu nhân, người có tâm địa độc ác, nhỏ mọn, hiềm thù, hạng đàn bà điên cuồng rồ dại, thần kinh hoảng hốt, làm lụng vất vả nhọc nhằn, hạng tiểu nhân ti tiện. **Về bệnh:** chứng bệnh thần kinh, nhức đầu, tay chân sưng, chảy máu. **Về ngũ cốc** là loại đậu; **về thú** là loại rắn; **về vật thực** là món ăn có mùi rất khó ăn. **Về sắc** là đỏ hồng, **về số** là số 4, **về vật** là kim hỏa sáng tốt, khi biến dị là loại kim hỏa thành tinh.",
     },
     CTr: {
       content:
-        "**Câu Trần** bản vị tại Mậu Thìn, thuộc Dương Thổ, là Thổ trung ương, được vượng khí trong Tứ quý, chứa đầy sát khí và giữ chức tướng quân. Đắc địa thì được bề trên ban quyền lệnh, thụ ấn tước, bội tinh, huân chương của vua hay chính phủ tùy cấp bậc; thất địa thì ứng về hạng binh lính giữ cửa, kẻ bất kham, tranh đấu nhau.\n\nCâu Trần chuyên ứng các sự việc lưu trì, chậm trễ, dây dưa kéo dài; việc tranh chấp nhà cửa, ruộng vườn, động đất cát, ra đi lâu về, tai nạn dây dưa tổn thất tiền bạc; các việc binh trận, quan tụng, tranh chấp kéo dài, lâu năm, cũ; việc tụ tập đông người, huyên náo, rối loạn. Đối với dân thường là tranh chấp đất đai, kiện tụng về cầm cố tài sản. Câu Trần khắc hào Thế thì khó biện bạch lý phải trái, lý chính đáng của mình, là điềm tai họa vấn vương, việc công hay việc tư đều kéo dài lâu ngày chẳng lúc nào tạm an nhàn.\n\n**Về người:** Câu Trần ứng là người quen cũ, người làm nghề nhà binh, bộ đội, công an, người đàn bà xấu xí, kẻ hai mặt, hay chất chứa hai lòng, ưa tranh cãi kiện tụng. **Luận về bệnh:** chứng đau tim, đau bụng, nóng lạnh, ung thũng có máu. **Luận về ngũ cốc** là trái cây; **luận về thú** là động vật dưới nước; **luận về sự biến dị** là những thứ cũ nát, hư tổn, xưa cũ, đồ cổ; **luận về sắc** là màu đen; **luận về số** là số 5."
+        "**Câu Trần** bản vị tại Mậu Thìn, thuộc Dương Thổ, là Thổ trung ương, được vượng khí trong Tứ quý, chứa đầy sát khí và giữ chức tướng quân. Đắc địa thì được bề trên ban quyền lệnh, thụ ấn tước, bội tinh, huân chương của vua hay chính phủ tùy cấp bậc; thất địa thì ứng về hạng binh lính giữ cửa, kẻ bất kham, tranh đấu nhau.\n\nCâu Trần chuyên ứng các sự việc lưu trì, chậm trễ, dây dưa kéo dài; việc tranh chấp nhà cửa, ruộng vườn, động đất cát, ra đi lâu về, tai nạn dây dưa tổn thất tiền bạc; các việc binh trận, quan tụng, tranh chấp kéo dài, lâu năm, cũ; việc tụ tập đông người, huyên náo, rối loạn. Đối với dân thường là tranh chấp đất đai, kiện tụng về cầm cố tài sản. Câu Trần khắc hào Thế thì khó biện bạch lý phải trái, lý chính đáng của mình, là điềm tai họa vấn vương, việc công hay việc tư đều kéo dài lâu ngày chẳng lúc nào tạm an nhàn.\n\n**Về người:** Câu Trần ứng là người quen cũ, người làm nghề nhà binh, bộ đội, công an, người đàn bà xấu xí, kẻ hai mặt, hay chất chứa hai lòng, ưa tranh cãi kiện tụng. **Luận về bệnh:** chứng đau tim, đau bụng, nóng lạnh, ung thũng có máu. **Luận về ngũ cốc** là trái cây; **luận về thú** là động vật dưới nước; **luận về sự biến dị** là những thứ cũ nát, hư tổn, xưa cũ, đồ cổ; **luận về sắc** là màu đen; **luận về số** là số 5.",
     },
     BH: {
       content:
-        "**Bạch Hổ** bản vị tại Thân Dậu, thuộc Dương Kim, phương Tây, là Bạch Đế Kim tinh chuyên quyền sát phạt, được vượng khí trong mùa Thu. Bạch Hổ chuyên ứng việc bệnh tật, tang chế, tổn hại cốt nhục, chôn cất, khóc kể, việc hung ác, chém giết, khẩu thiệt, tù ngục, cầm cố, ẩu đả, tranh đấu, huyên náo, ám muội, oán thù, kinh sợ, hình phạt, máu lửa. Cũng ứng tin tức, đi đường, quan tụng, binh lính, việc đông người, việc ở dọc đường.\n\n**Đối với quan quyền:** Bạch Hổ ứng mất chức, đổi quan, kinh sợ, có khi bị lưu huyết, thanh toán. **Đối với thường dân:** dễ bị thương tổn, thân thể sa sút, thời vận suy vi, điên đảo. Bạch Hổ đắc địa thì có oai quyền, làm việc mau chóng thành tựu, có khả năng điều khiển đại sự. Bạch Hổ khắc hào Thế là bị kẻ hung bạo gây khó dễ, có thù oán tranh cạnh, hoặc bệnh tật mệt mỏi, đau ốm đột ngột.\n\n**Về người:** hạng có uy quyền, có đao gươm, mang súng; người khỏe mạnh, cương cường, hung dữ, lỗ mãng, thích sát phạt; hoặc người có bệnh, người đang có tang. **Về bệnh:** bệnh về máu, xương cốt. **Về ngũ cốc:** lúa mạch, mè. **Về thú:** vượn, đười ươi, hổ, báo. **Về sắc:** màu trắng. **Về số:** số 7. **Về vật:** kiếm, thương, đao."
+        "**Bạch Hổ** bản vị tại Thân Dậu, thuộc Dương Kim, phương Tây, là Bạch Đế Kim tinh chuyên quyền sát phạt, được vượng khí trong mùa Thu. Bạch Hổ chuyên ứng việc bệnh tật, tang chế, tổn hại cốt nhục, chôn cất, khóc kể, việc hung ác, chém giết, khẩu thiệt, tù ngục, cầm cố, ẩu đả, tranh đấu, huyên náo, ám muội, oán thù, kinh sợ, hình phạt, máu lửa. Cũng ứng tin tức, đi đường, quan tụng, binh lính, việc đông người, việc ở dọc đường.\n\n**Đối với quan quyền:** Bạch Hổ ứng mất chức, đổi quan, kinh sợ, có khi bị lưu huyết, thanh toán. **Đối với thường dân:** dễ bị thương tổn, thân thể sa sút, thời vận suy vi, điên đảo. Bạch Hổ đắc địa thì có oai quyền, làm việc mau chóng thành tựu, có khả năng điều khiển đại sự. Bạch Hổ khắc hào Thế là bị kẻ hung bạo gây khó dễ, có thù oán tranh cạnh, hoặc bệnh tật mệt mỏi, đau ốm đột ngột.\n\n**Về người:** hạng có uy quyền, có đao gươm, mang súng; người khỏe mạnh, cương cường, hung dữ, lỗ mãng, thích sát phạt; hoặc người có bệnh, người đang có tang. **Về bệnh:** bệnh về máu, xương cốt. **Về ngũ cốc:** lúa mạch, mè. **Về thú:** vượn, đười ươi, hổ, báo. **Về sắc:** màu trắng. **Về số:** số 7. **Về vật:** kiếm, thương, đao.",
     },
     HV: {
       content:
-        "**Huyền Vũ** bản vị tại Hợi, thuộc âm Thủy, phương Tây Bắc, được vượng khí trong mùa Đông. Trên trời sao Huyền Vũ làm chức Hậu quân, vị thần làm khổ vũ (mưa trái thời tiết hoặc mưa quá nhiều sinh khổ hại). Huyền Vũ là tột bậc của Âm, chứa đầy tà khí, làm cho vạn vật tổn hại đến mức cuối cùng.\n\nHuyền Vũ chuyên ứng việc mờ ám, bất thường, thất lạc, hao tài, sai hẹn, trốn mất, cầu cạnh, việc chẳng minh bạch. Cũng ứng việc mưu tính âm thầm, việc tư riêng, cầu hoạch tài, các điều gian trá, thất ước, tật bệnh, trốn tránh, quỷ ám, mộng tưởng, những việc hao thoát, gian trá không thiết thực.\n\n**Đối với quân tử, quan nhân,** Huyền Vũ thường ứng mất xe ngựa, tôi tớ trốn đi; **đối với thường dân** thì dễ bị phá nhà cửa hoặc xảy ra chuyện dâm đãng lôi thôi. Huyền Vũ khắc hào Thế là gặp kẻ mua bán hoặc gian đạo đang mưu tính hại mình, là điềm hao phá tiền bạc, dính líu quan tụng, vụ trốn tránh, thiếu sót.\n\n**Về người:** bọn giặc cướp, trộm cắp, người gian tà tiểu tâm, hạng thông minh mà gian trá, lanh lợi mà mưu trí, có tài văn chương, hay cầu ước tài vật, thích giao du với quý nhân, người giàu. Cũng chủ tiểu nhân, đàn bà, con gái. **Về bệnh:** bệnh thủng ruột, sưng ruột. **Về thú:** heo, thủy trùng, loài có vẩy; cũng ứng các vật loại văn chương. **Về sắc:** màu đen. **Về số:** số 4. **Về hình chất:** vật hư rỗng, âm hộ của phụ nữ."
-    }
+        "**Huyền Vũ** bản vị tại Hợi, thuộc âm Thủy, phương Tây Bắc, được vượng khí trong mùa Đông. Trên trời sao Huyền Vũ làm chức Hậu quân, vị thần làm khổ vũ (mưa trái thời tiết hoặc mưa quá nhiều sinh khổ hại). Huyền Vũ là tột bậc của Âm, chứa đầy tà khí, làm cho vạn vật tổn hại đến mức cuối cùng.\n\nHuyền Vũ chuyên ứng việc mờ ám, bất thường, thất lạc, hao tài, sai hẹn, trốn mất, cầu cạnh, việc chẳng minh bạch. Cũng ứng việc mưu tính âm thầm, việc tư riêng, cầu hoạch tài, các điều gian trá, thất ước, tật bệnh, trốn tránh, quỷ ám, mộng tưởng, những việc hao thoát, gian trá không thiết thực.\n\n**Đối với quân tử, quan nhân,** Huyền Vũ thường ứng mất xe ngựa, tôi tớ trốn đi; **đối với thường dân** thì dễ bị phá nhà cửa hoặc xảy ra chuyện dâm đãng lôi thôi. Huyền Vũ khắc hào Thế là gặp kẻ mua bán hoặc gian đạo đang mưu tính hại mình, là điềm hao phá tiền bạc, dính líu quan tụng, vụ trốn tránh, thiếu sót.\n\n**Về người:** bọn giặc cướp, trộm cắp, người gian tà tiểu tâm, hạng thông minh mà gian trá, lanh lợi mà mưu trí, có tài văn chương, hay cầu ước tài vật, thích giao du với quý nhân, người giàu. Cũng chủ tiểu nhân, đàn bà, con gái. **Về bệnh:** bệnh thủng ruột, sưng ruột. **Về thú:** heo, thủy trùng, loài có vẩy; cũng ứng các vật loại văn chương. **Về sắc:** màu đen. **Về số:** số 4. **Về hình chất:** vật hư rỗng, âm hộ của phụ nữ.",
+    },
   };
 
   const renderLucTu = (lucTu, record) => {
@@ -588,7 +588,7 @@ export default function InterpretationTables({
           isCuuThanHao,
           isTietThanHao
         );
-      }
+      },
     },
     {
       title: "Thế ứng",
@@ -608,7 +608,7 @@ export default function InterpretationTables({
             {label}
           </span>
         );
-      }
+      },
     },
     {
       title: "Lục Thân",
@@ -634,7 +634,7 @@ export default function InterpretationTables({
             </span>
           </Tooltip>
         );
-      }
+      },
     },
     {
       title: "Can Chi",
@@ -642,7 +642,7 @@ export default function InterpretationTables({
       key: "canChi",
       width: 120,
       align: "center",
-      render: (canChi) => renderCanChi(canChi)
+      render: (canChi) => renderCanChi(canChi),
     },
     {
       title: "Phục thần",
@@ -750,7 +750,7 @@ export default function InterpretationTables({
             </div>
           </div>
         );
-      }
+      },
     },
     {
       title: "Tuần không",
@@ -758,8 +758,8 @@ export default function InterpretationTables({
       key: "tuanKhong",
       width: 100,
       align: "center",
-      render: (tuanKhong) => <span>{tuanKhong || ""}</span>
-    }
+      render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
+    },
   ];
 
   // Columns for NHÂN ĐOÁN TÁO CAO: Hào / Lục thân / Can chi / Lục tú / Tuần không
@@ -776,7 +776,7 @@ export default function InterpretationTables({
         const lineType = info ? info.lineType : lines2[index];
         const isMoving = info ? info.isMoving : false; // Quẻ biến không có hào động
         return renderHaoLine(realHao, lineType, isMoving);
-      }
+      },
     },
     {
       title: "Lục Thân",
@@ -802,7 +802,7 @@ export default function InterpretationTables({
             </span>
           </Tooltip>
         );
-      }
+      },
     },
     {
       title: "Can Chi",
@@ -810,7 +810,7 @@ export default function InterpretationTables({
       key: "canChi",
       width: 120,
       align: "center",
-      render: (canChi) => renderCanChi(canChi)
+      render: (canChi) => renderCanChi(canChi),
     },
     {
       title: "Lục Thú",
@@ -818,7 +818,7 @@ export default function InterpretationTables({
       key: "lucTu",
       width: 120,
       align: "center",
-      render: (lucTu, record) => renderLucTu(lucTu, record)
+      render: (lucTu, record) => renderLucTu(lucTu, record),
     },
     {
       title: "Tuần không",
@@ -826,8 +826,8 @@ export default function InterpretationTables({
       key: "tuanKhong",
       width: 100,
       align: "center",
-      render: (tuanKhong) => <span>{tuanKhong || ""}</span>
-    }
+      render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
+    },
   ];
 
   // Render content for Lục Thú fullscreen drawer
@@ -1221,35 +1221,35 @@ export default function InterpretationTables({
               buoc2KetLuan = {
                 relation: "Bằng nhau",
                 text: "Tốt",
-                color: "text-green-600"
+                color: "text-green-600",
               };
             } else if (relation === "duocSinh") {
               // Thế được sinh bởi Dụng
               buoc2KetLuan = {
                 relation: "Thế được sinh bởi Dụng",
                 text: "Tốt",
-                color: "text-green-600"
+                color: "text-green-600",
               };
             } else if (relation === "sinh") {
               // Thế sinh Dụng
               buoc2KetLuan = {
                 relation: "Thế sinh Dụng",
                 text: "Tốt nhưng cần phải có sự cố gắng thì việc mới thành",
-                color: "text-yellow-600"
+                color: "text-yellow-600",
               };
             } else if (relation === "khac") {
               // Thế khắc Dụng
               buoc2KetLuan = {
                 relation: "Thế khắc Dụng",
                 text: "Rất xấu",
-                color: "text-red-600"
+                color: "text-red-600",
               };
             } else if (relation === "biKhac") {
               // Dụng khắc Thế
               buoc2KetLuan = {
                 relation: "Dụng khắc Thế",
                 text: "Tương đối xấu",
-                color: "text-orange-600"
+                color: "text-orange-600",
               };
             }
           }
@@ -1284,7 +1284,7 @@ export default function InterpretationTables({
               step: "3.1",
               name: "Nguyệt Kiến",
               description: `Địa chi Dụng Thần (${dungThanDiaChi}) trùng với địa chi tháng (${monthDiaChi})`,
-              checked: true
+              checked: true,
             });
             if (dungThanDiaChi === monthDiaChi) {
               buoc3Diem += 1.75;
@@ -1301,7 +1301,7 @@ export default function InterpretationTables({
                 step: "3.2",
                 name: "Tam Hợp",
                 description: `Địa chi Dụng Thần (${dungThanDiaChi}) tam hợp với địa chi tháng (${monthDiaChi})`,
-                checked: true
+                checked: true,
               });
               if (isTamHopDiaChi(dungThanDiaChi, monthDiaChi)) {
                 buoc3Diem += 1;
@@ -1318,7 +1318,7 @@ export default function InterpretationTables({
                   step: "3.3",
                   name: "Nhị Hợp",
                   description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị hợp với địa chi tháng (${monthDiaChi})`,
-                  checked: true
+                  checked: true,
                 });
                 if (isNhiHopDiaChi(dungThanDiaChi, monthDiaChi)) {
                   buoc3Diem += 1;
@@ -1336,7 +1336,7 @@ export default function InterpretationTables({
                     step: "3.4",
                     name: "Nguyệt Phá",
                     description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị xung với địa chi tháng (${monthDiaChi})`,
-                    checked: true
+                    checked: true,
                   });
                   if (isNhiXungDiaChi(dungThanDiaChi, monthDiaChi)) {
                     buoc3Diem -= 1;
@@ -1356,7 +1356,7 @@ export default function InterpretationTables({
                       step: "3.5",
                       name: "Nhập Mộ",
                       description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhập mộ tại địa chi tháng (${monthDiaChi})`,
-                      checked: true
+                      checked: true,
                     });
                     if (nhapMo === monthDiaChi) {
                       buoc3Diem -= 0.25;
@@ -1383,7 +1383,7 @@ export default function InterpretationTables({
                           step: "3.6",
                           name: "Ngũ Hành",
                           description: `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) với ngũ hành tháng (${monthNguHanh.name})`,
-                          checked: true
+                          checked: true,
                         });
                         if (nguHanhRel === "duocSinh") {
                           // Dụng được tháng sinh
@@ -1466,7 +1466,7 @@ export default function InterpretationTables({
               step: "4.1",
               name: "Nhật Kiến",
               description: `Địa chi Dụng Thần (${dungThanDiaChi}) trùng với địa chi ngày (${dayDiaChi})`,
-              checked: true
+              checked: true,
             });
             if (dungThanDiaChi === dayDiaChi) {
               buoc4Diem += 1.75;
@@ -1483,7 +1483,7 @@ export default function InterpretationTables({
                 step: "4.2",
                 name: "Tam Hợp",
                 description: `Địa chi Dụng Thần (${dungThanDiaChi}) tam hợp với địa chi ngày (${dayDiaChi})`,
-                checked: true
+                checked: true,
               });
               if (isTamHopDiaChi(dungThanDiaChi, dayDiaChi)) {
                 buoc4Diem += 1;
@@ -1500,7 +1500,7 @@ export default function InterpretationTables({
                   step: "4.3",
                   name: "Nhị Hợp",
                   description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị hợp với địa chi ngày (${dayDiaChi})`,
-                  checked: true
+                  checked: true,
                 });
                 if (isNhiHopDiaChi(dungThanDiaChi, dayDiaChi)) {
                   buoc4Diem += 1;
@@ -1518,7 +1518,7 @@ export default function InterpretationTables({
                     step: "4.4",
                     name: "Nhật Phá",
                     description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhị xung với địa chi ngày (${dayDiaChi})`,
-                    checked: true
+                    checked: true,
                   });
                   if (isNhiXungDiaChi(dungThanDiaChi, dayDiaChi)) {
                     buoc4Diem -= 1;
@@ -1538,7 +1538,7 @@ export default function InterpretationTables({
                       step: "4.5",
                       name: "Nhập Mộ",
                       description: `Địa chi Dụng Thần (${dungThanDiaChi}) nhập mộ tại địa chi ngày (${dayDiaChi})`,
-                      checked: true
+                      checked: true,
                     });
                     if (nhapMo === dayDiaChi) {
                       buoc4Diem -= 0.25;
@@ -1565,7 +1565,7 @@ export default function InterpretationTables({
                           step: "4.6",
                           name: "Ngũ Hành",
                           description: `Ngũ hành Dụng Thần (${dungThanNguHanh.name}) với ngũ hành ngày (${dayNguHanh.name})`,
-                          checked: true
+                          checked: true,
                         });
                         if (nguHanhRel === "duocSinh") {
                           // Dụng được ngày sinh
@@ -1663,7 +1663,7 @@ export default function InterpretationTables({
               step: "5.1",
               name: "Nguyệt Kiến",
               description: `Địa chi Hào Thế (${theDiaChi}) trùng với địa chi tháng (${monthDiaChi})`,
-              checked: true
+              checked: true,
             });
             if (theDiaChi === monthDiaChi) {
               buoc5Diem += 1.75;
@@ -1680,7 +1680,7 @@ export default function InterpretationTables({
                 step: "5.2",
                 name: "Tam Hợp",
                 description: `Địa chi Hào Thế (${theDiaChi}) tam hợp với địa chi tháng (${monthDiaChi})`,
-                checked: true
+                checked: true,
               });
               if (isTamHopDiaChi(theDiaChi, monthDiaChi)) {
                 buoc5Diem += 1;
@@ -1697,7 +1697,7 @@ export default function InterpretationTables({
                   step: "5.3",
                   name: "Nhị Hợp",
                   description: `Địa chi Hào Thế (${theDiaChi}) nhị hợp với địa chi tháng (${monthDiaChi})`,
-                  checked: true
+                  checked: true,
                 });
                 if (isNhiHopDiaChi(theDiaChi, monthDiaChi)) {
                   buoc5Diem += 1;
@@ -1715,7 +1715,7 @@ export default function InterpretationTables({
                     step: "5.4",
                     name: "Nguyệt Phá",
                     description: `Địa chi Hào Thế (${theDiaChi}) nhị xung với địa chi tháng (${monthDiaChi})`,
-                    checked: true
+                    checked: true,
                   });
                   if (isNhiXungDiaChi(theDiaChi, monthDiaChi)) {
                     buoc5Diem -= 1;
@@ -1735,7 +1735,7 @@ export default function InterpretationTables({
                       step: "5.5",
                       name: "Nhập Mộ",
                       description: `Địa chi Hào Thế (${theDiaChi}) nhập mộ tại địa chi tháng (${monthDiaChi})`,
-                      checked: true
+                      checked: true,
                     });
                     if (nhapMoThe === monthDiaChi) {
                       buoc5Diem -= 0.25;
@@ -1761,7 +1761,7 @@ export default function InterpretationTables({
                           step: "5.6",
                           name: "Ngũ Hành",
                           description: `Ngũ hành Hào Thế (${theNguHanh.name}) với ngũ hành tháng (${monthNguHanhThe.name})`,
-                          checked: true
+                          checked: true,
                         });
                         if (nguHanhRelThe === "duocSinh") {
                           buoc5Diem += 1;
@@ -1838,7 +1838,7 @@ export default function InterpretationTables({
               step: "6.1",
               name: "Nhật Kiến",
               description: `Địa chi Hào Thế (${theDiaChi}) trùng với địa chi ngày (${dayDiaChi})`,
-              checked: true
+              checked: true,
             });
             if (theDiaChi === dayDiaChi) {
               buoc6Diem += 1.75;
@@ -1855,7 +1855,7 @@ export default function InterpretationTables({
                 step: "6.2",
                 name: "Tam Hợp",
                 description: `Địa chi Hào Thế (${theDiaChi}) tam hợp với địa chi ngày (${dayDiaChi})`,
-                checked: true
+                checked: true,
               });
               if (isTamHopDiaChi(theDiaChi, dayDiaChi)) {
                 buoc6Diem += 1;
@@ -1872,7 +1872,7 @@ export default function InterpretationTables({
                   step: "6.3",
                   name: "Nhị Hợp",
                   description: `Địa chi Hào Thế (${theDiaChi}) nhị hợp với địa chi ngày (${dayDiaChi})`,
-                  checked: true
+                  checked: true,
                 });
                 if (isNhiHopDiaChi(theDiaChi, dayDiaChi)) {
                   buoc6Diem += 1;
@@ -1890,7 +1890,7 @@ export default function InterpretationTables({
                     step: "6.4",
                     name: "Nhật Phá",
                     description: `Địa chi Hào Thế (${theDiaChi}) nhị xung với địa chi ngày (${dayDiaChi})`,
-                    checked: true
+                    checked: true,
                   });
                   if (isNhiXungDiaChi(theDiaChi, dayDiaChi)) {
                     buoc6Diem -= 1;
@@ -1910,7 +1910,7 @@ export default function InterpretationTables({
                       step: "6.5",
                       name: "Nhập Mộ",
                       description: `Địa chi Hào Thế (${theDiaChi}) nhập mộ tại địa chi ngày (${dayDiaChi})`,
-                      checked: true
+                      checked: true,
                     });
                     if (nhapMoTheDay === dayDiaChi) {
                       buoc6Diem -= 0.25;
@@ -1936,7 +1936,7 @@ export default function InterpretationTables({
                           step: "6.6",
                           name: "Ngũ Hành",
                           description: `Ngũ hành Hào Thế (${theNguHanhDay.name}) với ngũ hành ngày (${dayNguHanhThe.name})`,
-                          checked: true
+                          checked: true,
                         });
                         if (nguHanhRelTheDay === "duocSinh") {
                           buoc6Diem += 1;
@@ -2084,7 +2084,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         },
                         {
                           key: "2",
@@ -2144,7 +2144,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         },
                         {
                           key: "3",
@@ -2230,8 +2230,8 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
-                        }
+                          ),
+                        },
                       ];
 
                       // Thêm các bước có điều kiện
@@ -2346,7 +2346,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         });
                       }
 
@@ -2461,7 +2461,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         });
                       }
 
@@ -2541,7 +2541,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         });
                       }
 
@@ -2656,7 +2656,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         });
                       }
 
@@ -2771,7 +2771,7 @@ export default function InterpretationTables({
                                 </div>
                               </div>
                             </div>
-                          )
+                          ),
                         });
                       }
 
@@ -3013,7 +3013,7 @@ export default function InterpretationTables({
                                   // Thêm địa chi của hào Tử Tôn vào để kiểm tra
                                   const diaChiArrayWithTuTon = [
                                     ...allDiaChi,
-                                    tuTonDiaChi
+                                    tuTonDiaChi,
                                   ];
 
                                   // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
@@ -3128,7 +3128,7 @@ export default function InterpretationTables({
                                         tuTonTrigram:
                                           tuTonTrigram === "lower"
                                             ? "Hạ quái"
-                                            : "Thượng quái"
+                                            : "Thượng quái",
                                       };
                                     }
                                   }
@@ -3284,11 +3284,11 @@ export default function InterpretationTables({
                                   );
                                 })()}
                               </div>
-                            )
+                            ),
                           },
                           {
                             key: "2",
-                            label: "Luận Vợ/Chồng Đã Từng Kết Hôn",
+                            label: "Luận Vợ Đã Từng Kết Hôn",
                             children: (
                               <div className="bg-white p-4 rounded-lg border border-amber-200">
                                 {(() => {
@@ -3529,7 +3529,7 @@ export default function InterpretationTables({
                                   );
                                 })()}
                               </div>
-                            )
+                            ),
                           },
                           {
                             key: "3",
@@ -3565,7 +3565,7 @@ export default function InterpretationTables({
                                             canChi: line1.canChi,
                                             lucTu: lucTuName,
                                             line1: line1,
-                                            line2: line2
+                                            line2: line2,
                                           });
                                         }
                                       }
@@ -3998,8 +3998,8 @@ export default function InterpretationTables({
                                   );
                                 })()}
                               </div>
-                            )
-                          }
+                            ),
+                          },
                         ]}
                       />
                     </div>

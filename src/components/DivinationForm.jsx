@@ -8,7 +8,7 @@ import {
   Tooltip,
   Card,
   Radio,
-  Switch
+  Switch,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { getDungThanInfo } from "../data/dungThan";
@@ -34,9 +34,12 @@ export default function DivinationForm({ onDivinate }) {
         month: now.getMonth() + 1,
         year: now.getFullYear(),
         hour: now.getHours(),
-        minute: now.getMinutes()
+        minute: now.getMinutes(),
       });
     }
+    // Reset selected dụng thần khi chuyển chế độ
+    setSelectedDungThan(null);
+    form.setFieldsValue({ dungThan: undefined });
   }, [mode, form]);
 
   const dungThanOptions = [
@@ -44,7 +47,7 @@ export default function DivinationForm({ onDivinate }) {
     { value: "Huynh Đệ", label: "Huynh Đệ" },
     { value: "Tử Tôn", label: "Tử Tôn" },
     { value: "Thê Tài", label: "Thê Tài" },
-    { value: "Quan Quỷ", label: "Quan Quỷ" }
+    { value: "Quan Quỷ", label: "Quan Quỷ" },
   ];
 
   const handleDungThanChange = (value) => {
@@ -176,7 +179,7 @@ export default function DivinationForm({ onDivinate }) {
             upperSum,
             upperRemainder,
             lowerSum,
-            lowerRemainder
+            lowerRemainder,
           });
           throw new Error(
             "Không thể tính được quẻ. Vui lòng kiểm tra lại ngày giờ."
@@ -192,7 +195,7 @@ export default function DivinationForm({ onDivinate }) {
             type: "manual",
             lines,
             movingLine: movingRemainder,
-            datetime: selectedDate
+            datetime: selectedDate,
           },
           values.dungThan
         );
@@ -231,7 +234,7 @@ export default function DivinationForm({ onDivinate }) {
           {
             type: "manual",
             lines,
-            movingLine: movingLine === "none" ? null : Number(movingLine)
+            movingLine: movingLine === "none" ? null : Number(movingLine),
           },
           values.dungThan
         );
@@ -275,7 +278,7 @@ export default function DivinationForm({ onDivinate }) {
           month: currentDate.getMonth() + 1,
           year: currentDate.getFullYear(),
           hour: currentDate.getHours(),
-          minute: currentDate.getMinutes()
+          minute: currentDate.getMinutes(),
         }}
       >
         {mode === "serial" && (
@@ -284,7 +287,7 @@ export default function DivinationForm({ onDivinate }) {
               name="serial"
               rules={[
                 { required: true, message: "Vui lòng nhập" },
-                { pattern: /^\d+$/, message: "Chỉ được nhập số" }
+                { pattern: /^\d+$/, message: "Chỉ được nhập số" },
               ]}
               className="flex-1 min-w-[200px]"
             >
@@ -367,7 +370,6 @@ export default function DivinationForm({ onDivinate }) {
             </Form.Item>
           </div>
         )}
-
         {mode === "datetime" && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -435,7 +437,12 @@ export default function DivinationForm({ onDivinate }) {
                 label={
                   <span className="font-semibold text-gray-700 flex items-center gap-2">
                     Dụng Thần:
-                    <Tooltip title="Chọn dụng thần">
+                    <Tooltip
+                      title={renderDungThanTooltip()}
+                      placement="right"
+                      overlayClassName="tooltip-custom"
+                      overlayStyle={{ maxWidth: "500px" }}
+                    >
                       <InfoCircleOutlined className="text-blue-500 cursor-help" />
                     </Tooltip>
                   </span>
@@ -510,7 +517,7 @@ export default function DivinationForm({ onDivinate }) {
                                 <div className="h-2 w-12 bg-gray-500 rounded-full dark:bg-gray-300" />
                               </div>
                             ),
-                            value: 1
+                            value: 1,
                           },
                           {
                             label: (
@@ -520,8 +527,8 @@ export default function DivinationForm({ onDivinate }) {
                                 <div className="h-2 w-5 bg-gray-500 rounded-full dark:bg-gray-300" />
                               </div>
                             ),
-                            value: 0
-                          }
+                            value: 0,
+                          },
                         ]}
                         optionType="button"
                         buttonStyle="solid"
