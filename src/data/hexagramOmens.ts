@@ -24,7 +24,7 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "5-2": "Hành tẩu bạc bằng", // PHONG TRẠCH TRUNG PHU
   "5-7": "Hồng nhạn cao phi", // PHONG SƠN TIỆM
   "1-1": "Khốn Long đắc thủy", // BÁT THUẦN CÀN
-  "2-2": "Lưỡng trạch tương tư", // BÁT THUẦN ĐOÀI
+  "2-2": "Chẩn thuỷ hoà nê", // BÁT THUẦN ĐOÀI
   "5-5": "Cô chu đắc thủy", // BÁT THUẦN TỐN
   "6-6": "Khảm vi thủy", // BÁT THUẦN KHẢM
   "4-4": "Thiên hạ dương danh", // BÁT THUẦN CHẤN
@@ -62,7 +62,7 @@ const HEXAGRAM_OMENS: Record<string, string> = {
   "1-4": "Điểu bị lũng lao", // THIÊN LÔI VÔ VỌNG
   "3-4": "Cô nhân ngộ thực", // HỎA LÔI PHỆ HẠP
   "7-4": "Vị thủy phong hiền", // SƠN LÔI DI
-  "7-5": "Súy ma phân dao", // SƠN PHONG CỔ
+  "7-5": "Súy ma phân dao" // SƠN PHONG CỔ
 };
 
 export function getHexagramOmen(key: string): string | null {

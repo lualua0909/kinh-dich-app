@@ -14,9 +14,11 @@
     "antd": "^5.12.8",
     "framer-motion": "^12.23.26",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
