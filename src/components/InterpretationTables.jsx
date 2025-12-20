@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Table, Card, Tooltip, Drawer, Modal, Collapse } from "antd";
 import ReactMarkdown from "react-markdown";
+import nguHanhRelations from "../data/nguHanhRelations.json";
 import { getDungThanInfo } from "../data/dungThan";
 import {
   thanhLongLucThanInfo,
@@ -37,7 +38,6 @@ import {
   getDiaChiNhapMoTai,
   isTamHopDiaChi,
   isNhiHopDiaChi,
-  getTamHinhGroupOf,
   DIA_CHI_CODES,
   DIA_CHI_NAMES,
 } from "../utils/diaChi";
@@ -152,38 +152,8 @@ export default function InterpretationTables({
   };
 
   // Ngũ hành tương sinh / tương khắc data (dùng cho tooltip)
-  const nguHanhRelations = {
-    Mộc: {
-      sinh: "Hỏa",
-      duocSinh: "Thủy",
-      khac: "Thổ",
-      biKhac: "Kim",
-    },
-    Hỏa: {
-      sinh: "Thổ",
-      duocSinh: "Mộc",
-      khac: "Kim",
-      biKhac: "Thủy",
-    },
-    Thổ: {
-      sinh: "Kim",
-      duocSinh: "Hỏa",
-      khac: "Thủy",
-      biKhac: "Mộc",
-    },
-    Kim: {
-      sinh: "Thủy",
-      duocSinh: "Thổ",
-      khac: "Mộc",
-      biKhac: "Hỏa",
-    },
-    Thủy: {
-      sinh: "Mộc",
-      duocSinh: "Kim",
-      khac: "Hỏa",
-      biKhac: "Thổ",
-    },
-  };
+  // Ngũ hành tương sinh / tương khắc data import from json
+  // const nguHanhRelations = { ... } (removed)
   // Function to get Ngũ Hành from Địa Chi
   const getNguHanhFromDiaChi = (diaChi) => {
     const nguHanhMap = {
@@ -224,13 +194,7 @@ export default function InterpretationTables({
     const nguHanh2 = getNguHanhFromDiaChi(chi2);
     if (!nguHanh1 || !nguHanh2) return null;
 
-    const nguHanhRelations = {
-      Mộc: { sinh: "Hỏa", duocSinh: "Thủy", khac: "Thổ", biKhac: "Kim" },
-      Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
-      Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
-      Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
-      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" },
-    };
+    // nguHanhRelations imported globally
 
     const rel1 = nguHanhRelations[nguHanh1.name];
     if (rel1.sinh === nguHanh2.name) return "sinh"; // chi1 sinh chi2
@@ -267,13 +231,7 @@ export default function InterpretationTables({
     if (!nguHanh1 || !nguHanh2) return null;
     if (nguHanh1 === nguHanh2) return "trung"; // Trùng nhau
 
-    const nguHanhRelations = {
-      Mộc: { sinh: "Hỏa", duocSinh: "Thủy", khac: "Thổ", biKhac: "Kim" },
-      Hỏa: { sinh: "Thổ", duocSinh: "Mộc", khac: "Kim", biKhac: "Thủy" },
-      Thổ: { sinh: "Kim", duocSinh: "Hỏa", khac: "Thủy", biKhac: "Mộc" },
-      Kim: { sinh: "Thủy", duocSinh: "Thổ", khac: "Mộc", biKhac: "Hỏa" },
-      Thủy: { sinh: "Mộc", duocSinh: "Kim", khac: "Hỏa", biKhac: "Thổ" },
-    };
+    // nguHanhRelations imported globally
 
     const rel1 = nguHanhRelations[nguHanh1];
     if (!rel1) return null;

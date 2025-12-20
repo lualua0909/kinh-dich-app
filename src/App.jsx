@@ -12,38 +12,10 @@ import { initializeDataMigrations } from "./utils/dataMigration";
 import { DIA_CHI_CODES } from "./utils/diaChi";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
-const nguHanhRelations = {
-  Mộc: {
-    sinh: "Hỏa",
-    duocSinh: "Thủy",
-    khac: "Thổ",
-    biKhac: "Kim"
-  },
-  Hỏa: {
-    sinh: "Thổ",
-    duocSinh: "Mộc",
-    khac: "Kim",
-    biKhac: "Thủy"
-  },
-  Thổ: {
-    sinh: "Kim",
-    duocSinh: "Hỏa",
-    khac: "Thủy",
-    biKhac: "Mộc"
-  },
-  Kim: {
-    sinh: "Thủy",
-    duocSinh: "Thổ",
-    khac: "Mộc",
-    biKhac: "Hỏa"
-  },
-  Thủy: {
-    sinh: "Mộc",
-    duocSinh: "Kim",
-    khac: "Hỏa",
-    biKhac: "Thổ"
-  }
-};
+import nguHanhRelations from "./data/nguHanhRelations.json";
+
+// Ngũ hành theo Địa Chi (dùng cho tooltip)
+// const nguHanhRelations = { ... } (moved to json)
 
 const nguHanhFromDiaChi = {
   DN: { name: "Mộc", color: "text-green-600 bg-green-50" },

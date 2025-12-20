@@ -1,0 +1,32 @@
+{
+  "Mộc": {
+    "sinh": "Hỏa",
+    "duocSinh": "Thủy",
+    "khac": "Thổ",
+    "biKhac": "Kim"
+  },
+  "Hỏa": {
+    "sinh": "Thổ",
+    "duocSinh": "Mộc",
+    "khac": "Kim",
+    "biKhac": "Thủy"
+  },
+  "Thổ": {
+    "sinh": "Kim",
+    "duocSinh": "Hỏa",
+    "khac": "Thủy",
+    "biKhac": "Mộc"
+  },
+  "Kim": {
+    "sinh": "Thủy",
+    "duocSinh": "Thổ",
+    "khac": "Mộc",
+    "biKhac": "Hỏa"
+  },
+  "Thủy": {
+    "sinh": "Mộc",
+    "duocSinh": "Kim",
+    "khac": "Hỏa",
+    "biKhac": "Thổ"
+  }
+}
