@@ -2355,9 +2355,17 @@ export default function InterpretationTables({
 
                         const formatDiaChiUngKy = (dc) => {
                           const name = DIA_CHI_NAMES[DIA_CHI_CODES[dc] || dc] || dc;
-                          const dayMap = { "Tý": 1, "Sửu": 2, "Dần": 3, "Mão": 4, "Thìn": 5, "Tỵ": 6, "Ngọ": 7, "Mùi": 8, "Thân": 9, "Dậu": 10, "Tuất": 11, "Hợi": 12 };
+                          const firstDay = { "Tý": 1, "Sửu": 2, "Dần": 3, "Mão": 4, "Thìn": 5, "Tỵ": 6, "Ngọ": 7, "Mùi": 8, "Thân": 9, "Dậu": 10, "Tuất": 11, "Hợi": 12 }[name];
+
+                          const days = [];
+                          if (firstDay) {
+                            for (let d = firstDay; d <= 30; d += 12) {
+                              days.push(d);
+                            }
+                          }
+
                           const monthMap = { "Dần": 1, "Mão": 2, "Thìn": 3, "Tỵ": 4, "Ngọ": 5, "Mùi": 6, "Thân": 7, "Dậu": 8, "Tuất": 9, "Hợi": 10, "Tý": 11, "Sửu": 12 };
-                          return <span>ngày {name} (ngày {dayMap[name]}), tháng {name} (tháng {monthMap[name]})</span>;
+                          return <span>ngày {name} (ngày {days.join(", ")}), tháng {name} (tháng {monthMap[name]})</span>;
                         };
 
                         buoc8Item = {
