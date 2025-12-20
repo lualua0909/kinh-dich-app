@@ -2083,9 +2083,6 @@ export default function InterpretationTables({
                 <div className="space-y-6">
                   {/* Các bước giải quẻ */}
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b border-parchment-300 pb-2">
-                      Các Bước Giải Quẻ
-                    </h3>
                     {(() => {
                       // Logic: Luận Vợ Đã Từng Kết Hôn
                       let voDaTungKetHonResult = null;
@@ -3039,1373 +3036,1368 @@ export default function InterpretationTables({
 
                   {/* Thông tin ngoài lề */}
                   <div className="mt-8">
-                    <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4">
-                      <p className="text-center font-bold text-lg text-gray-800 m-0 mb-4">
-                        Thông Tin Ngoài Lề
-                      </p>
-                      <Collapse
-                        items={[
-                          {
-                            key: "1",
-                            label: "Luận Sảy Bỏ Con",
-                            children: (
-                              <div className="bg-white p-4 rounded-lg border border-amber-200">
-                                {(() => {
-                                  // Tìm hào Tử Tôn trong quẻ chính và quẻ biến
-                                  const tuTonHao1 = lineData1.find(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) === "Tử Tôn"
-                                  );
-                                  const tuTonHao2 = lineData2.find(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) === "Tử Tôn"
-                                  );
-                                  const tuTonHao = tuTonHao1 || tuTonHao2;
+                    <Collapse
+                      items={[
+                        {
+                          key: "1",
+                          label: "Luận Sảy Bỏ Con",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                              {(() => {
+                                // Tìm hào Tử Tôn trong quẻ chính và quẻ biến
+                                const tuTonHao1 = lineData1.find(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) === "Tử Tôn"
+                                );
+                                const tuTonHao2 = lineData2.find(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) === "Tử Tôn"
+                                );
+                                const tuTonHao = tuTonHao1 || tuTonHao2;
 
-                                  if (!tuTonHao) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào Tử Tôn trong quẻ
-                                      </p>
-                                    );
-                                  }
-
-                                  const tuTonDiaChi = extractDiaChi(
-                                    tuTonHao.canChi
-                                  );
-                                  if (!tuTonDiaChi) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không thể xác định địa chi của hào Tử
-                                        Tôn
-                                      </p>
-                                    );
-                                  }
-
-                                  // Thu thập tất cả địa chi từ ngày, tháng và các hào
-                                  const allDiaChi = [];
-
-                                  // Thêm địa chi từ ngày, tháng
-                                  const dayDiaChi = getDayDiaChi();
-                                  const monthDiaChi = getMonthDiaChi();
-                                  if (dayDiaChi) allDiaChi.push(dayDiaChi);
-                                  if (monthDiaChi) allDiaChi.push(monthDiaChi);
-
-                                  // Thêm địa chi từ các hào trong quẻ chính
-                                  lineData1.forEach((line) => {
-                                    const diaChi = extractDiaChi(line.canChi);
-                                    if (diaChi) allDiaChi.push(diaChi);
-                                  });
-
-                                  // Thêm địa chi từ các hào trong quẻ biến
-                                  lineData2.forEach((line) => {
-                                    const diaChi = extractDiaChi(line.canChi);
-                                    if (diaChi) allDiaChi.push(diaChi);
-                                  });
-
-                                  // Thêm địa chi của hào Tử Tôn vào để kiểm tra
-                                  const diaChiArrayWithTuTon = [
-                                    ...allDiaChi,
-                                    tuTonDiaChi,
-                                  ];
-
-                                  // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
-                                  const tamHinhCheck =
-                                    hasFullTamHinhGroup(diaChiArrayWithTuTon);
-
-                                  // Điều kiện 2: Kiểm tra không vong hoặc suy/nhập mộ
-                                  const isKhongVong =
-                                    tuTonHao.tuanKhong === "K";
-
-                                  // Kiểm tra suy/nhập mộ với ngày và tháng
-                                  let isSuyNhapMo = false;
-                                  let suyNhapMoDetails = [];
-
-                                  if (dayDiaChi) {
-                                    const nhapMoDay = getNhapMoOf(tuTonDiaChi);
-                                    if (nhapMoDay === dayDiaChi) {
-                                      isSuyNhapMo = true;
-                                      suyNhapMoDetails.push(
-                                        `Nhập mộ với ngày (${dayDiaChi})`
-                                      );
-                                    }
-                                  }
-
-                                  if (monthDiaChi) {
-                                    const nhapMoMonth =
-                                      getNhapMoOf(tuTonDiaChi);
-                                    if (nhapMoMonth === monthDiaChi) {
-                                      isSuyNhapMo = true;
-                                      suyNhapMoDetails.push(
-                                        `Nhập mộ với tháng (${monthDiaChi})`
-                                      );
-                                    }
-                                  }
-
-                                  // Kiểm tra suy (ngũ hành bị khắc)
-                                  if (dayDiaChi) {
-                                    const tuTonNguHanh =
-                                      getNguHanhFromDiaChi(tuTonDiaChi);
-                                    const dayNguHanh =
-                                      getNguHanhFromDiaChi(dayDiaChi);
-                                    if (tuTonNguHanh && dayNguHanh) {
-                                      const relation = getDiaChiRelation(
-                                        tuTonDiaChi,
-                                        dayDiaChi
-                                      );
-                                      if (relation === "biKhac") {
-                                        isSuyNhapMo = true;
-                                        suyNhapMoDetails.push(
-                                          `Bị ngày khắc (${dayDiaChi})`
-                                        );
-                                      }
-                                    }
-                                  }
-
-                                  if (monthDiaChi) {
-                                    const tuTonNguHanh =
-                                      getNguHanhFromDiaChi(tuTonDiaChi);
-                                    const monthNguHanh =
-                                      getNguHanhFromDiaChi(monthDiaChi);
-                                    if (tuTonNguHanh && monthNguHanh) {
-                                      const relation = getDiaChiRelation(
-                                        tuTonDiaChi,
-                                        monthDiaChi
-                                      );
-                                      if (relation === "biKhac") {
-                                        isSuyNhapMo = true;
-                                        suyNhapMoDetails.push(
-                                          `Bị tháng khắc (${monthDiaChi})`
-                                        );
-                                      }
-                                    }
-                                  }
-
-                                  const dieuKien2 = isKhongVong || isSuyNhapMo;
-
-                                  // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
-                                  const coNguyCo =
-                                    tamHinhCheck.hasFullGroup && dieuKien2;
-
-                                  // Kiểm tra xem có phải con của người hỏi không
-                                  // Người hỏi tương ứng với hào Thế
-                                  const theHao = lineData1.find(
-                                    (line) => Number(line.theUng) === 1
-                                  );
-
-                                  let khongPhaiConCuaNguoiHoi = false;
-                                  let thongTinKiemTraCon = null;
-
-                                  if (coNguyCo && theHao) {
-                                    // Xác định quái của hào Thế: hào 1-3 thuộc hạ quái, hào 4-6 thuộc thượng quái
-                                    const theTrigram =
-                                      theHao.hao <= 3 ? "lower" : "upper";
-
-                                    // Xác định quái của hào Tử Tôn
-                                    const tuTonTrigram =
-                                      tuTonHao.hao <= 3 ? "lower" : "upper";
-
-                                    // Kiểm tra: nếu hào Tử tôn có tuanKhong = "K" và không cùng quái với hào Thế
-                                    if (
-                                      tuTonHao.tuanKhong === "K" &&
-                                      theTrigram !== tuTonTrigram
-                                    ) {
-                                      khongPhaiConCuaNguoiHoi = true;
-                                      thongTinKiemTraCon = {
-                                        theHao: theHao.hao,
-                                        theTrigram:
-                                          theTrigram === "lower"
-                                            ? "Hạ quái"
-                                            : "Thượng quái",
-                                        tuTonHao: tuTonHao.hao,
-                                        tuTonTrigram:
-                                          tuTonTrigram === "lower"
-                                            ? "Hạ quái"
-                                            : "Thượng quái",
-                                      };
-                                    }
-                                  }
-
+                                if (!tuTonHao) {
                                   return (
-                                    <div className="space-y-3">
-                                      <div>
-                                        <p className="font-semibold mb-2">
-                                          Hào Tử Tôn: Hào {tuTonHao.hao} (
-                                          {tuTonHao.canChi}) - Địa Chi:{" "}
-                                          <strong>{tuTonDiaChi}</strong>
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào Tử Tôn trong quẻ
+                                    </p>
+                                  );
+                                }
+
+                                const tuTonDiaChi = extractDiaChi(
+                                  tuTonHao.canChi
+                                );
+                                if (!tuTonDiaChi) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không thể xác định địa chi của hào Tử
+                                      Tôn
+                                    </p>
+                                  );
+                                }
+
+                                // Thu thập tất cả địa chi từ ngày, tháng và các hào
+                                const allDiaChi = [];
+
+                                // Thêm địa chi từ ngày, tháng
+                                const dayDiaChi = getDayDiaChi();
+                                const monthDiaChi = getMonthDiaChi();
+                                if (dayDiaChi) allDiaChi.push(dayDiaChi);
+                                if (monthDiaChi) allDiaChi.push(monthDiaChi);
+
+                                // Thêm địa chi từ các hào trong quẻ chính
+                                lineData1.forEach((line) => {
+                                  const diaChi = extractDiaChi(line.canChi);
+                                  if (diaChi) allDiaChi.push(diaChi);
+                                });
+
+                                // Thêm địa chi từ các hào trong quẻ biến
+                                lineData2.forEach((line) => {
+                                  const diaChi = extractDiaChi(line.canChi);
+                                  if (diaChi) allDiaChi.push(diaChi);
+                                });
+
+                                // Thêm địa chi của hào Tử Tôn vào để kiểm tra
+                                const diaChiArrayWithTuTon = [
+                                  ...allDiaChi,
+                                  tuTonDiaChi,
+                                ];
+
+                                // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
+                                const tamHinhCheck =
+                                  hasFullTamHinhGroup(diaChiArrayWithTuTon);
+
+                                // Điều kiện 2: Kiểm tra không vong hoặc suy/nhập mộ
+                                const isKhongVong =
+                                  tuTonHao.tuanKhong === "K";
+
+                                // Kiểm tra suy/nhập mộ với ngày và tháng
+                                let isSuyNhapMo = false;
+                                let suyNhapMoDetails = [];
+
+                                if (dayDiaChi) {
+                                  const nhapMoDay = getNhapMoOf(tuTonDiaChi);
+                                  if (nhapMoDay === dayDiaChi) {
+                                    isSuyNhapMo = true;
+                                    suyNhapMoDetails.push(
+                                      `Nhập mộ với ngày (${dayDiaChi})`
+                                    );
+                                  }
+                                }
+
+                                if (monthDiaChi) {
+                                  const nhapMoMonth =
+                                    getNhapMoOf(tuTonDiaChi);
+                                  if (nhapMoMonth === monthDiaChi) {
+                                    isSuyNhapMo = true;
+                                    suyNhapMoDetails.push(
+                                      `Nhập mộ với tháng (${monthDiaChi})`
+                                    );
+                                  }
+                                }
+
+                                // Kiểm tra suy (ngũ hành bị khắc)
+                                if (dayDiaChi) {
+                                  const tuTonNguHanh =
+                                    getNguHanhFromDiaChi(tuTonDiaChi);
+                                  const dayNguHanh =
+                                    getNguHanhFromDiaChi(dayDiaChi);
+                                  if (tuTonNguHanh && dayNguHanh) {
+                                    const relation = getDiaChiRelation(
+                                      tuTonDiaChi,
+                                      dayDiaChi
+                                    );
+                                    if (relation === "biKhac") {
+                                      isSuyNhapMo = true;
+                                      suyNhapMoDetails.push(
+                                        `Bị ngày khắc (${dayDiaChi})`
+                                      );
+                                    }
+                                  }
+                                }
+
+                                if (monthDiaChi) {
+                                  const tuTonNguHanh =
+                                    getNguHanhFromDiaChi(tuTonDiaChi);
+                                  const monthNguHanh =
+                                    getNguHanhFromDiaChi(monthDiaChi);
+                                  if (tuTonNguHanh && monthNguHanh) {
+                                    const relation = getDiaChiRelation(
+                                      tuTonDiaChi,
+                                      monthDiaChi
+                                    );
+                                    if (relation === "biKhac") {
+                                      isSuyNhapMo = true;
+                                      suyNhapMoDetails.push(
+                                        `Bị tháng khắc (${monthDiaChi})`
+                                      );
+                                    }
+                                  }
+                                }
+
+                                const dieuKien2 = isKhongVong || isSuyNhapMo;
+
+                                // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
+                                const coNguyCo =
+                                  tamHinhCheck.hasFullGroup && dieuKien2;
+
+                                // Kiểm tra xem có phải con của người hỏi không
+                                // Người hỏi tương ứng với hào Thế
+                                const theHao = lineData1.find(
+                                  (line) => Number(line.theUng) === 1
+                                );
+
+                                let khongPhaiConCuaNguoiHoi = false;
+                                let thongTinKiemTraCon = null;
+
+                                if (coNguyCo && theHao) {
+                                  // Xác định quái của hào Thế: hào 1-3 thuộc hạ quái, hào 4-6 thuộc thượng quái
+                                  const theTrigram =
+                                    theHao.hao <= 3 ? "lower" : "upper";
+
+                                  // Xác định quái của hào Tử Tôn
+                                  const tuTonTrigram =
+                                    tuTonHao.hao <= 3 ? "lower" : "upper";
+
+                                  // Kiểm tra: nếu hào Tử tôn có tuanKhong = "K" và không cùng quái với hào Thế
+                                  if (
+                                    tuTonHao.tuanKhong === "K" &&
+                                    theTrigram !== tuTonTrigram
+                                  ) {
+                                    khongPhaiConCuaNguoiHoi = true;
+                                    thongTinKiemTraCon = {
+                                      theHao: theHao.hao,
+                                      theTrigram:
+                                        theTrigram === "lower"
+                                          ? "Hạ quái"
+                                          : "Thượng quái",
+                                      tuTonHao: tuTonHao.hao,
+                                      tuTonTrigram:
+                                        tuTonTrigram === "lower"
+                                          ? "Hạ quái"
+                                          : "Thượng quái",
+                                    };
+                                  }
+                                }
+
+                                return (
+                                  <div className="space-y-3">
+                                    <div>
+                                      <p className="font-semibold mb-2">
+                                        Hào Tử Tôn: Hào {tuTonHao.hao} (
+                                        {tuTonHao.canChi}) - Địa Chi:{" "}
+                                        <strong>{tuTonDiaChi}</strong>
+                                      </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <div
+                                        className={`p-3 rounded border-l-4 ${tamHinhCheck.hasFullGroup
+                                          ? "bg-red-50 border-red-500"
+                                          : "bg-green-50 border-green-500"
+                                          }`}
+                                      >
+                                        <p className="font-semibold mb-1">
+                                          Điều kiện 1: Kiểm tra Tam Hình
                                         </p>
-                                      </div>
-
-                                      <div className="space-y-2">
-                                        <div
-                                          className={`p-3 rounded border-l-4 ${tamHinhCheck.hasFullGroup
-                                            ? "bg-red-50 border-red-500"
-                                            : "bg-green-50 border-green-500"
-                                            }`}
-                                        >
-                                          <p className="font-semibold mb-1">
-                                            Điều kiện 1: Kiểm tra Tam Hình
-                                          </p>
-                                          {tamHinhCheck.hasFullGroup ? (
-                                            <div>
-                                              <p className="text-red-700 font-bold">
-                                                ⚠ Có nguy cơ: Tìm thấy nhóm Tam
-                                                Hình đầy đủ
-                                              </p>
-                                              <p className="text-sm text-gray-600 mt-1">
-                                                Nhóm: {tamHinhCheck.groupType}
-                                              </p>
-                                              <p className="text-sm text-gray-600">
-                                                Các địa chi:{" "}
-                                                {tamHinhCheck.groupMembers?.join(
-                                                  ", "
-                                                )}
-                                              </p>
-                                            </div>
-                                          ) : (
-                                            <p className="text-green-700">
-                                              ✓ Không tìm thấy nhóm Tam Hình đầy
-                                              đủ
+                                        {tamHinhCheck.hasFullGroup ? (
+                                          <div>
+                                            <p className="text-red-700 font-bold">
+                                              ⚠ Có nguy cơ: Tìm thấy nhóm Tam
+                                              Hình đầy đủ
                                             </p>
-                                          )}
-                                        </div>
-
-                                        <div
-                                          className={`p-3 rounded border-l-4 ${dieuKien2
-                                            ? "bg-red-50 border-red-500"
-                                            : "bg-green-50 border-green-500"
-                                            }`}
-                                        >
-                                          <p className="font-semibold mb-1">
-                                            Điều kiện 2: Kiểm tra Không Vong /
-                                            Suy / Nhập Mộ
-                                          </p>
-                                          {dieuKien2 ? (
-                                            <div>
-                                              <p className="text-red-700 font-bold">
-                                                ⚠ Có nguy cơ
-                                              </p>
-                                              <div className="text-sm text-gray-600 mt-1 space-y-1">
-                                                {isKhongVong && (
-                                                  <p>
-                                                    • Có Không Vong (Tuần không
-                                                    = K)
-                                                  </p>
-                                                )}
-                                                {isSuyNhapMo &&
-                                                  suyNhapMoDetails.length >
-                                                  0 && (
-                                                    <div>
-                                                      <p>• Suy/Nhập Mộ:</p>
-                                                      <ul className="list-disc list-inside ml-2">
-                                                        {suyNhapMoDetails.map(
-                                                          (detail, idx) => (
-                                                            <li key={idx}>
-                                                              {detail}
-                                                            </li>
-                                                          )
-                                                        )}
-                                                      </ul>
-                                                    </div>
-                                                  )}
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            <p className="text-green-700">
-                                              ✓ Không có Không Vong, không bị
-                                              Suy hoặc Nhập Mộ
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              Nhóm: {tamHinhCheck.groupType}
                                             </p>
-                                          )}
-                                        </div>
-
-                                        {coNguyCo && (
-                                          <div className="p-4 rounded-lg border-2 bg-red-100 border-red-400">
-                                            <p className="font-bold text-lg mb-2">
-                                              Kết luận:
-                                            </p>
-                                            <p className="text-red-800 font-bold text-lg">
-                                              ⚠ CÓ NGUY CƠ SẢY BỎ CON
-                                            </p>
-
-                                            {/* Kiểm tra xem có phải con của người hỏi không */}
-                                            {khongPhaiConCuaNguoiHoi &&
-                                              thongTinKiemTraCon && (
-                                                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded">
-                                                  <p className="font-semibold text-yellow-800 mb-2">
-                                                    ⚠ Lưu ý về quan hệ:
-                                                  </p>
-                                                  <div className="text-sm text-yellow-700 space-y-1">
-                                                    <p>
-                                                      • Hào Thế (Hào{" "}
-                                                      {
-                                                        thongTinKiemTraCon.theHao
-                                                      }
-                                                      ) - đại diện cho người hỏi
-                                                      - thuộc{" "}
-                                                      {
-                                                        thongTinKiemTraCon.theTrigram
-                                                      }
-                                                    </p>
-                                                    <p>
-                                                      • Hào Tử Tôn (Hào{" "}
-                                                      {
-                                                        thongTinKiemTraCon.tuTonHao
-                                                      }
-                                                      ) có Tuần không = "K" và
-                                                      thuộc{" "}
-                                                      {
-                                                        thongTinKiemTraCon.tuTonTrigram
-                                                      }
-                                                    </p>
-                                                    <p className="font-semibold mt-2">
-                                                      → Có thể suy luận: Đây có
-                                                      thể không phải là con của
-                                                      người hỏi (hào Thế) vì hào
-                                                      Tử Tôn có Tuần không = "K"
-                                                      và không nằm cùng quái với
-                                                      hào Thế.
-                                                    </p>
-                                                  </div>
-                                                </div>
+                                            <p className="text-sm text-gray-600">
+                                              Các địa chi:{" "}
+                                              {tamHinhCheck.groupMembers?.join(
+                                                ", "
                                               )}
+                                            </p>
                                           </div>
+                                        ) : (
+                                          <p className="text-green-700">
+                                            ✓ Không tìm thấy nhóm Tam Hình đầy
+                                            đủ
+                                          </p>
                                         )}
                                       </div>
-                                    </div>
-                                  );
-                                })()}
-                              </div>
-                            ),
-                          },
-                          {
-                            key: "2",
-                            label: "Luận Vợ Đã Từng Kết Hôn",
-                            children: (
-                              <div className="bg-white p-4 rounded-lg border border-amber-200">
-                                {(() => {
-                                  // Bước 1: Tìm hào Thê Tài trong quẻ chính
-                                  const theTaiHao = lineData1.find(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) === "Thê Tài"
-                                  );
 
-                                  if (!theTaiHao) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào Thê Tài trong quẻ
-                                        chính
-                                      </p>
-                                    );
-                                  }
-
-                                  // Xác định quái của hào Thê Tài
-                                  const theTaiTrigram =
-                                    theTaiHao.hao <= 3 ? "lower" : "upper";
-
-                                  // Tìm các hào Phụ Mẫu trong quẻ chính
-                                  const phuMauHaos = lineData1.filter(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) === "Phụ Mẫu"
-                                  );
-
-                                  if (phuMauHaos.length === 0) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào Phụ Mẫu trong quẻ
-                                        chính
-                                      </p>
-                                    );
-                                  }
-
-                                  // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Thê Tài không
-                                  const phuMauCungQuai = phuMauHaos.find(
-                                    (line) => {
-                                      const phuMauTrigram =
-                                        line.hao <= 3 ? "lower" : "upper";
-                                      return phuMauTrigram === theTaiTrigram;
-                                    }
-                                  );
-
-                                  if (!phuMauCungQuai) {
-                                    return (
-                                      <div className="space-y-2">
-                                        <p className="text-gray-500 italic">
-                                          Không tìm thấy hào Phụ Mẫu cùng quái
-                                          với hào Thê Tài
+                                      <div
+                                        className={`p-3 rounded border-l-4 ${dieuKien2
+                                          ? "bg-red-50 border-red-500"
+                                          : "bg-green-50 border-green-500"
+                                          }`}
+                                      >
+                                        <p className="font-semibold mb-1">
+                                          Điều kiện 2: Kiểm tra Không Vong /
+                                          Suy / Nhập Mộ
                                         </p>
-                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
-                                          <p className="font-semibold mb-2">
-                                            Bước 1: Kiểm tra hào Thê Tài và Phụ
-                                            Mẫu cùng quái
+                                        {dieuKien2 ? (
+                                          <div>
+                                            <p className="text-red-700 font-bold">
+                                              ⚠ Có nguy cơ
+                                            </p>
+                                            <div className="text-sm text-gray-600 mt-1 space-y-1">
+                                              {isKhongVong && (
+                                                <p>
+                                                  • Có Không Vong (Tuần không
+                                                  = K)
+                                                </p>
+                                              )}
+                                              {isSuyNhapMo &&
+                                                suyNhapMoDetails.length >
+                                                0 && (
+                                                  <div>
+                                                    <p>• Suy/Nhập Mộ:</p>
+                                                    <ul className="list-disc list-inside ml-2">
+                                                      {suyNhapMoDetails.map(
+                                                        (detail, idx) => (
+                                                          <li key={idx}>
+                                                            {detail}
+                                                          </li>
+                                                        )
+                                                      )}
+                                                    </ul>
+                                                  </div>
+                                                )}
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <p className="text-green-700">
+                                            ✓ Không có Không Vong, không bị
+                                            Suy hoặc Nhập Mộ
                                           </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Hào Thê Tài: Hào {theTaiHao.hao} (
-                                            {theTaiHao.canChi}) - Thuộc{" "}
-                                            {theTaiTrigram === "lower"
-                                              ? "Hạ quái"
-                                              : "Thượng quái"}
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Các hào Phụ Mẫu tìm thấy:{" "}
-                                            {phuMauHaos
-                                              .map(
-                                                (pm) =>
-                                                  `Hào ${pm.hao} (${pm.canChi})`
-                                              )
-                                              .join(", ")}
-                                          </p>
-                                          <p className="text-sm text-red-600 mt-2">
-                                            → Không có hào Phụ Mẫu nào cùng quái
-                                            với hào Thê Tài
-                                          </p>
-                                        </div>
+                                        )}
                                       </div>
-                                    );
-                                  }
 
-                                  // Bước 2: Tìm hào tương ứng trong quẻ biến
-                                  const phuMauIndex = lineData1.findIndex(
-                                    (line) => line.hao === phuMauCungQuai.hao
-                                  );
-                                  const phuMauBienHao =
-                                    phuMauIndex >= 0 &&
-                                      phuMauIndex < lineData2.length
-                                      ? lineData2[phuMauIndex]
-                                      : null;
+                                      {coNguyCo && (
+                                        <div className="p-4 rounded-lg border-2 bg-red-100 border-red-400">
+                                          <p className="font-bold text-lg mb-2">
+                                            Kết luận:
+                                          </p>
+                                          <p className="text-red-800 font-bold text-lg">
+                                            ⚠ CÓ NGUY CƠ SẢY BỎ CON
+                                          </p>
 
-                                  if (!phuMauBienHao) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào tương ứng trong quẻ
-                                        biến
-                                      </p>
-                                    );
-                                  }
+                                          {/* Kiểm tra xem có phải con của người hỏi không */}
+                                          {khongPhaiConCuaNguoiHoi &&
+                                            thongTinKiemTraCon && (
+                                              <div className="mt-4 p-3 bg-yellow-50 border border-yellow-300 rounded">
+                                                <p className="font-semibold text-yellow-800 mb-2">
+                                                  ⚠ Lưu ý về quan hệ:
+                                                </p>
+                                                <div className="text-sm text-yellow-700 space-y-1">
+                                                  <p>
+                                                    • Hào Thế (Hào{" "}
+                                                    {
+                                                      thongTinKiemTraCon.theHao
+                                                    }
+                                                    ) - đại diện cho người hỏi
+                                                    - thuộc{" "}
+                                                    {
+                                                      thongTinKiemTraCon.theTrigram
+                                                    }
+                                                  </p>
+                                                  <p>
+                                                    • Hào Tử Tôn (Hào{" "}
+                                                    {
+                                                      thongTinKiemTraCon.tuTonHao
+                                                    }
+                                                    ) có Tuần không = "K" và
+                                                    thuộc{" "}
+                                                    {
+                                                      thongTinKiemTraCon.tuTonTrigram
+                                                    }
+                                                  </p>
+                                                  <p className="font-semibold mt-2">
+                                                    → Có thể suy luận: Đây có
+                                                    thể không phải là con của
+                                                    người hỏi (hào Thế) vì hào
+                                                    Tử Tôn có Tuần không = "K"
+                                                    và không nằm cùng quái với
+                                                    hào Thế.
+                                                  </p>
+                                                </div>
+                                              </div>
+                                            )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ),
+                        },
+                        {
+                          key: "2",
+                          label: "Luận Vợ Đã Từng Kết Hôn",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                              {(() => {
+                                // Bước 1: Tìm hào Thê Tài trong quẻ chính
+                                const theTaiHao = lineData1.find(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) === "Thê Tài"
+                                );
 
-                                  // Kiểm tra Lục Thú có phải Chu Tước không
-                                  const lucTuName = getLucTuName(
-                                    phuMauBienHao.lucTu
-                                  );
-                                  const laChuTuoc = lucTuName === "Chu Tước";
-
-                                  // Kiểm tra tuanKhong = "K"
-                                  const coTuanKhong =
-                                    phuMauBienHao.tuanKhong === "K";
-
-                                  // Kết luận
-                                  const coKhaNangTungKetHon =
-                                    laChuTuoc && coTuanKhong;
-
+                                if (!theTaiHao) {
                                   return (
-                                    <div className="space-y-3">
-                                      <div>
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào Thê Tài trong quẻ
+                                      chính
+                                    </p>
+                                  );
+                                }
+
+                                // Xác định quái của hào Thê Tài
+                                const theTaiTrigram =
+                                  theTaiHao.hao <= 3 ? "lower" : "upper";
+
+                                // Tìm các hào Phụ Mẫu trong quẻ chính
+                                const phuMauHaos = lineData1.filter(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) === "Phụ Mẫu"
+                                );
+
+                                if (phuMauHaos.length === 0) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào Phụ Mẫu trong quẻ
+                                      chính
+                                    </p>
+                                  );
+                                }
+
+                                // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Thê Tài không
+                                const phuMauCungQuai = phuMauHaos.find(
+                                  (line) => {
+                                    const phuMauTrigram =
+                                      line.hao <= 3 ? "lower" : "upper";
+                                    return phuMauTrigram === theTaiTrigram;
+                                  }
+                                );
+
+                                if (!phuMauCungQuai) {
+                                  return (
+                                    <div className="space-y-2">
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Phụ Mẫu cùng quái
+                                        với hào Thê Tài
+                                      </p>
+                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
                                         <p className="font-semibold mb-2">
-                                          Hào Thê Tài: Hào {theTaiHao.hao} (
+                                          Bước 1: Kiểm tra hào Thê Tài và Phụ
+                                          Mẫu cùng quái
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          • Hào Thê Tài: Hào {theTaiHao.hao} (
                                           {theTaiHao.canChi}) - Thuộc{" "}
                                           {theTaiTrigram === "lower"
                                             ? "Hạ quái"
                                             : "Thượng quái"}
                                         </p>
-                                      </div>
-
-                                      <div className="space-y-2">
-                                        <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
-                                          <p className="font-semibold mb-2">
-                                            Bước 1: Kiểm tra hào Thê Tài và Phụ
-                                            Mẫu cùng quái
-                                          </p>
-                                          <p className="text-green-700 mb-1">
-                                            ✓ Tìm thấy hào Phụ Mẫu cùng quái với
-                                            hào Thê Tài
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Hào Phụ Mẫu: Hào{" "}
-                                            {phuMauCungQuai.hao} (
-                                            {phuMauCungQuai.canChi}) - Thuộc{" "}
-                                            {phuMauCungQuai.hao <= 3
-                                              ? "Hạ quái"
-                                              : "Thượng quái"}
-                                          </p>
-                                        </div>
-
-                                        <div
-                                          className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
-                                            ? "bg-green-50 border-green-500"
-                                            : "bg-gray-50 border-gray-300"
-                                            }`}
-                                        >
-                                          <p className="font-semibold mb-2">
-                                            Bước 2: Kiểm tra hào Phụ Mẫu trong
-                                            quẻ biến
-                                          </p>
-                                          <p className="text-sm text-gray-600 mb-1">
-                                            Hào Phụ Mẫu trong quẻ biến: Hào{" "}
-                                            {phuMauBienHao.hao} (
-                                            {phuMauBienHao.canChi})
-                                          </p>
-                                          <div className="space-y-1 mt-2">
-                                            <p
-                                              className={
-                                                laChuTuoc
-                                                  ? "text-green-700"
-                                                  : "text-red-700"
-                                              }
-                                            >
-                                              {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
-                                              {lucTuName}
-                                              {laChuTuoc
-                                                ? " (Chu Tước)"
-                                                : ""}
-                                            </p>
-                                            <p
-                                              className={
-                                                coTuanKhong
-                                                  ? "text-green-700"
-                                                  : "text-red-700"
-                                              }
-                                            >
-                                              {coTuanKhong ? "✓" : "✗"} Tuần
-                                              không:{" "}
-                                              {phuMauBienHao.tuanKhong ||
-                                                "Không có"}
-                                              {coTuanKhong ? ' (= "K")' : ""}
-                                            </p>
-                                          </div>
-                                        </div>
-
-                                        {coKhaNangTungKetHon && (
-                                          <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
-                                            <p className="font-bold text-lg mb-2">
-                                              Kết luận:
-                                            </p>
-                                            <p className="text-blue-800 font-bold text-lg">
-                                              ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
-                                              TRƯỚC ĐÂY
-                                            </p>
-                                            <p className="text-sm text-blue-700 mt-2">
-                                              Hào Phụ Mẫu cùng quái với hào Thê
-                                              Tài có Lục Thú là Chu Tước và có Tuần không = "K",
-                                              cho thấy có khả năng vợ/chồng đã
-                                              từng kết hôn trước đây.
-                                            </p>
-                                          </div>
-                                        )}
-
-                                        {!coKhaNangTungKetHon && (
-                                          <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
-                                            <p className="font-semibold mb-2">
-                                              Kết luận:
-                                            </p>
-                                            <p className="text-gray-700">
-                                              Không đủ điều kiện để kết luận đã
-                                              từng kết hôn trước đây.
-                                            </p>
-                                            {!laChuTuoc && (
-                                              <p className="text-sm text-red-600 mt-1">
-                                                • Lục Thú không phải Chu Tước
-                                              </p>
-                                            )}
-                                            {!coTuanKhong && (
-                                              <p className="text-sm text-red-600 mt-1">
-                                                • Không có Tuần không = "K"
-                                              </p>
-                                            )}
-                                          </div>
-                                        )}
+                                        <p className="text-sm text-gray-600">
+                                          • Các hào Phụ Mẫu tìm thấy:{" "}
+                                          {phuMauHaos
+                                            .map(
+                                              (pm) =>
+                                                `Hào ${pm.hao} (${pm.canChi})`
+                                            )
+                                            .join(", ")}
+                                        </p>
+                                        <p className="text-sm text-red-600 mt-2">
+                                          → Không có hào Phụ Mẫu nào cùng quái
+                                          với hào Thê Tài
+                                        </p>
                                       </div>
                                     </div>
                                   );
-                                })()}
-                              </div>
-                            ),
-                          },
-                          {
-                            key: "3",
-                            label: "Luận Chồng Đã Từng Kết Hôn",
-                            children: (
-                              <div className="bg-white p-4 rounded-lg border border-amber-200">
-                                {(() => {
-                                  // Bước 1: Tìm hào Quan Quỷ trong quẻ chính
-                                  const quanQuyHao = lineData1.find(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) ===
-                                      "Quan Quỷ"
-                                  );
+                                }
 
-                                  if (!quanQuyHao) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào Quan Quỷ trong quẻ
-                                        chính
-                                      </p>
-                                    );
-                                  }
+                                // Bước 2: Tìm hào tương ứng trong quẻ biến
+                                const phuMauIndex = lineData1.findIndex(
+                                  (line) => line.hao === phuMauCungQuai.hao
+                                );
+                                const phuMauBienHao =
+                                  phuMauIndex >= 0 &&
+                                    phuMauIndex < lineData2.length
+                                    ? lineData2[phuMauIndex]
+                                    : null;
 
-                                  // Xác định quái của hào Quan Quỷ
-                                  const quanQuyTrigram =
-                                    quanQuyHao.hao <= 3 ? "lower" : "upper";
-
-                                  // Tìm các hào Phụ Mẫu trong quẻ chính
-                                  const phuMauHaos = lineData1.filter(
-                                    (line) =>
-                                      getLucThanName(line.lucThan) === "Phụ Mẫu"
-                                  );
-
-                                  if (phuMauHaos.length === 0) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào Phụ Mẫu trong quẻ
-                                        chính
-                                      </p>
-                                    );
-                                  }
-
-                                  // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Quan Quỷ không
-                                  const phuMauCungQuai = phuMauHaos.find(
-                                    (line) => {
-                                      const phuMauTrigram =
-                                        line.hao <= 3 ? "lower" : "upper";
-                                      return phuMauTrigram === quanQuyTrigram;
-                                    }
-                                  );
-
-                                  if (!phuMauCungQuai) {
-                                    return (
-                                      <div className="space-y-2">
-                                        <p className="text-gray-500 italic">
-                                          Không tìm thấy hào Phụ Mẫu cùng quái
-                                          với hào Quan Quỷ
-                                        </p>
-                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
-                                          <p className="font-semibold mb-2">
-                                            Bước 1: Kiểm tra hào Quan Quỷ và Phụ
-                                            Mẫu cùng quái
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Hào Quan Quỷ: Hào {quanQuyHao.hao}{" "}
-                                            ({quanQuyHao.canChi}) - Thuộc{" "}
-                                            {quanQuyTrigram === "lower"
-                                              ? "Hạ quái"
-                                              : "Thượng quái"}
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Các hào Phụ Mẫu tìm thấy:{" "}
-                                            {phuMauHaos
-                                              .map(
-                                                (pm) =>
-                                                  `Hào ${pm.hao} (${pm.canChi})`
-                                              )
-                                              .join(", ")}
-                                          </p>
-                                          <p className="text-sm text-red-600 mt-2">
-                                            → Không có hào Phụ Mẫu nào cùng quái
-                                            với hào Quan Quỷ
-                                          </p>
-                                        </div>
-                                      </div>
-                                    );
-                                  }
-
-                                  // Bước 2: Tìm hào tương ứng trong quẻ biến
-                                  const phuMauIndex = lineData1.findIndex(
-                                    (line) => line.hao === phuMauCungQuai.hao
-                                  );
-                                  const phuMauBienHao =
-                                    phuMauIndex >= 0 &&
-                                      phuMauIndex < lineData2.length
-                                      ? lineData2[phuMauIndex]
-                                      : null;
-
-                                  if (!phuMauBienHao) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không tìm thấy hào tương ứng trong quẻ
-                                        biến
-                                      </p>
-                                    );
-                                  }
-
-                                  // Kiểm tra Lục Thú có phải Chu Tước không
-                                  const lucTuName = getLucTuName(
-                                    phuMauBienHao.lucTu
-                                  );
-                                  const laChuTuoc = lucTuName === "Chu Tước";
-
-                                  // Kiểm tra tuanKhong = "K"
-                                  const coTuanKhong =
-                                    phuMauBienHao.tuanKhong === "K";
-
-                                  // Kết luận
-                                  const coKhaNangTungKetHon =
-                                    laChuTuoc && coTuanKhong;
-
+                                if (!phuMauBienHao) {
                                   return (
-                                    <div className="space-y-3">
-                                      <div>
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào tương ứng trong quẻ
+                                      biến
+                                    </p>
+                                  );
+                                }
+
+                                // Kiểm tra Lục Thú có phải Chu Tước không
+                                const lucTuName = getLucTuName(
+                                  phuMauBienHao.lucTu
+                                );
+                                const laChuTuoc = lucTuName === "Chu Tước";
+
+                                // Kiểm tra tuanKhong = "K"
+                                const coTuanKhong =
+                                  phuMauBienHao.tuanKhong === "K";
+
+                                // Kết luận
+                                const coKhaNangTungKetHon =
+                                  laChuTuoc && coTuanKhong;
+
+                                return (
+                                  <div className="space-y-3">
+                                    <div>
+                                      <p className="font-semibold mb-2">
+                                        Hào Thê Tài: Hào {theTaiHao.hao} (
+                                        {theTaiHao.canChi}) - Thuộc{" "}
+                                        {theTaiTrigram === "lower"
+                                          ? "Hạ quái"
+                                          : "Thượng quái"}
+                                      </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
                                         <p className="font-semibold mb-2">
-                                          Hào Quan Quỷ: Hào {quanQuyHao.hao} (
-                                          {quanQuyHao.canChi}) - Thuộc{" "}
-                                          {quanQuyTrigram === "lower"
+                                          Bước 1: Kiểm tra hào Thê Tài và Phụ
+                                          Mẫu cùng quái
+                                        </p>
+                                        <p className="text-green-700 mb-1">
+                                          ✓ Tìm thấy hào Phụ Mẫu cùng quái với
+                                          hào Thê Tài
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          • Hào Phụ Mẫu: Hào{" "}
+                                          {phuMauCungQuai.hao} (
+                                          {phuMauCungQuai.canChi}) - Thuộc{" "}
+                                          {phuMauCungQuai.hao <= 3
                                             ? "Hạ quái"
                                             : "Thượng quái"}
                                         </p>
                                       </div>
 
-                                      <div className="space-y-2">
-                                        <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
-                                          <p className="font-semibold mb-2">
-                                            Bước 1: Kiểm tra hào Quan Quỷ và Phụ
-                                            Mẫu cùng quái
+                                      <div
+                                        className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
+                                          ? "bg-green-50 border-green-500"
+                                          : "bg-gray-50 border-gray-300"
+                                          }`}
+                                      >
+                                        <p className="font-semibold mb-2">
+                                          Bước 2: Kiểm tra hào Phụ Mẫu trong
+                                          quẻ biến
+                                        </p>
+                                        <p className="text-sm text-gray-600 mb-1">
+                                          Hào Phụ Mẫu trong quẻ biến: Hào{" "}
+                                          {phuMauBienHao.hao} (
+                                          {phuMauBienHao.canChi})
+                                        </p>
+                                        <div className="space-y-1 mt-2">
+                                          <p
+                                            className={
+                                              laChuTuoc
+                                                ? "text-green-700"
+                                                : "text-red-700"
+                                            }
+                                          >
+                                            {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
+                                            {lucTuName}
+                                            {laChuTuoc
+                                              ? " (Chu Tước)"
+                                              : ""}
                                           </p>
-                                          <p className="text-green-700 mb-1">
-                                            ✓ Tìm thấy hào Phụ Mẫu cùng quái với
-                                            hào Quan Quỷ
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            • Hào Phụ Mẫu: Hào{" "}
-                                            {phuMauCungQuai.hao} (
-                                            {phuMauCungQuai.canChi}) - Thuộc{" "}
-                                            {phuMauCungQuai.hao <= 3
-                                              ? "Hạ quái"
-                                              : "Thượng quái"}
+                                          <p
+                                            className={
+                                              coTuanKhong
+                                                ? "text-green-700"
+                                                : "text-red-700"
+                                            }
+                                          >
+                                            {coTuanKhong ? "✓" : "✗"} Tuần
+                                            không:{" "}
+                                            {phuMauBienHao.tuanKhong ||
+                                              "Không có"}
+                                            {coTuanKhong ? ' (= "K")' : ""}
                                           </p>
                                         </div>
+                                      </div>
 
-                                        <div
-                                          className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
-                                            ? "bg-green-50 border-green-500"
-                                            : "bg-gray-50 border-gray-300"
-                                            }`}
-                                        >
-                                          <p className="font-semibold mb-2">
-                                            Bước 2: Kiểm tra hào Phụ Mẫu trong
-                                            quẻ biến
+                                      {coKhaNangTungKetHon && (
+                                        <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
+                                          <p className="font-bold text-lg mb-2">
+                                            Kết luận:
                                           </p>
-                                          <p className="text-sm text-gray-600 mb-1">
-                                            Hào Phụ Mẫu trong quẻ biến: Hào{" "}
-                                            {phuMauBienHao.hao} (
-                                            {phuMauBienHao.canChi})
+                                          <p className="text-blue-800 font-bold text-lg">
+                                            ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
+                                            TRƯỚC ĐÂY
                                           </p>
-                                          <div className="space-y-1 mt-2">
-                                            <p
-                                              className={
-                                                laChuTuoc
-                                                  ? "text-green-700"
-                                                  : "text-red-700"
-                                              }
-                                            >
-                                              {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
-                                              {lucTuName}
-                                              {laChuTuoc
-                                                ? " (Chu Tước)"
-                                                : ""}
-                                            </p>
-                                            <p
-                                              className={
-                                                coTuanKhong
-                                                  ? "text-green-700"
-                                                  : "text-red-700"
-                                              }
-                                            >
-                                              {coTuanKhong ? "✓" : "✗"} Tuần
-                                              không:{" "}
-                                              {phuMauBienHao.tuanKhong ||
-                                                "Không có"}
-                                              {coTuanKhong ? ' (= "K")' : ""}
-                                            </p>
-                                          </div>
+                                          <p className="text-sm text-blue-700 mt-2">
+                                            Hào Phụ Mẫu cùng quái với hào Thê
+                                            Tài có Lục Thú là Chu Tước và có Tuần không = "K",
+                                            cho thấy có khả năng vợ/chồng đã
+                                            từng kết hôn trước đây.
+                                          </p>
                                         </div>
+                                      )}
 
-                                        {coKhaNangTungKetHon && (
-                                          <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
-                                            <p className="font-bold text-lg mb-2">
-                                              Kết luận:
+                                      {!coKhaNangTungKetHon && (
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                          <p className="font-semibold mb-2">
+                                            Kết luận:
+                                          </p>
+                                          <p className="text-gray-700">
+                                            Không đủ điều kiện để kết luận đã
+                                            từng kết hôn trước đây.
+                                          </p>
+                                          {!laChuTuoc && (
+                                            <p className="text-sm text-red-600 mt-1">
+                                              • Lục Thú không phải Chu Tước
                                             </p>
-                                            <p className="text-blue-800 font-bold text-lg">
-                                              ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
-                                              TRƯỚC ĐÂY
+                                          )}
+                                          {!coTuanKhong && (
+                                            <p className="text-sm text-red-600 mt-1">
+                                              • Không có Tuần không = "K"
                                             </p>
-                                            <p className="text-sm text-blue-700 mt-2">
-                                              Hào Phụ Mẫu cùng quái với hào Quan
-                                              Quỷ có Lục Thú là Chu Tước và có Tuần không = "K",
-                                              cho thấy có khả năng chồng đã từng
-                                              kết hôn trước đây.
-                                            </p>
-                                          </div>
-                                        )}
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ),
+                        },
+                        {
+                          key: "3",
+                          label: "Luận Chồng Đã Từng Kết Hôn",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                              {(() => {
+                                // Bước 1: Tìm hào Quan Quỷ trong quẻ chính
+                                const quanQuyHao = lineData1.find(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) ===
+                                    "Quan Quỷ"
+                                );
 
-                                        {!coKhaNangTungKetHon && (
-                                          <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
-                                            <p className="font-semibold mb-2">
-                                              Kết luận:
-                                            </p>
-                                            <p className="text-gray-700">
-                                              Không đủ điều kiện để kết luận đã
-                                              từng kết hôn trước đây.
-                                            </p>
-                                            {!laChuTuoc && (
-                                              <p className="text-sm text-red-600 mt-1">
-                                                • Lục Thú không phải Chu Tước
-                                              </p>
-                                            )}
-                                            {!coTuanKhong && (
-                                              <p className="text-sm text-red-600 mt-1">
-                                                • Không có Tuần không = "K"
-                                              </p>
-                                            )}
-                                          </div>
-                                        )}
+                                if (!quanQuyHao) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào Quan Quỷ trong quẻ
+                                      chính
+                                    </p>
+                                  );
+                                }
+
+                                // Xác định quái của hào Quan Quỷ
+                                const quanQuyTrigram =
+                                  quanQuyHao.hao <= 3 ? "lower" : "upper";
+
+                                // Tìm các hào Phụ Mẫu trong quẻ chính
+                                const phuMauHaos = lineData1.filter(
+                                  (line) =>
+                                    getLucThanName(line.lucThan) === "Phụ Mẫu"
+                                );
+
+                                if (phuMauHaos.length === 0) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào Phụ Mẫu trong quẻ
+                                      chính
+                                    </p>
+                                  );
+                                }
+
+                                // Kiểm tra xem có hào Phụ Mẫu nào cùng quái với hào Quan Quỷ không
+                                const phuMauCungQuai = phuMauHaos.find(
+                                  (line) => {
+                                    const phuMauTrigram =
+                                      line.hao <= 3 ? "lower" : "upper";
+                                    return phuMauTrigram === quanQuyTrigram;
+                                  }
+                                );
+
+                                if (!phuMauCungQuai) {
+                                  return (
+                                    <div className="space-y-2">
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy hào Phụ Mẫu cùng quái
+                                        với hào Quan Quỷ
+                                      </p>
+                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                        <p className="font-semibold mb-2">
+                                          Bước 1: Kiểm tra hào Quan Quỷ và Phụ
+                                          Mẫu cùng quái
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          • Hào Quan Quỷ: Hào {quanQuyHao.hao}{" "}
+                                          ({quanQuyHao.canChi}) - Thuộc{" "}
+                                          {quanQuyTrigram === "lower"
+                                            ? "Hạ quái"
+                                            : "Thượng quái"}
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          • Các hào Phụ Mẫu tìm thấy:{" "}
+                                          {phuMauHaos
+                                            .map(
+                                              (pm) =>
+                                                `Hào ${pm.hao} (${pm.canChi})`
+                                            )
+                                            .join(", ")}
+                                        </p>
+                                        <p className="text-sm text-red-600 mt-2">
+                                          → Không có hào Phụ Mẫu nào cùng quái
+                                          với hào Quan Quỷ
+                                        </p>
                                       </div>
                                     </div>
                                   );
-                                })()}
-                              </div>
-                            ),
-                          },
-                          {
-                            key: "4",
-                            label: "Luận Cây Trước Nhà",
-                            children: (
-                              <div className="bg-white p-4 rounded-lg border border-amber-200">
-                                {(() => {
-                                  // Bước 1: Tìm cây trong quẻ
-                                  const cayHaos = [];
+                                }
 
-                                  // Tìm các hào có địa chi Dần, Mão, hoặc Mùi trong quẻ chính
-                                  lineData1.forEach((line1, index) => {
-                                    const diaChi = extractDiaChi(line1.canChi);
-                                    if (
-                                      diaChi === "Dần" ||
-                                      diaChi === "Mão" ||
-                                      diaChi === "Mùi"
-                                    ) {
-                                      // Kiểm tra hào tương ứng trong quẻ biến
-                                      if (index < lineData2.length) {
-                                        const line2 = lineData2[index];
-                                        const lucTuName = getLucTuName(
-                                          line2.lucTu
-                                        );
-                                        if (
-                                          lucTuName === "Thanh Long" ||
-                                          lucTuName === "Bạch Hổ" ||
-                                          lucTuName === "Chu Tước"
-                                        ) {
-                                          cayHaos.push({
-                                            hao: line1.hao,
-                                            diaChi: diaChi,
-                                            canChi: line1.canChi,
-                                            lucTu: lucTuName,
-                                            line1: line1,
-                                            line2: line2,
-                                          });
-                                        }
-                                      }
-                                    }
-                                  });
+                                // Bước 2: Tìm hào tương ứng trong quẻ biến
+                                const phuMauIndex = lineData1.findIndex(
+                                  (line) => line.hao === phuMauCungQuai.hao
+                                );
+                                const phuMauBienHao =
+                                  phuMauIndex >= 0 &&
+                                    phuMauIndex < lineData2.length
+                                    ? lineData2[phuMauIndex]
+                                    : null;
 
-                                  if (cayHaos.length === 0) {
-                                    return (
-                                      <div className="space-y-2">
-                                        <p className="text-gray-500 italic">
-                                          Không tìm thấy cây trong quẻ
+                                if (!phuMauBienHao) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không tìm thấy hào tương ứng trong quẻ
+                                      biến
+                                    </p>
+                                  );
+                                }
+
+                                // Kiểm tra Lục Thú có phải Chu Tước không
+                                const lucTuName = getLucTuName(
+                                  phuMauBienHao.lucTu
+                                );
+                                const laChuTuoc = lucTuName === "Chu Tước";
+
+                                // Kiểm tra tuanKhong = "K"
+                                const coTuanKhong =
+                                  phuMauBienHao.tuanKhong === "K";
+
+                                // Kết luận
+                                const coKhaNangTungKetHon =
+                                  laChuTuoc && coTuanKhong;
+
+                                return (
+                                  <div className="space-y-3">
+                                    <div>
+                                      <p className="font-semibold mb-2">
+                                        Hào Quan Quỷ: Hào {quanQuyHao.hao} (
+                                        {quanQuyHao.canChi}) - Thuộc{" "}
+                                        {quanQuyTrigram === "lower"
+                                          ? "Hạ quái"
+                                          : "Thượng quái"}
+                                      </p>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                      <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                        <p className="font-semibold mb-2">
+                                          Bước 1: Kiểm tra hào Quan Quỷ và Phụ
+                                          Mẫu cùng quái
                                         </p>
-                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
-                                          <p className="font-semibold mb-2">
-                                            Bước 1: Tìm cây trong quẻ
+                                        <p className="text-green-700 mb-1">
+                                          ✓ Tìm thấy hào Phụ Mẫu cùng quái với
+                                          hào Quan Quỷ
+                                        </p>
+                                        <p className="text-sm text-gray-600">
+                                          • Hào Phụ Mẫu: Hào{" "}
+                                          {phuMauCungQuai.hao} (
+                                          {phuMauCungQuai.canChi}) - Thuộc{" "}
+                                          {phuMauCungQuai.hao <= 3
+                                            ? "Hạ quái"
+                                            : "Thượng quái"}
+                                        </p>
+                                      </div>
+
+                                      <div
+                                        className={`p-3 rounded border-l-4 ${laChuTuoc && coTuanKhong
+                                          ? "bg-green-50 border-green-500"
+                                          : "bg-gray-50 border-gray-300"
+                                          }`}
+                                      >
+                                        <p className="font-semibold mb-2">
+                                          Bước 2: Kiểm tra hào Phụ Mẫu trong
+                                          quẻ biến
+                                        </p>
+                                        <p className="text-sm text-gray-600 mb-1">
+                                          Hào Phụ Mẫu trong quẻ biến: Hào{" "}
+                                          {phuMauBienHao.hao} (
+                                          {phuMauBienHao.canChi})
+                                        </p>
+                                        <div className="space-y-1 mt-2">
+                                          <p
+                                            className={
+                                              laChuTuoc
+                                                ? "text-green-700"
+                                                : "text-red-700"
+                                            }
+                                          >
+                                            {laChuTuoc ? "✓" : "✗"} Lục Thú:{" "}
+                                            {lucTuName}
+                                            {laChuTuoc
+                                              ? " (Chu Tước)"
+                                              : ""}
                                           </p>
-                                          <p className="text-sm text-gray-600">
-                                            Điều kiện 1: Không có hào Dần, Mão,
-                                            hoặc Mùi trong quẻ chính
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            HOẶC
-                                          </p>
-                                          <p className="text-sm text-gray-600">
-                                            Điều kiện 2: Hào tương ứng trong quẻ
-                                            biến không có Thanh Long, Bạch Hổ,
-                                            hoặc Chu Tước
+                                          <p
+                                            className={
+                                              coTuanKhong
+                                                ? "text-green-700"
+                                                : "text-red-700"
+                                            }
+                                          >
+                                            {coTuanKhong ? "✓" : "✗"} Tuần
+                                            không:{" "}
+                                            {phuMauBienHao.tuanKhong ||
+                                              "Không có"}
+                                            {coTuanKhong ? ' (= "K")' : ""}
                                           </p>
                                         </div>
                                       </div>
-                                    );
-                                  }
 
+                                      {coKhaNangTungKetHon && (
+                                        <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
+                                          <p className="font-bold text-lg mb-2">
+                                            Kết luận:
+                                          </p>
+                                          <p className="text-blue-800 font-bold text-lg">
+                                            ⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN
+                                            TRƯỚC ĐÂY
+                                          </p>
+                                          <p className="text-sm text-blue-700 mt-2">
+                                            Hào Phụ Mẫu cùng quái với hào Quan
+                                            Quỷ có Lục Thú là Chu Tước và có Tuần không = "K",
+                                            cho thấy có khả năng chồng đã từng
+                                            kết hôn trước đây.
+                                          </p>
+                                        </div>
+                                      )}
+
+                                      {!coKhaNangTungKetHon && (
+                                        <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
+                                          <p className="font-semibold mb-2">
+                                            Kết luận:
+                                          </p>
+                                          <p className="text-gray-700">
+                                            Không đủ điều kiện để kết luận đã
+                                            từng kết hôn trước đây.
+                                          </p>
+                                          {!laChuTuoc && (
+                                            <p className="text-sm text-red-600 mt-1">
+                                              • Lục Thú không phải Chu Tước
+                                            </p>
+                                          )}
+                                          {!coTuanKhong && (
+                                            <p className="text-sm text-red-600 mt-1">
+                                              • Không có Tuần không = "K"
+                                            </p>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ),
+                        },
+                        {
+                          key: "4",
+                          label: "Luận Cây Trước Nhà",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                              {(() => {
+                                // Bước 1: Tìm cây trong quẻ
+                                const cayHaos = [];
+
+                                // Tìm các hào có địa chi Dần, Mão, hoặc Mùi trong quẻ chính
+                                lineData1.forEach((line1, index) => {
+                                  const diaChi = extractDiaChi(line1.canChi);
+                                  if (
+                                    diaChi === "Dần" ||
+                                    diaChi === "Mão" ||
+                                    diaChi === "Mùi"
+                                  ) {
+                                    // Kiểm tra hào tương ứng trong quẻ biến
+                                    if (index < lineData2.length) {
+                                      const line2 = lineData2[index];
+                                      const lucTuName = getLucTuName(
+                                        line2.lucTu
+                                      );
+                                      if (
+                                        lucTuName === "Thanh Long" ||
+                                        lucTuName === "Bạch Hổ" ||
+                                        lucTuName === "Chu Tước"
+                                      ) {
+                                        cayHaos.push({
+                                          hao: line1.hao,
+                                          diaChi: diaChi,
+                                          canChi: line1.canChi,
+                                          lucTu: lucTuName,
+                                          line1: line1,
+                                          line2: line2,
+                                        });
+                                      }
+                                    }
+                                  }
+                                });
+
+                                if (cayHaos.length === 0) {
                                   return (
-                                    <div className="space-y-4">
-                                      {/* Bước 1: Tìm cây trong quẻ */}
-                                      <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                    <div className="space-y-2">
+                                      <p className="text-gray-500 italic">
+                                        Không tìm thấy cây trong quẻ
+                                      </p>
+                                      <div className="p-3 bg-gray-50 rounded border-l-4 border-gray-300">
                                         <p className="font-semibold mb-2">
                                           Bước 1: Tìm cây trong quẻ
                                         </p>
-                                        <p className="text-sm text-gray-600 mb-2">
-                                          ✓ Điều kiện 1: Tìm thấy hào có địa chi
-                                          Dần, Mão, hoặc Mùi trong quẻ chính
+                                        <p className="text-sm text-gray-600">
+                                          Điều kiện 1: Không có hào Dần, Mão,
+                                          hoặc Mùi trong quẻ chính
                                         </p>
-                                        <p className="text-sm text-gray-600 mb-2">
-                                          ✓ Điều kiện 2: Hào tương ứng trong quẻ
-                                          biến có Thanh Long, Bạch Hổ, hoặc Chu
-                                          Tước
+                                        <p className="text-sm text-gray-600">
+                                          HOẶC
                                         </p>
-                                        <div className="mt-2 space-y-1">
-                                          {cayHaos.map((cay, idx) => (
-                                            <p
-                                              key={idx}
-                                              className="text-sm font-medium text-gray-700"
-                                            >
-                                              • Hào {cay.hao} ({cay.canChi}) -
-                                              Địa Chi:{" "}
-                                              <strong>{cay.diaChi}</strong> -
-                                              Lục Thú:{" "}
-                                              <strong>{cay.lucTu}</strong>
-                                            </p>
-                                          ))}
-                                        </div>
+                                        <p className="text-sm text-gray-600">
+                                          Điều kiện 2: Hào tương ứng trong quẻ
+                                          biến không có Thanh Long, Bạch Hổ,
+                                          hoặc Chu Tước
+                                        </p>
                                       </div>
+                                    </div>
+                                  );
+                                }
 
-                                      {/* Bước 2 và 3 cho từng cây */}
-                                      {cayHaos.map((cay, idx) => {
-                                        // Bước 2: Xác định vị trí
-                                        let viTri = "";
-                                        if (cay.lucTu === "Thanh Long") {
-                                          viTri = "Bên trái";
-                                        } else if (cay.lucTu === "Bạch Hổ") {
-                                          viTri = "Bên phải";
-                                        } else if (cay.lucTu === "Chu Tước") {
-                                          viTri = "Phía trước";
+                                return (
+                                  <div className="space-y-4">
+                                    {/* Bước 1: Tìm cây trong quẻ */}
+                                    <div className="p-3 bg-green-50 rounded border-l-4 border-green-500">
+                                      <p className="font-semibold mb-2">
+                                        Bước 1: Tìm cây trong quẻ
+                                      </p>
+                                      <p className="text-sm text-gray-600 mb-2">
+                                        ✓ Điều kiện 1: Tìm thấy hào có địa chi
+                                        Dần, Mão, hoặc Mùi trong quẻ chính
+                                      </p>
+                                      <p className="text-sm text-gray-600 mb-2">
+                                        ✓ Điều kiện 2: Hào tương ứng trong quẻ
+                                        biến có Thanh Long, Bạch Hổ, hoặc Chu
+                                        Tước
+                                      </p>
+                                      <div className="mt-2 space-y-1">
+                                        {cayHaos.map((cay, idx) => (
+                                          <p
+                                            key={idx}
+                                            className="text-sm font-medium text-gray-700"
+                                          >
+                                            • Hào {cay.hao} ({cay.canChi}) -
+                                            Địa Chi:{" "}
+                                            <strong>{cay.diaChi}</strong> -
+                                            Lục Thú:{" "}
+                                            <strong>{cay.lucTu}</strong>
+                                          </p>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    {/* Bước 2 và 3 cho từng cây */}
+                                    {cayHaos.map((cay, idx) => {
+                                      // Bước 2: Xác định vị trí
+                                      let viTri = "";
+                                      if (cay.lucTu === "Thanh Long") {
+                                        viTri = "Bên trái";
+                                      } else if (cay.lucTu === "Bạch Hổ") {
+                                        viTri = "Bên phải";
+                                      } else if (cay.lucTu === "Chu Tước") {
+                                        viTri = "Phía trước";
+                                      }
+
+                                      // Bước 3: Xác định loại cây
+                                      let loaiCay = "";
+                                      let caySize = "medium"; // small, medium, large
+                                      let cayColor = "#22c55e"; // màu xanh lá
+                                      if (cay.diaChi === "Dần") {
+                                        loaiCay = "Cây to thân gỗ";
+                                        caySize = "large";
+                                        cayColor = "#166534"; // xanh đậm
+                                      } else if (cay.diaChi === "Mão") {
+                                        loaiCay =
+                                          "Cây cỏ hoặc thân leo hoặc bụi cây";
+                                        caySize = "small";
+                                        cayColor = "#86efac"; // xanh nhạt
+                                      } else if (cay.diaChi === "Mùi") {
+                                        loaiCay =
+                                          "Rất nhiều cây như rừng hoặc công viên hoặc lùm cây (nhập mộ của Dần/Mão)";
+                                        caySize = "multiple";
+                                        cayColor = "#16a34a"; // xanh lá
+                                      }
+
+                                      // Hàm vẽ SVG ngôi nhà và cây
+                                      const renderHouseWithTree = (
+                                        viTri,
+                                        loaiCay,
+                                        caySize,
+                                        cayColor
+                                      ) => {
+                                        const svgSize = 140; // Kích thước SVG lớn hơn để có không gian cho cây, đặc biệt là rừng cây
+                                        const houseSize = 32;
+                                        const houseX =
+                                          svgSize / 2 - houseSize / 2;
+                                        const houseY =
+                                          svgSize / 2 - houseSize / 2;
+
+                                        // Xác định vị trí cây (nhìn từ trên xuống, đảo ngược so với nhìn từ trong nhà ra ngoài)
+                                        // Điều chỉnh khoảng cách dựa trên loại cây (rừng cây cần nhiều không gian hơn)
+                                        const treeDistance =
+                                          caySize === "multiple" ? 25 : 20;
+                                        let treeX = 0;
+                                        let treeY = 0;
+                                        if (viTri === "Bên trái") {
+                                          // Bên trái (từ trong nhà) = Bên phải (nhìn từ trên xuống)
+                                          treeX =
+                                            houseX + houseSize + treeDistance;
+                                          treeY = houseY + houseSize / 2;
+                                        } else if (viTri === "Bên phải") {
+                                          // Bên phải (từ trong nhà) = Bên trái (nhìn từ trên xuống)
+                                          treeX = houseX - treeDistance;
+                                          treeY = houseY + houseSize / 2;
+                                        } else if (viTri === "Phía trước") {
+                                          // Phía trước (từ trong nhà) = Phía dưới (nhìn từ trên xuống)
+                                          treeX = houseX + houseSize / 2;
+                                          treeY =
+                                            houseY + houseSize + treeDistance;
                                         }
 
-                                        // Bước 3: Xác định loại cây
-                                        let loaiCay = "";
-                                        let caySize = "medium"; // small, medium, large
-                                        let cayColor = "#22c55e"; // màu xanh lá
-                                        if (cay.diaChi === "Dần") {
-                                          loaiCay = "Cây to thân gỗ";
-                                          caySize = "large";
-                                          cayColor = "#166534"; // xanh đậm
-                                        } else if (cay.diaChi === "Mão") {
-                                          loaiCay =
-                                            "Cây cỏ hoặc thân leo hoặc bụi cây";
-                                          caySize = "small";
-                                          cayColor = "#86efac"; // xanh nhạt
-                                        } else if (cay.diaChi === "Mùi") {
-                                          loaiCay =
-                                            "Rất nhiều cây như rừng hoặc công viên hoặc lùm cây (nhập mộ của Dần/Mão)";
-                                          caySize = "multiple";
-                                          cayColor = "#16a34a"; // xanh lá
-                                        }
-
-                                        // Hàm vẽ SVG ngôi nhà và cây
-                                        const renderHouseWithTree = (
-                                          viTri,
-                                          loaiCay,
-                                          caySize,
-                                          cayColor
-                                        ) => {
-                                          const svgSize = 140; // Kích thước SVG lớn hơn để có không gian cho cây, đặc biệt là rừng cây
-                                          const houseSize = 32;
-                                          const houseX =
-                                            svgSize / 2 - houseSize / 2;
-                                          const houseY =
-                                            svgSize / 2 - houseSize / 2;
-
-                                          // Xác định vị trí cây (nhìn từ trên xuống, đảo ngược so với nhìn từ trong nhà ra ngoài)
-                                          // Điều chỉnh khoảng cách dựa trên loại cây (rừng cây cần nhiều không gian hơn)
-                                          const treeDistance =
-                                            caySize === "multiple" ? 25 : 20;
-                                          let treeX = 0;
-                                          let treeY = 0;
-                                          if (viTri === "Bên trái") {
-                                            // Bên trái (từ trong nhà) = Bên phải (nhìn từ trên xuống)
-                                            treeX =
-                                              houseX + houseSize + treeDistance;
-                                            treeY = houseY + houseSize / 2;
-                                          } else if (viTri === "Bên phải") {
-                                            // Bên phải (từ trong nhà) = Bên trái (nhìn từ trên xuống)
-                                            treeX = houseX - treeDistance;
-                                            treeY = houseY + houseSize / 2;
-                                          } else if (viTri === "Phía trước") {
-                                            // Phía trước (từ trong nhà) = Phía dưới (nhìn từ trên xuống)
-                                            treeX = houseX + houseSize / 2;
-                                            treeY =
-                                              houseY + houseSize + treeDistance;
-                                          }
-
-                                          // Vẽ cây dựa trên loại
-                                          const renderTree = () => {
-                                            if (caySize === "multiple") {
-                                              // Rừng cây / Công viên / Lùm cây (Mùi) - nhiều cây rải rác
-                                              // Điều chỉnh vị trí để căn giữa tốt hơn
-                                              let offsetX = 0;
-                                              let offsetY = 0;
-                                              if (
-                                                viTri === "Bên trái" ||
-                                                viTri === "Bên phải"
-                                              ) {
-                                                // Khi ở bên trái/phải, căn giữa theo chiều dọc
-                                                offsetY = -5;
-                                              } else {
-                                                // Khi ở phía trước, căn giữa theo chiều ngang
-                                                offsetX = -5;
-                                              }
-
-                                              return (
-                                                <>
-                                                  {/* Cây 1 */}
-                                                  <circle
-                                                    cx={treeX - 8 + offsetX}
-                                                    cy={treeY - 10 + offsetY}
-                                                    r="7"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX - 10 + offsetX}
-                                                    y={treeY + offsetY}
-                                                    width="4"
-                                                    height="10"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây 2 */}
-                                                  <circle
-                                                    cx={treeX - 2 + offsetX}
-                                                    cy={treeY - 8 + offsetY}
-                                                    r="6"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX - 4 + offsetX}
-                                                    y={treeY + offsetY}
-                                                    width="4"
-                                                    height="8"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây 3 */}
-                                                  <circle
-                                                    cx={treeX + 4 + offsetX}
-                                                    cy={treeY - 10 + offsetY}
-                                                    r="7"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX + 2 + offsetX}
-                                                    y={treeY + offsetY}
-                                                    width="4"
-                                                    height="10"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây 4 */}
-                                                  <circle
-                                                    cx={treeX + 10 + offsetX}
-                                                    cy={treeY - 7 + offsetY}
-                                                    r="6"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX + 8 + offsetX}
-                                                    y={treeY + offsetY}
-                                                    width="4"
-                                                    height="8"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây 5 */}
-                                                  <circle
-                                                    cx={treeX + 1 + offsetX}
-                                                    cy={treeY - 12 + offsetY}
-                                                    r="5"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX - 1 + offsetX}
-                                                    y={treeY + offsetY}
-                                                    width="4"
-                                                    height="7"
-                                                    fill="#8b4513"
-                                                  />
-                                                </>
-                                              );
-                                            } else if (caySize === "small") {
-                                              // Cây bụi / Cây cỏ / Thân leo (Mão) - nhóm cây nhỏ gần nhau
-                                              return (
-                                                <>
-                                                  {/* Cây bụi 1 */}
-                                                  <circle
-                                                    cx={treeX - 3}
-                                                    cy={treeY - 5}
-                                                    r="4"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX - 4}
-                                                    y={treeY}
-                                                    width="2"
-                                                    height="4"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây bụi 2 */}
-                                                  <circle
-                                                    cx={treeX}
-                                                    cy={treeY - 6}
-                                                    r="5"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX - 1}
-                                                    y={treeY}
-                                                    width="2"
-                                                    height="5"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Cây bụi 3 */}
-                                                  <circle
-                                                    cx={treeX + 3}
-                                                    cy={treeY - 5}
-                                                    r="4"
-                                                    fill={cayColor}
-                                                  />
-                                                  <rect
-                                                    x={treeX + 2}
-                                                    y={treeY}
-                                                    width="2"
-                                                    height="4"
-                                                    fill="#8b4513"
-                                                  />
-                                                  {/* Thêm một số cây cỏ nhỏ */}
-                                                  <circle
-                                                    cx={treeX - 1}
-                                                    cy={treeY - 3}
-                                                    r="2"
-                                                    fill={cayColor}
-                                                    opacity="0.8"
-                                                  />
-                                                  <circle
-                                                    cx={treeX + 2}
-                                                    cy={treeY - 2}
-                                                    r="2"
-                                                    fill={cayColor}
-                                                    opacity="0.8"
-                                                  />
-                                                </>
-                                              );
+                                        // Vẽ cây dựa trên loại
+                                        const renderTree = () => {
+                                          if (caySize === "multiple") {
+                                            // Rừng cây / Công viên / Lùm cây (Mùi) - nhiều cây rải rác
+                                            // Điều chỉnh vị trí để căn giữa tốt hơn
+                                            let offsetX = 0;
+                                            let offsetY = 0;
+                                            if (
+                                              viTri === "Bên trái" ||
+                                              viTri === "Bên phải"
+                                            ) {
+                                              // Khi ở bên trái/phải, căn giữa theo chiều dọc
+                                              offsetY = -5;
                                             } else {
-                                              // Cây to thân gỗ (Dần) - cây lớn đơn lẻ
-                                              const treeRadius = 12;
-                                              const trunkWidth = 5;
-                                              const trunkHeight = 10;
-                                              return (
-                                                <>
-                                                  {/* Tán lá chính */}
-                                                  <circle
-                                                    cx={treeX}
-                                                    cy={treeY - trunkHeight}
-                                                    r={treeRadius}
-                                                    fill={cayColor}
-                                                  />
-                                                  {/* Tán lá phụ (tạo độ sâu) */}
-                                                  <circle
-                                                    cx={treeX - 3}
-                                                    cy={treeY - trunkHeight - 2}
-                                                    r={treeRadius - 2}
-                                                    fill={cayColor}
-                                                    opacity="0.7"
-                                                  />
-                                                  <circle
-                                                    cx={treeX + 3}
-                                                    cy={treeY - trunkHeight - 2}
-                                                    r={treeRadius - 2}
-                                                    fill={cayColor}
-                                                    opacity="0.7"
-                                                  />
-                                                  {/* Thân cây */}
-                                                  <rect
-                                                    x={treeX - trunkWidth / 2}
-                                                    y={treeY}
-                                                    width={trunkWidth}
-                                                    height={trunkHeight}
-                                                    fill="#8b4513"
-                                                  />
-                                                </>
-                                              );
+                                              // Khi ở phía trước, căn giữa theo chiều ngang
+                                              offsetX = -5;
                                             }
-                                          };
 
-                                          return (
-                                            <svg
-                                              width={svgSize}
-                                              height={svgSize}
-                                              viewBox={`0 0 ${svgSize} ${svgSize}`}
-                                              className="border border-gray-300 rounded bg-gray-50"
-                                            >
-                                              {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
-                                              {/* Mái nhà (hình tam giác) */}
-                                              <polygon
-                                                points={`${houseX + houseSize / 2
-                                                  },${houseY} ${houseX},${houseY + houseSize / 3
-                                                  } ${houseX + houseSize},${houseY + houseSize / 3
-                                                  }`}
-                                                fill="#dc2626"
-                                                stroke="#991b1b"
-                                                strokeWidth="1"
-                                              />
-                                              {/* Thân nhà (hình chữ nhật) */}
-                                              <rect
-                                                x={houseX}
-                                                y={houseY + houseSize / 3}
-                                                width={houseSize}
-                                                height={(houseSize * 2) / 3}
-                                                fill="#fbbf24"
-                                                stroke="#d97706"
-                                                strokeWidth="1"
-                                              />
-                                              {/* Cửa (ở phía dưới - phía trước khi nhìn từ trong nhà ra ngoài) */}
-                                              <rect
-                                                x={houseX + houseSize / 2 - 4}
-                                                y={houseY + houseSize - 12}
-                                                width="8"
-                                                height="12"
-                                                fill="#78350f"
-                                              />
-
-                                              {/* Vẽ cây */}
-                                              {renderTree()}
-                                            </svg>
-                                          );
+                                            return (
+                                              <>
+                                                {/* Cây 1 */}
+                                                <circle
+                                                  cx={treeX - 8 + offsetX}
+                                                  cy={treeY - 10 + offsetY}
+                                                  r="7"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 10 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="10"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 2 */}
+                                                <circle
+                                                  cx={treeX - 2 + offsetX}
+                                                  cy={treeY - 8 + offsetY}
+                                                  r="6"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 4 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="8"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 3 */}
+                                                <circle
+                                                  cx={treeX + 4 + offsetX}
+                                                  cy={treeY - 10 + offsetY}
+                                                  r="7"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 2 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="10"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 4 */}
+                                                <circle
+                                                  cx={treeX + 10 + offsetX}
+                                                  cy={treeY - 7 + offsetY}
+                                                  r="6"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 8 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="8"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây 5 */}
+                                                <circle
+                                                  cx={treeX + 1 + offsetX}
+                                                  cy={treeY - 12 + offsetY}
+                                                  r="5"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 1 + offsetX}
+                                                  y={treeY + offsetY}
+                                                  width="4"
+                                                  height="7"
+                                                  fill="#8b4513"
+                                                />
+                                              </>
+                                            );
+                                          } else if (caySize === "small") {
+                                            // Cây bụi / Cây cỏ / Thân leo (Mão) - nhóm cây nhỏ gần nhau
+                                            return (
+                                              <>
+                                                {/* Cây bụi 1 */}
+                                                <circle
+                                                  cx={treeX - 3}
+                                                  cy={treeY - 5}
+                                                  r="4"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 4}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="4"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây bụi 2 */}
+                                                <circle
+                                                  cx={treeX}
+                                                  cy={treeY - 6}
+                                                  r="5"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX - 1}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="5"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Cây bụi 3 */}
+                                                <circle
+                                                  cx={treeX + 3}
+                                                  cy={treeY - 5}
+                                                  r="4"
+                                                  fill={cayColor}
+                                                />
+                                                <rect
+                                                  x={treeX + 2}
+                                                  y={treeY}
+                                                  width="2"
+                                                  height="4"
+                                                  fill="#8b4513"
+                                                />
+                                                {/* Thêm một số cây cỏ nhỏ */}
+                                                <circle
+                                                  cx={treeX - 1}
+                                                  cy={treeY - 3}
+                                                  r="2"
+                                                  fill={cayColor}
+                                                  opacity="0.8"
+                                                />
+                                                <circle
+                                                  cx={treeX + 2}
+                                                  cy={treeY - 2}
+                                                  r="2"
+                                                  fill={cayColor}
+                                                  opacity="0.8"
+                                                />
+                                              </>
+                                            );
+                                          } else {
+                                            // Cây to thân gỗ (Dần) - cây lớn đơn lẻ
+                                            const treeRadius = 12;
+                                            const trunkWidth = 5;
+                                            const trunkHeight = 10;
+                                            return (
+                                              <>
+                                                {/* Tán lá chính */}
+                                                <circle
+                                                  cx={treeX}
+                                                  cy={treeY - trunkHeight}
+                                                  r={treeRadius}
+                                                  fill={cayColor}
+                                                />
+                                                {/* Tán lá phụ (tạo độ sâu) */}
+                                                <circle
+                                                  cx={treeX - 3}
+                                                  cy={treeY - trunkHeight - 2}
+                                                  r={treeRadius - 2}
+                                                  fill={cayColor}
+                                                  opacity="0.7"
+                                                />
+                                                <circle
+                                                  cx={treeX + 3}
+                                                  cy={treeY - trunkHeight - 2}
+                                                  r={treeRadius - 2}
+                                                  fill={cayColor}
+                                                  opacity="0.7"
+                                                />
+                                                {/* Thân cây */}
+                                                <rect
+                                                  x={treeX - trunkWidth / 2}
+                                                  y={treeY}
+                                                  width={trunkWidth}
+                                                  height={trunkHeight}
+                                                  fill="#8b4513"
+                                                />
+                                              </>
+                                            );
+                                          }
                                         };
 
                                         return (
-                                          <div
-                                            key={idx}
-                                            className="p-4 bg-blue-50 rounded-lg border border-blue-200"
+                                          <svg
+                                            width={svgSize}
+                                            height={svgSize}
+                                            viewBox={`0 0 ${svgSize} ${svgSize}`}
+                                            className="border border-gray-300 rounded bg-gray-50"
                                           >
-                                            <p className="font-semibold mb-2">
-                                              Cây {idx + 1}: Hào {cay.hao} (
-                                              {cay.canChi})
-                                            </p>
+                                            {/* Vẽ ngôi nhà (nhìn từ trên xuống) */}
+                                            {/* Mái nhà (hình tam giác) */}
+                                            <polygon
+                                              points={`${houseX + houseSize / 2
+                                                },${houseY} ${houseX},${houseY + houseSize / 3
+                                                } ${houseX + houseSize},${houseY + houseSize / 3
+                                                }`}
+                                              fill="#dc2626"
+                                              stroke="#991b1b"
+                                              strokeWidth="1"
+                                            />
+                                            {/* Thân nhà (hình chữ nhật) */}
+                                            <rect
+                                              x={houseX}
+                                              y={houseY + houseSize / 3}
+                                              width={houseSize}
+                                              height={(houseSize * 2) / 3}
+                                              fill="#fbbf24"
+                                              stroke="#d97706"
+                                              strokeWidth="1"
+                                            />
+                                            {/* Cửa (ở phía dưới - phía trước khi nhìn từ trong nhà ra ngoài) */}
+                                            <rect
+                                              x={houseX + houseSize / 2 - 4}
+                                              y={houseY + houseSize - 12}
+                                              width="8"
+                                              height="12"
+                                              fill="#78350f"
+                                            />
 
-                                            {/* Bước 2: Vị trí */}
-                                            <div className="mb-3">
-                                              <p className="font-semibold text-sm mb-1">
-                                                Bước 2: Vị trí của cây
+                                            {/* Vẽ cây */}
+                                            {renderTree()}
+                                          </svg>
+                                        );
+                                      };
+
+                                      return (
+                                        <div
+                                          key={idx}
+                                          className="p-4 bg-blue-50 rounded-lg border border-blue-200"
+                                        >
+                                          <p className="font-semibold mb-2">
+                                            Cây {idx + 1}: Hào {cay.hao} (
+                                            {cay.canChi})
+                                          </p>
+
+                                          {/* Bước 2: Vị trí */}
+                                          <div className="mb-3">
+                                            <p className="font-semibold text-sm mb-1">
+                                              Bước 2: Vị trí của cây
+                                            </p>
+                                            <div className="flex items-center gap-4">
+                                              <p className="text-sm text-gray-700">
+                                                <strong>Lục Thú:</strong>{" "}
+                                                {cay.lucTu} →{" "}
+                                                <strong className="text-blue-700">
+                                                  {viTri}
+                                                </strong>{" "}
+                                                (tính từ trong nhà nhìn ra
+                                                ngoài)
                                               </p>
-                                              <div className="flex items-center gap-4">
-                                                <p className="text-sm text-gray-700">
-                                                  <strong>Lục Thú:</strong>{" "}
-                                                  {cay.lucTu} →{" "}
-                                                  <strong className="text-blue-700">
-                                                    {viTri}
-                                                  </strong>{" "}
-                                                  (tính từ trong nhà nhìn ra
-                                                  ngoài)
-                                                </p>
-                                                <div className="flex-shrink-0">
-                                                  {renderHouseWithTree(
-                                                    viTri,
-                                                    loaiCay,
-                                                    caySize,
-                                                    cayColor
-                                                  )}
-                                                </div>
+                                              <div className="flex-shrink-0">
+                                                {renderHouseWithTree(
+                                                  viTri,
+                                                  loaiCay,
+                                                  caySize,
+                                                  cayColor
+                                                )}
                                               </div>
                                             </div>
-
-                                            {/* Bước 3: Loại cây */}
-                                            <div>
-                                              <p className="font-semibold text-sm mb-1">
-                                                Bước 3: Loại cây
-                                              </p>
-                                              <p className="text-sm text-gray-700">
-                                                <strong>Địa Chi:</strong>{" "}
-                                                {cay.diaChi} →{" "}
-                                                <strong className="text-green-700">
-                                                  {loaiCay}
-                                                </strong>
-                                              </p>
-                                            </div>
                                           </div>
-                                        );
-                                      })}
-                                    </div>
-                                  );
-                                })()}
-                              </div>
-                            ),
-                          },
-                          {
-                            key: "5",
-                            label: "Khác",
-                            children: (
-                              <div className="bg-white p-4 rounded-lg border border-amber-200 space-y-4">
-                                {(() => {
-                                  const results = [];
-                                  const hexNames = [];
-                                  if (originalHexagram?.name)
-                                    hexNames.push(originalHexagram.name);
-                                  if (changedHexagram?.name)
-                                    hexNames.push(changedHexagram.name);
 
-                                  const checkLogic = (name) => {
-                                    const upperName = name.toUpperCase();
-                                    if (upperName === "HỎA SƠN LỮ") {
-                                      results.push({
-                                        title: `Quẻ ${name}`,
-                                        content:
-                                          "Cần kiểm tra phong thuỷ của phòng khách, nhà kho hoặc nơi cất tạm bợ.",
-                                      });
-                                    }
-                                    if (upperName.includes("BÍ")) {
-                                      results.push({
-                                        title: `Quẻ ${name}`,
-                                        content:
-                                          "Cần kiểm tra bóng đèn trong nhà, trên bàn thờ hoặc di ảnh.",
-                                      });
-                                    }
-                                    if (upperName === "THIÊN LÔI VÔ VỌNG") {
-                                      results.push({
-                                        title: `Quẻ ${name}`,
-                                        content:
-                                          "Nhà có vong, vong bị đói khát không được cúng kiếng.",
-                                      });
-                                    }
-                                  };
+                                          {/* Bước 3: Loại cây */}
+                                          <div>
+                                            <p className="font-semibold text-sm mb-1">
+                                              Bước 3: Loại cây
+                                            </p>
+                                            <p className="text-sm text-gray-700">
+                                              <strong>Địa Chi:</strong>{" "}
+                                              {cay.diaChi} →{" "}
+                                              <strong className="text-green-700">
+                                                {loaiCay}
+                                              </strong>
+                                            </p>
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          ),
+                        },
+                        {
+                          key: "5",
+                          label: "Khác",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-amber-200 space-y-4">
+                              {(() => {
+                                const results = [];
+                                const hexNames = [];
+                                if (originalHexagram?.name)
+                                  hexNames.push(originalHexagram.name);
+                                if (changedHexagram?.name)
+                                  hexNames.push(changedHexagram.name);
 
-                                  hexNames.forEach(checkLogic);
-
-                                  // Remove duplicates if same rule applies to both original and changed hexagrams
-                                  const uniqueResults = [];
-                                  const seenContent = new Set();
-                                  results.forEach((res) => {
-                                    if (!seenContent.has(res.content)) {
-                                      uniqueResults.push(res);
-                                      seenContent.add(res.content);
-                                    }
-                                  });
-
-                                  if (uniqueResults.length === 0) {
-                                    return (
-                                      <p className="text-gray-500 italic">
-                                        Không có thông tin bổ sung cho quẻ này.
-                                      </p>
-                                    );
+                                const checkLogic = (name) => {
+                                  const upperName = name.toUpperCase();
+                                  if (upperName === "HỎA SƠN LỮ") {
+                                    results.push({
+                                      title: `Quẻ ${name}`,
+                                      content:
+                                        "Cần kiểm tra phong thuỷ của phòng khách, nhà kho hoặc nơi cất tạm bợ.",
+                                    });
                                   }
+                                  if (upperName.includes("BÍ")) {
+                                    results.push({
+                                      title: `Quẻ ${name}`,
+                                      content:
+                                        "Cần kiểm tra bóng đèn trong nhà, trên bàn thờ hoặc di ảnh.",
+                                    });
+                                  }
+                                  if (upperName === "THIÊN LÔI VÔ VỌNG") {
+                                    results.push({
+                                      title: `Quẻ ${name}`,
+                                      content:
+                                        "Nhà có vong, vong bị đói khát không được cúng kiếng.",
+                                    });
+                                  }
+                                };
 
-                                  return uniqueResults.map((res, i) => (
-                                    <div
-                                      key={i}
-                                      className="p-3 bg-blue-50 rounded border-l-4 border-blue-500"
-                                    >
-                                      <p className="font-semibold text-blue-800 mb-1">
-                                        {res.title}
-                                      </p>
-                                      <p className="text-gray-700">
-                                        {res.content}
-                                      </p>
-                                    </div>
-                                  ));
-                                })()}
-                              </div>
-                            ),
-                          },
-                        ]}
-                      />
-                    </div>
+                                hexNames.forEach(checkLogic);
+
+                                // Remove duplicates if same rule applies to both original and changed hexagrams
+                                const uniqueResults = [];
+                                const seenContent = new Set();
+                                results.forEach((res) => {
+                                  if (!seenContent.has(res.content)) {
+                                    uniqueResults.push(res);
+                                    seenContent.add(res.content);
+                                  }
+                                });
+
+                                if (uniqueResults.length === 0) {
+                                  return (
+                                    <p className="text-gray-500 italic">
+                                      Không có thông tin bổ sung cho quẻ này.
+                                    </p>
+                                  );
+                                }
+
+                                return uniqueResults.map((res, i) => (
+                                  <div
+                                    key={i}
+                                    className="p-3 bg-blue-50 rounded border-l-4 border-blue-500"
+                                  >
+                                    <p className="font-semibold text-blue-800 mb-1">
+                                      {res.title}
+                                    </p>
+                                    <p className="text-gray-700">
+                                      {res.content}
+                                    </p>
+                                  </div>
+                                ));
+                              })()}
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
                   </div>
                 </div>
               </Card>
