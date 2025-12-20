@@ -2148,8 +2148,11 @@ export default function InterpretationTables({
                         },
                         {
                           key: "3",
-                          label:
-                            "Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá",
+                          label: `Bước 3: Xác định Dụng Thần có Thái Tuế hay Tuế Phá${
+                            (thaiTue || tuePha) && dungThanDiaChi && yearDiaChi
+                              ? ` (${buoc3ThaiTueDiem > 0 ? "+" : ""}${buoc3ThaiTueDiem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2233,8 +2236,11 @@ export default function InterpretationTables({
                       if (dungThanDiaChi && monthDiaChi) {
                         collapseItems.push({
                           key: "3b",
-                          label:
-                            "Bước 3: Xét mối tương quan Dụng Thần và Tháng",
+                          label: `Bước 3: Xét mối tương quan Dụng Thần và Tháng${
+                            buoc3Diem !== undefined && buoc3Diem !== null
+                              ? ` (${buoc3Diem > 0 ? "+" : ""}${buoc3Diem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2343,7 +2349,11 @@ export default function InterpretationTables({
                       if (dungThanDiaChi && dayDiaChi) {
                         collapseItems.push({
                           key: "4",
-                          label: "Bước 4: Xét mối tương quan Dụng Thần và Ngày",
+                          label: `Bước 4: Xét mối tương quan Dụng Thần và Ngày${
+                            buoc4Diem !== undefined && buoc4Diem !== null
+                              ? ` (${buoc4Diem > 0 ? "+" : ""}${buoc4Diem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2452,8 +2462,11 @@ export default function InterpretationTables({
                       if (theDiaChi && yearDiaChi) {
                         collapseItems.push({
                           key: "5",
-                          label:
-                            "Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá",
+                          label: `Bước 5: Xác định Hào Thế có Thái Tuế hay Tuế Phá${
+                            (thaiTueThe || tuePhaThe) && theDiaChi && yearDiaChi
+                              ? ` (${buoc5ThaiTueDiem > 0 ? "+" : ""}${buoc5ThaiTueDiem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2527,7 +2540,11 @@ export default function InterpretationTables({
                       if (theDiaChi && monthDiaChi) {
                         collapseItems.push({
                           key: "5b",
-                          label: "Bước 5: Xét mối tương quan Hào Thế và Tháng",
+                          label: `Bước 5: Xét mối tương quan Hào Thế và Tháng${
+                            buoc5Diem !== undefined && buoc5Diem !== null
+                              ? ` (${buoc5Diem > 0 ? "+" : ""}${buoc5Diem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
@@ -2636,7 +2653,11 @@ export default function InterpretationTables({
                       if (theDiaChi && dayDiaChi) {
                         collapseItems.push({
                           key: "6",
-                          label: "Bước 6: Xét mối tương quan Hào Thế và Ngày",
+                          label: `Bước 6: Xét mối tương quan Hào Thế và Ngày${
+                            buoc6Diem !== undefined && buoc6Diem !== null
+                              ? ` (${buoc6Diem > 0 ? "+" : ""}${buoc6Diem.toFixed(2)} điểm)`
+                              : ""
+                          }`,
                           children: (
                             <div className="bg-white p-4 rounded-lg border border-parchment-200">
                               <div className="flex items-start gap-3">
