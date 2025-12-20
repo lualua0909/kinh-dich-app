@@ -37,9 +37,9 @@ import {
   getDiaChiNhapMoTai,
   isTamHopDiaChi,
   isNhiHopDiaChi,
-  isNhiXungDiaChi,
-  hasFullTamHinhGroup,
   getTamHinhGroupOf,
+  DIA_CHI_CODES,
+  DIA_CHI_NAMES,
 } from "../utils/diaChi";
 /**
  * InterpretationTables component - displays TỨC ĐIỀU PHÁN SÀO and NHÂN ĐOÁN TÁO CAO tables
@@ -319,22 +319,6 @@ export default function InterpretationTables({
     );
   };
 
-  // Mã Địa Chi (Tý, Sửu, Dần...) dùng cho phân loại Lục Tú lâm Địa Chi
-  const diaChiCodeMap = {
-    Tý: "TY",
-    Sửu: "SU",
-    Dần: "DN",
-    Mão: "MA",
-    Thìn: "TH",
-    Tỵ: "TI",
-    Ngọ: "NG",
-    Mùi: "MU",
-    Thân: "TN",
-    Dậu: "DA",
-    Tuất: "TU",
-    Hợi: "HO",
-  };
-
   // (thanhLongDiaChiInfo được định nghĩa phía dưới, sau phần lucTuInfo)
 
   // State for fullscreen Lục Thú drawer
@@ -366,8 +350,10 @@ export default function InterpretationTables({
     const tuName = getLucTuName(lucTu);
     const thanName = getLucThanName(lucThan);
 
-    const tuCode = LUC_TU_CODES[tuName] || lucTu || "--";
-    const thanCode = LUC_THAN_CODES[thanName] || lucThan || "--";
+    const tuCode = LUC_TU_CODES[tuName] || lucTu;
+    const thanCode = LUC_THAN_CODES[thanName] || lucThan;
+
+    if (!tuCode || !thanCode) return null;
 
     const code = `${tuCode}-${thanCode}`;
     return {
@@ -379,12 +365,17 @@ export default function InterpretationTables({
   const getClassificationDiaChi = (lucTu, canChi) => {
     if (!lucTu || !canChi) return null;
 
-    const parts = canChi.split(" ");
-    const diaChi = parts[parts.length - 1];
+    const diaChi = extractDiaChi(canChi);
+    if (!diaChi) return null;
 
     const tuName = getLucTuName(lucTu);
-    const tuCode = LUC_TU_CODES[tuName] || lucTu || "--";
-    const chiCode = diaChiCodeMap[diaChi] || "--";
+    
+    // Đảm bảo có code
+    const tuCode = LUC_TU_CODES[tuName] || lucTu;
+    const chiCode = DIA_CHI_CODES[diaChi];
+
+    if (!tuCode || !chiCode) return null;
+
     const code = `${tuCode}-${chiCode}`;
 
     return {
@@ -397,30 +388,44 @@ export default function InterpretationTables({
   const renderDiaChiTooltip = (diaChi) => {
     if (!diaChi) return null;
 
-    const nhiHop = getNhiHopOf(diaChi);
-    const nhiXung = getNhiXungOf(diaChi);
-    const tamHopGroup = getTamHopGroupOf(diaChi);
-    const tamHopPartners = tamHopGroup
-      ? tamHopGroup.filter((c) => c !== diaChi)
+    // Helper để lấy tên hiển thị từ code
+    const getName = (code) => DIA_CHI_NAMES[code] || code;
+
+    const nhiHopCode = getNhiHopOf(diaChi);
+    const nhiXungCode = getNhiXungOf(diaChi);
+    
+    // getTamHopGroupOf trả về mảng codes (VD: ["HO", "MA", "MU"])
+    const tamHopGroupCodes = getTamHopGroupOf(diaChi);
+    
+    // Khi lọc partner, cần lưu ý diaChi đầu vào có thể là Tên (Tý) hoặc Code (TY).
+    // getTamHopGroupOf đã tự xử lý input là Tên/Code và trả về Code chuẩn.
+    // Nên ta cần convert input `diaChi` sang Code để so sánh loại trừ chính nó.
+    const currentDiaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
+    
+    const tamHopPartners = tamHopGroupCodes
+      ? tamHopGroupCodes
+          .filter((code) => code !== currentDiaChiCode)
+          .map(getName)
       : [];
-    const nhapMo = getNhapMoOf(diaChi);
-    const diaChiNhapMoTai = getDiaChiNhapMoTai(diaChi);
+
+    const nhapMoCode = getNhapMoOf(diaChi);
+    const diaChiNhapMoTaiCodes = getDiaChiNhapMoTai(diaChi);
 
     return (
       <div className="max-w-xs text-xs space-y-2">
         <div className="font-bold mb-2 text-sm">{diaChi}</div>
 
-        {nhiHop && (
+        {nhiHopCode && (
           <div>
             <span className="font-semibold text-green-600">Nhị Hợp:</span>{" "}
-            <span className="font-bold">{nhiHop}</span>
+            <span className="font-bold">{getName(nhiHopCode)}</span>
           </div>
         )}
 
-        {nhiXung && (
+        {nhiXungCode && (
           <div>
             <span className="font-semibold text-red-600">Nhị Xung:</span>{" "}
-            <span className="font-bold">{nhiXung}</span>
+            <span className="font-bold">{getName(nhiXungCode)}</span>
           </div>
         )}
 
@@ -433,17 +438,19 @@ export default function InterpretationTables({
           </div>
         )}
 
-        {nhapMo && (
+        {nhapMoCode && (
           <div>
             <span className="font-semibold text-purple-600">Nhập Mộ tại:</span>{" "}
-            <span className="font-bold">{nhapMo}</span>
+            <span className="font-bold">{getName(nhapMoCode)}</span>
           </div>
         )}
 
-        {diaChiNhapMoTai.length > 0 && (
+        {diaChiNhapMoTaiCodes.length > 0 && (
           <div>
             <span className="font-semibold text-purple-600">Là mộ của:</span>{" "}
-            <span className="font-bold">{diaChiNhapMoTai.join(", ")}</span>
+            <span className="font-bold">
+              {diaChiNhapMoTaiCodes.map(getName).join(", ")}
+            </span>
           </div>
         )}
       </div>
@@ -834,9 +841,12 @@ export default function InterpretationTables({
   const renderLucTuDrawerContent = () => {
     if (!lucTuDrawerData) return null;
     const { lucTu, record } = lucTuDrawerData;
+    
+    // lucTu passed here is likely the Name (e.g. "Đằng Xà") from openLucTuDrawer logic
     const lucTuName = getLucTuName(lucTu);
-    const code = LUC_TU_CODES[lucTuName] || lucTu;
-    const info = lucTuInfo[code];
+    const lucTuCode = LUC_TU_CODES[lucTuName] || lucTu; // Normalize to Code (e.g. "DX")
+    
+    const info = lucTuInfo[lucTuCode];
     const lucThan = record?.lucThan;
     const lucThanName = getLucThanName(lucThan);
     // Chuyển đổi tên đầy đủ sang code rút gọn để truy cập JSON
@@ -847,21 +857,20 @@ export default function InterpretationTables({
 
     let diaChiExtraText = null;
     if (record?.canChi) {
-      const parts = record.canChi.split(" ");
-      const diaChi = parts[parts.length - 1];
-      // Chuyển đổi địa chi từ tên đầy đủ sang code rút gọn để truy cập JSON
-      const diaChiCode = diaChiCodeMap[diaChi] || diaChi || "";
-      if (lucTuName === "Thanh Long") {
+      const diaChi = extractDiaChi(record.canChi);
+      const diaChiCode = DIA_CHI_CODES[diaChi] || diaChi || "";
+
+      if (lucTuCode === "TL") {
         diaChiExtraText = thanhLongDiaChiInfo[diaChiCode] || null;
-      } else if (lucTuName === "Bạch Hổ") {
+      } else if (lucTuCode === "BH") {
         diaChiExtraText = bachHoDiaChiInfo[diaChiCode] || null;
-      } else if (lucTuName === "Câu Trần") {
+      } else if (lucTuCode === "CTr") {
         diaChiExtraText = cauTranDiaChiInfo[diaChiCode] || null;
-      } else if (lucTuName === "Chu Tước") {
+      } else if (lucTuCode === "CT") {
         diaChiExtraText = chuTuocDiaChiInfo[diaChiCode] || null;
-      } else if (lucTuName === "Đằng Xà") {
+      } else if (lucTuCode === "DX") {
         diaChiExtraText = dangXaDiaChiInfo[diaChiCode] || null;
-      } else if (lucTuName === "Huyền Vũ") {
+      } else if (lucTuCode === "HV") {
         diaChiExtraText = huyenVuDiaChiInfo[diaChiCode] || null;
       }
     }
@@ -884,7 +893,7 @@ export default function InterpretationTables({
                   <span>{clsThan.label}</span>
                 </div>
                 {lucThanCode &&
-                  lucTuName === "Thanh Long" &&
+                  lucTuCode === "TL" &&
                   thanhLongLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
@@ -893,7 +902,7 @@ export default function InterpretationTables({
                     </div>
                   )}
                 {lucThanCode &&
-                  lucTuName === "Bạch Hổ" &&
+                  lucTuCode === "BH" &&
                   bachHoLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
@@ -902,7 +911,7 @@ export default function InterpretationTables({
                     </div>
                   )}
                 {lucThanCode &&
-                  lucTuName === "Câu Trần" &&
+                  lucTuCode === "CTr" &&
                   cauTranLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
@@ -911,7 +920,7 @@ export default function InterpretationTables({
                     </div>
                   )}
                 {lucThanCode &&
-                  lucTuName === "Chu Tước" &&
+                  lucTuCode === "CT" &&
                   chuTuocLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
@@ -920,7 +929,7 @@ export default function InterpretationTables({
                     </div>
                   )}
                 {lucThanCode &&
-                  lucTuName === "Đằng Xà" &&
+                  lucTuCode === "DX" &&
                   dangXaLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>
@@ -929,7 +938,7 @@ export default function InterpretationTables({
                     </div>
                   )}
                 {lucThanCode &&
-                  lucTuName === "Huyền Vũ" &&
+                  lucTuCode === "HV" &&
                   huyenVuLucThanInfo[lucThanCode] && (
                     <div className="mt-2 text-xs leading-relaxed text-gray-700 prose prose-sm max-w-none">
                       <ReactMarkdown>

@@ -9,6 +9,7 @@ import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
 import { initializeDataMigrations } from "./utils/dataMigration";
+import { DIA_CHI_CODES } from "./utils/diaChi";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 const nguHanhRelations = {
@@ -45,18 +46,18 @@ const nguHanhRelations = {
 };
 
 const nguHanhFromDiaChi = {
-  Dần: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  Mão: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  Tỵ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  Ngọ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  Thìn: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Tuất: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Sửu: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Mùi: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
+  DN: { name: "Mộc", color: "text-green-600 bg-green-50" },
+  MA: { name: "Mộc", color: "text-green-600 bg-green-50" },
+  TI: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+  NG: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+  TH: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  TU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  SU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  MU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  TN: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+  DA: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+  HO: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+  TY: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
 };
 
 const renderNguHanhTooltip = (nguHanhName) => {
@@ -96,7 +97,8 @@ const renderCanChiWithNguHanh = (canChi) => {
   if (!canChi) return "-";
   const parts = canChi.split(" ");
   const diaChi = parts[parts.length - 1];
-  const nguHanh = nguHanhFromDiaChi[diaChi];
+  const diaChiCode = DIA_CHI_CODES[diaChi];
+  const nguHanh = nguHanhFromDiaChi[diaChiCode];
 
   return (
     <span>
