@@ -46,6 +46,7 @@ import {
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
 } from "../utils/diaChi";
+import { anVongTruongSinh, anVongTruongSinhByCan } from "../utils/truongSinh";
 
 // Helper: Extract địa chi từ canChi
 export const extractDiaChi = (canChi) => {
@@ -74,10 +75,14 @@ export default function InterpretationTables({
   const meaningsReady = useHexagramMeanings();
 
   // Chuẩn hoá dữ liệu hào cho quẻ gốc & quẻ biến (từ trên xuống: hào 6 → hào 1)
+  // dayCanChi từ metadata để tính Lục Thú
+  const dayCanChi = metadata?.dayCanChi;
+  const monthCanChi = metadata?.monthCanChi;
   const normalizedLines1 = useHexagramLines(
     originalHexagram,
     movingLine,
-    dungThan
+    dungThan,
+    dayCanChi
   );
   const lineData1 = normalizedLines1.map((l) => l.lineData);
   const lines1 = normalizedLines1.map((l) => l.lineType);
@@ -97,12 +102,208 @@ export default function InterpretationTables({
     normalizedLines1.filter((l) => l.isTietThan).map((l) => l.hao)
   );
 
-  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan);
+
+  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan, dayCanChi);
   const lineData2 = normalizedLines2.map((l) => l.lineData);
   const lines2 = normalizedLines2.map((l) => l.lineType);
   const dungThanHaos2 = new Set(
     normalizedLines2.filter((l) => l.isDungThan).map((l) => l.hao)
   );
+
+  // Function to get Ngũ Hành from Địa Chi (cần định nghĩa trước khi sử dụng)
+  const getNguHanhFromDiaChi = (diaChi) => {
+    const nguHanhMap = {
+      Dần: { name: "Mộc", color: "text-green-600 bg-green-50" },
+      Mão: { name: "Mộc", color: "text-green-600 bg-green-50" },
+      Tỵ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+      Ngọ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+      Thìn: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+      Tuất: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+      Sửu: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+      Mùi: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+      Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+      Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+      Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+      Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+    };
+    return nguHanhMap[diaChi] || null;
+  };
+
+  // Tính Trường Sinh cho cột Ngày (dựa trên dayCanChi)
+  let truongSinhNgay1 = [];
+  let truongSinhNgay2 = [];
+  if (dayCanChi && lineData1.length === 6) {
+    console.log("Calculating Trường Sinh Ngày with dayCanChi:", dayCanChi);
+    // Chuẩn bị dữ liệu hào cho quẻ gốc (bảng 1)
+    const haoListNgay1 = lineData1
+      .map((line) => {
+        if (!line.canChi) {
+          return null;
+        }
+        const diaChi = extractDiaChi(line.canChi);
+        if (!diaChi) {
+          return null;
+        }
+        const diaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
+        const nguHanhHao = getNguHanhFromDiaChi(diaChi)?.name || "";
+        return {
+          viTri: line.hao,
+          diaChi: diaChiCode,
+          nguHanh: nguHanhHao,
+        };
+      })
+      .filter((h) => h && h.diaChi);
+
+    // Chuẩn bị dữ liệu hào cho quẻ biến (bảng 2)
+    const haoListNgay2 = lineData2
+      .map((line) => {
+        if (!line.canChi) {
+          return null;
+        }
+        const diaChi = extractDiaChi(line.canChi);
+        if (!diaChi) {
+          return null;
+        }
+        const diaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
+        const nguHanhHao = getNguHanhFromDiaChi(diaChi)?.name || "";
+        return {
+          viTri: line.hao,
+          diaChi: diaChiCode,
+          nguHanh: nguHanhHao,
+        };
+      })
+      .filter((h) => h && h.diaChi);
+
+    // Tính Trường Sinh cho Ngày - quẻ gốc
+    if (haoListNgay1.length === 6) {
+      try {
+        truongSinhNgay1 = anVongTruongSinhByCan(dayCanChi, haoListNgay1);
+        console.log("Trường Sinh Ngày 1 results:", truongSinhNgay1);
+      } catch (error) {
+        console.warn("Error calculating Trường Sinh Ngày for hexagram 1:", error);
+      }
+    } else {
+      console.warn("Invalid haoListNgay1 length:", haoListNgay1.length, haoListNgay1);
+    }
+
+    // Tính Trường Sinh cho Ngày - quẻ biến (chỉ khi có quẻ biến)
+    if (changedHexagram && lineData2.length === 6) {
+      if (haoListNgay2.length === 6) {
+        try {
+          truongSinhNgay2 = anVongTruongSinhByCan(dayCanChi, haoListNgay2);
+          console.log("Trường Sinh Ngày 2 results:", truongSinhNgay2);
+        } catch (error) {
+          console.warn("Error calculating Trường Sinh Ngày for hexagram 2:", error);
+        }
+      } else {
+        console.warn("Invalid haoListNgay2 length:", haoListNgay2.length, haoListNgay2);
+      }
+    }
+  } else {
+    console.warn("Missing data for Trường Sinh Ngày:", {
+      dayCanChi,
+      lineData1Length: lineData1.length,
+      lineData2Length: lineData2.length,
+    });
+  }
+
+  // Tính Trường Sinh cho cột Tháng (dựa trên monthCanChi)
+  let truongSinhThang1 = [];
+  let truongSinhThang2 = [];
+  if (monthCanChi && lineData1.length === 6) {
+    console.log("Calculating Trường Sinh Tháng with monthCanChi:", monthCanChi);
+    // Chuẩn bị dữ liệu hào cho quẻ gốc (bảng 1)
+    const haoListThang1 = lineData1
+      .map((line) => {
+        if (!line.canChi) {
+          return null;
+        }
+        const diaChi = extractDiaChi(line.canChi);
+        if (!diaChi) {
+          return null;
+        }
+        const diaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
+        const nguHanhHao = getNguHanhFromDiaChi(diaChi)?.name || "";
+        return {
+          viTri: line.hao,
+          diaChi: diaChiCode,
+          nguHanh: nguHanhHao,
+        };
+      })
+      .filter((h) => h && h.diaChi);
+
+    // Chuẩn bị dữ liệu hào cho quẻ biến (bảng 2)
+    const haoListThang2 = lineData2
+      .map((line) => {
+        if (!line.canChi) {
+          return null;
+        }
+        const diaChi = extractDiaChi(line.canChi);
+        if (!diaChi) {
+          return null;
+        }
+        const diaChiCode = DIA_CHI_CODES[diaChi] || diaChi;
+        const nguHanhHao = getNguHanhFromDiaChi(diaChi)?.name || "";
+        return {
+          viTri: line.hao,
+          diaChi: diaChiCode,
+          nguHanh: nguHanhHao,
+        };
+      })
+      .filter((h) => h && h.diaChi);
+
+    // Tính Trường Sinh cho Tháng - quẻ gốc
+    if (haoListThang1.length === 6) {
+      try {
+        truongSinhThang1 = anVongTruongSinhByCan(monthCanChi, haoListThang1);
+        console.log("Trường Sinh Tháng 1 results:", truongSinhThang1);
+      } catch (error) {
+        console.warn("Error calculating Trường Sinh Tháng for hexagram 1:", error);
+      }
+    } else {
+      console.warn("Invalid haoListThang1 length:", haoListThang1.length, haoListThang1);
+    }
+
+    // Tính Trường Sinh cho Tháng - quẻ biến (chỉ khi có quẻ biến)
+    if (changedHexagram && lineData2.length === 6) {
+      if (haoListThang2.length === 6) {
+        try {
+          truongSinhThang2 = anVongTruongSinhByCan(monthCanChi, haoListThang2);
+          console.log("Trường Sinh Tháng 2 results:", truongSinhThang2);
+        } catch (error) {
+          console.warn("Error calculating Trường Sinh Tháng for hexagram 2:", error);
+        }
+      } else {
+        console.warn("Invalid haoListThang2 length:", haoListThang2.length, haoListThang2);
+      }
+    }
+  } else {
+    console.warn("Missing data for Trường Sinh Tháng:", {
+      monthCanChi,
+      lineData1Length: lineData1.length,
+      lineData2Length: lineData2.length,
+    });
+  }
+
+  // Tạo map để tra cứu nhanh Trường Sinh theo hào
+  const truongSinhNgayMap1 = new Map(
+    truongSinhNgay1.map((r) => [r.viTri, r.trangThai])
+  );
+  const truongSinhThangMap1 = new Map(
+    truongSinhThang1.map((r) => [r.viTri, r.trangThai])
+  );
+  const truongSinhNgayMap2 = new Map(
+    truongSinhNgay2.map((r) => [r.viTri, r.trangThai])
+  );
+  const truongSinhThangMap2 = new Map(
+    truongSinhThang2.map((r) => [r.viTri, r.trangThai])
+  );
+
+  // Debug: Log maps
+  console.log("Trường Sinh Ngày Map 1:", Array.from(truongSinhNgayMap1.entries()));
+  console.log("Trường Sinh Tháng Map 1:", Array.from(truongSinhThangMap1.entries()));
+  console.log("Trường Sinh Ngày Map 2:", Array.from(truongSinhNgayMap2.entries()));
+  console.log("Trường Sinh Tháng Map 2:", Array.from(truongSinhThangMap2.entries()));
 
   // Component to render hào line
   const renderHaoLine = (
@@ -167,24 +368,7 @@ export default function InterpretationTables({
   // Ngũ hành tương sinh / tương khắc data (dùng cho tooltip)
   // Ngũ hành tương sinh / tương khắc data import from json
   // const nguHanhRelations = { ... } (removed)
-  // Function to get Ngũ Hành from Địa Chi
-  const getNguHanhFromDiaChi = (diaChi) => {
-    const nguHanhMap = {
-      Dần: { name: "Mộc", color: "text-green-600 bg-green-50" },
-      Mão: { name: "Mộc", color: "text-green-600 bg-green-50" },
-      Tỵ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-      Ngọ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-      Thìn: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Tuất: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Sửu: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Mùi: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-      Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-      Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-      Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-    };
-    return nguHanhMap[diaChi] || null;
-  };
+  // Function getNguHanhFromDiaChi đã được di chuyển lên trên để tránh lỗi "Cannot access before initialization"
 
 
   // Helper: Xác định quan hệ tương sinh/tương khắc giữa 2 địa chi
@@ -668,7 +852,7 @@ export default function InterpretationTables({
         <Tooltip
           title={renderDiaChiTooltip(diaChi)}
           placement="top"
-          overlayClassName="tooltip-custom"
+          classNames={{ root: "tooltip-custom" }}
         >
           <span className="cursor-help text-center flex flex-col items-center">
             {DIA_CHI_ICONS[DIA_CHI_CODES[diaChi]] && (
@@ -830,7 +1014,7 @@ export default function InterpretationTables({
     return "";
   };
 
-  // Columns for TỨC ĐIỀU PHÁN SÀO: Hào / Thế ứng / Lục thân / Can chi / Phục thần / Tuần không
+  // Columns for TỨC ĐIỀU PHÁN SÀO: Hào / Thế ứng / Lục thân / Can chi / Phục thần / Tuần không / Ngày / Tháng
   const columns1 = [
     {
       title: "Hào",
@@ -921,7 +1105,15 @@ export default function InterpretationTables({
         const nguHanh = getNguHanhFromDiaChi(diaChi);
 
         // Tính toán các trạng thái Dụng/Kỵ/Cừu/Tiết/Nguyên cho Phục Thần
-        const selectedDungThanName = dungThan ? getLucThanName(dungThan) : null;
+        // dungThan: hao number (1-6) or null
+        let selectedDungThanName = null;
+        if (dungThan) {
+          const dungThanHao = Number(dungThan);
+          const dungThanLineData = lineData1.find((line) => line.hao === dungThanHao);
+          if (dungThanLineData && dungThanLineData.lucThan) {
+            selectedDungThanName = getLucThanName(dungThanLineData.lucThan);
+          }
+        }
         const isDungThan =
           !!selectedDungThanName && fullLucThan === selectedDungThanName;
         const isNguyenThan =
@@ -952,7 +1144,7 @@ export default function InterpretationTables({
               <Tooltip
                 title={renderDiaChiTooltip(diaChi)}
                 placement="top"
-                overlayClassName="tooltip-custom"
+                classNames={{ root: "tooltip-custom" }}
               >
                 <span className="text-xs cursor-help">{diaChi}</span>
               </Tooltip>
@@ -1009,6 +1201,34 @@ export default function InterpretationTables({
       render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
     },
     {
+      title: "Ngày",
+      dataIndex: "ngay",
+      key: "ngay",
+      width: 100,
+      align: "center",
+      render: (ngay, record) => {
+        const trangThai = truongSinhNgayMap1.get(record.hao);
+        if (!trangThai && truongSinhNgayMap1.size > 0) {
+          console.warn("Trường Sinh Ngày not found for hào:", record.hao, "Map keys:", Array.from(truongSinhNgayMap1.keys()));
+        }
+        return <span>{trangThai || ""}</span>;
+      },
+    },
+    {
+      title: "Tháng",
+      dataIndex: "thang",
+      key: "thang",
+      width: 100,
+      align: "center",
+      render: (thang, record) => {
+        const trangThai = truongSinhThangMap1.get(record.hao);
+        if (!trangThai && truongSinhThangMap1.size > 0) {
+          console.warn("Trường Sinh Tháng not found for hào:", record.hao, "Map keys:", Array.from(truongSinhThangMap1.keys()));
+        }
+        return <span>{trangThai || ""}</span>;
+      },
+    },
+    {
       title: "Hoá",
       key: "hoa",
       width: 100,
@@ -1017,7 +1237,7 @@ export default function InterpretationTables({
     },
   ];
 
-  // Columns for NHÂN ĐOÁN TÁO CAO: Hào / Lục thân / Can chi / Lục tú / Tuần không
+  // Columns for NHÂN ĐOÁN TÁO CAO: Hào / Lục thân / Can chi / Lục tú / Tuần không / Ngày / Tháng
   const columns2 = [
     {
       title: "Hào",
@@ -1068,6 +1288,28 @@ export default function InterpretationTables({
       width: 100,
       align: "center",
       render: (tuanKhong) => <span>{tuanKhong || ""}</span>,
+    },
+    {
+      title: "Ngày",
+      dataIndex: "ngay",
+      key: "ngay",
+      width: 100,
+      align: "center",
+      render: (ngay, record) => {
+        const trangThai = truongSinhNgayMap2.get(record.hao);
+        return <span>{trangThai || ""}</span>;
+      },
+    },
+    {
+      title: "Tháng",
+      dataIndex: "thang",
+      key: "thang",
+      width: 100,
+      align: "center",
+      render: (thang, record) => {
+        const trangThai = truongSinhThangMap2.get(record.hao);
+        return <span>{trangThai || ""}</span>;
+      },
     },
     {
       title: "Hoá",
@@ -1373,11 +1615,17 @@ export default function InterpretationTables({
           const theHao = lineData1.find((line) => Number(line.theUng) === 1);
           const theDiaChi = theHao ? extractDiaChi(theHao.canChi) : null;
 
-          // Tìm tất cả các hào Dụng Thần
-          const dungThanName = getLucThanName(dungThan);
-          const allDungThanHaos = lineData1.filter((line) => {
-            return getLucThanName(line.lucThan) === dungThanName;
-          });
+          // dungThan: hao number (1-6)
+          const dungThanHao = Number(dungThan);
+          
+          // Tìm hào Dụng Thần (chỉ có 1 hào được chọn)
+          const dungThanLine = lineData1.find((line) => line.hao === dungThanHao);
+          const allDungThanHaos = dungThanLine ? [dungThanLine] : [];
+          
+          // Lấy Lục Thân của hào Dụng Thần
+          const dungThanName = dungThanLine && dungThanLine.lucThan 
+            ? getLucThanName(dungThanLine.lucThan) 
+            : null;
 
           // Hàm helper để tính điểm cho một hào Dụng Thần
           const calculateDungThanDiem = (hao) => {
@@ -1466,29 +1714,14 @@ export default function InterpretationTables({
             return totalDiem;
           };
 
-          // Tính điểm cho tất cả các hào Dụng Thần và chọn hào có điểm cao nhất
-          let dungThanHao = null;
-          if (allDungThanHaos.length > 0) {
-            if (allDungThanHaos.length === 1) {
-              dungThanHao = allDungThanHaos[0];
-            } else {
-              // Có nhiều hơn 1 hào Dụng Thần, chọn hào có điểm cao nhất
-              let maxDiem = -Infinity;
-              for (const hao of allDungThanHaos) {
-                const diem = calculateDungThanDiem(hao);
-                if (diem > maxDiem) {
-                  maxDiem = diem;
-                  dungThanHao = hao;
-                }
-              }
-            }
-          }
+          // Dụng Thần: chỉ có 1 hào được chọn
+          const dungThanLineData = allDungThanHaos.length > 0 ? allDungThanHaos[0] : null;
 
-          const dungThanDiaChi = dungThanHao
-            ? extractDiaChi(dungThanHao.canChi)
+          const dungThanDiaChi = dungThanLineData
+            ? extractDiaChi(dungThanLineData.canChi)
             : null;
-          const dungThanInfo = dungThan
-            ? getDungThanInfo(getLucThanName(dungThan))
+          const dungThanInfo = dungThanName
+            ? getDungThanInfo(dungThanName)
             : null;
 
           // Phân tích quan hệ giữa hào Thế và Dụng Thần
@@ -2342,8 +2575,8 @@ export default function InterpretationTables({
 
                       // Bước 8: Ứng kỳ
                       let buoc8Item = null;
-                      if (dungThanHao && dungThanDiaChi) {
-                        const isDong = dungThanHao.hao === movingLine;
+                      if (dungThanLineData && dungThanDiaChi) {
+                        const isDong = dungThanLineData.hao === movingLine;
                         const isQuaVuong = (dungThanDiaChi === monthDiaChi) && (dungThanDiaChi === dayDiaChi);
 
                         const dungThanNguHanh = getNguHanhFromDiaChi(dungThanDiaChi);
@@ -2383,7 +2616,7 @@ export default function InterpretationTables({
                                     <div className={`p-3 rounded border-l-4 ${isDong ? 'bg-blue-50 border-blue-500' : 'bg-gray-50 border-gray-400'}`}>
                                       <p className="font-bold m-0 text-sm">{isDong ? 'Hào Động' : 'Hào Tĩnh'}</p>
                                       <p className="text-xs text-gray-600 m-0 mt-1">
-                                        {isDong ? `Hào Dụng Thần (Hào ${dungThanHao.hao}) là hào động.` : `Hào Dụng Thần (Hào ${dungThanHao.hao}) là hào tĩnh.`}
+                                        {isDong ? `Hào Dụng Thần (Hào ${dungThanLineData.hao}) là hào động.` : `Hào Dụng Thần (Hào ${dungThanLineData.hao}) là hào tĩnh.`}
                                       </p>
                                       {isDong && (
                                         <div className="mt-2 pt-2 border-t border-gray-200">
@@ -2394,7 +2627,7 @@ export default function InterpretationTables({
                                             • Ứng kỳ (Hợp): {formatDiaChiUngKy(getNhiHopOf(dungThanDiaChi))}
                                           </p>
                                           {(() => {
-                                            const ttIndex = lineData1.findIndex(l => l.hao === dungThanHao.hao);
+                                            const ttIndex = lineData1.findIndex(l => l.hao === dungThanLineData.hao);
                                             const ttChangedLine = lineData2[ttIndex];
                                             if (ttChangedLine) {
                                               const changedDiaChi = extractDiaChi(ttChangedLine.canChi);
@@ -2492,11 +2725,11 @@ export default function InterpretationTables({
                                       <div className="p-4 bg-white rounded-lg border border-parchment-200 shadow-sm leading-relaxed">
                                         <ReactMarkdown>{dungThanInfo.content}</ReactMarkdown>
                                       </div>
-                                      {dungThanHao && (
+                                      {dungThanLineData && (
                                         <div className="p-3 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-2">
                                           <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                                           <p className="m-0 text-sm">
-                                            <strong>Hào Dụng Thần:</strong> Hào {dungThanHao.hao} ({dungThanHao.canChi})
+                                            <strong>Hào Dụng Thần:</strong> Hào {dungThanLineData.hao} ({dungThanLineData.canChi})
                                           </p>
                                         </div>
                                       )}
@@ -2527,7 +2760,7 @@ export default function InterpretationTables({
                                     Dụng Thần
                                   </p>
                                   {theHao &&
-                                    dungThanHao &&
+                                    dungThanLineData &&
                                     theDiaChi &&
                                     dungThanDiaChi ? (
                                     <div className="space-y-2">
@@ -2538,7 +2771,7 @@ export default function InterpretationTables({
                                       </p>
                                       <p>
                                         <strong>Hào Dụng Thần:</strong> Hào{" "}
-                                        {dungThanHao.hao} ({dungThanHao.canChi})
+                                        {dungThanLineData.hao} ({dungThanLineData.canChi})
                                         - Địa Chi:{" "}
                                         <strong>{dungThanDiaChi}</strong>
                                       </p>

@@ -11,7 +11,7 @@
 
 import { getTrigramByRemainder } from "../data/trigrams";
 import { getHexagram, Hexagram } from "../data/hexagrams";
-import { LunarCalendar } from "@dqcai/vn-lunar";
+import { getGanzhiFromDate } from "./ganzhi";
 
 export interface DivinationResult {
   originalHexagram: Hexagram | null;
@@ -181,6 +181,7 @@ function createChangedHexagram(
 
 /**
  * Get current date/time metadata
+ * Sử dụng ganzhi.js để tính Can Chi cho năm, tháng, ngày
  */
 function getMetadata(date?: Date): DivinationResult["metadata"] {
   const now = date || new Date();
@@ -192,22 +193,32 @@ function getMetadata(date?: Date): DivinationResult["metadata"] {
     minute: "2-digit",
   });
 
-  // Convert to Vietnamese lunar calendar using @dqcai/vn-lunar
+  // Lấy ngày, tháng, năm từ Date object
   const solarDay = now.getDate();
   const solarMonth = now.getMonth() + 1; // JS months are 0-based
   const solarYear = now.getFullYear();
 
-  const lunar = LunarCalendar.fromSolar(solarDay, solarMonth, solarYear);
+  // Tính Can Chi sử dụng ganzhi.js
+  const ganzhi = getGanzhiFromDate({
+    year: solarYear,
+    month: solarMonth,
+    day: solarDay,
+  });
+
+  // Format âm lịch: hiển thị Can Chi năm, tháng, ngày
+  // Lưu ý: Đây là Can Chi dương lịch, không phải âm lịch thực sự
+  // Để có âm lịch chính xác, cần thêm logic chuyển đổi dương lịch sang âm lịch
+  const thoiGianAm = `Năm ${ganzhi.year}, Tháng ${ganzhi.month}, Ngày ${ganzhi.day}`;
 
   const tietKhi = "Lập Xuân";
   const nhatThan = "Mậu Thổ";
 
   return {
     thoiGianDuong: dateStr,
-    thoiGianAm: lunar.formatLunar(),
-    yearCanChi: lunar.yearCanChi,
-    monthCanChi: lunar.monthCanChi,
-    dayCanChi: lunar.dayCanChi,
+    thoiGianAm: thoiGianAm,
+    yearCanChi: ganzhi.year,
+    monthCanChi: ganzhi.month,
+    dayCanChi: ganzhi.day,
     tietKhi,
     nhatThan,
   };

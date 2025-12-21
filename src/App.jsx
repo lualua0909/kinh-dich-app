@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tooltip } from "antd";
+import { Card, Tooltip, message } from "antd";
 import { performDivination } from "./utils/divination";
 import { generateLineData } from "./data/lines";
 import DivinationForm from "./components/DivinationForm";
@@ -8,7 +8,6 @@ import InterpretationTables from "./components/InterpretationTables";
 import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
-import { initializeDataMigrations } from "./utils/dataMigration";
 import { DIA_CHI_CODES, DIA_CHI_ICONS } from "./utils/diaChi";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
@@ -29,7 +28,7 @@ const nguHanhFromDiaChi = {
   TN: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   DA: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
   HO: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  TY: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+  TY: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
 };
 
 const renderNguHanhTooltip = (nguHanhName) => {
@@ -85,11 +84,9 @@ const renderCanChiWithNguHanh = (canChi) => {
         <Tooltip
           title={renderNguHanhTooltip(nguHanh.name)}
           placement="top"
-          overlayClassName="tooltip-custom"
+          classNames={{ root: "tooltip-custom" }}
         >
-          <span
-            className={`${nguHanh.color}`}
-          >
+          <span className={`${nguHanh.color}`}>
             {nguHanhRelations[nguHanh.name]?.icon}
           </span>
         </Tooltip>
@@ -104,35 +101,30 @@ const getDiaChiFromCanChi = (canChi) => {
   return parts[parts.length - 1];
 };
 
-const getDungThanDiaChi = (result, dungThan) => {
-  if (!dungThan || !result || !result.originalHexagram) return null;
-  const lineData = generateLineData(
-    result.originalHexagram.id,
-    result.movingLine
-  );
-  const dungThanLine = lineData.find(
-    (line) => line.lucThan === LUC_THAN_CODES[dungThan]
-  );
+const getDungThanDiaChi = (result, dungThanHao) => {
+  // dungThanHao: hao number (1-6) or null
+  if (!dungThanHao || !result || !result.originalHexagram) return null;
+
+  // Lấy dayCanChi từ metadata để tính Lục Thú
+  const dayCanChi = result.metadata?.dayCanChi;
+  const lineData = generateLineData(result.originalHexagram.id, dayCanChi);
+  // Find line by hao number
+  const dungThanLine = lineData.find((line) => line.hao === dungThanHao);
   return dungThanLine ? getDiaChiFromCanChi(dungThanLine.canChi) : null;
 };
 
 function App() {
   const [result, setResult] = useState(null);
-  const [dungThan, setDungThan] = useState(null);
+  const [dungThan, setDungThan] = useState(null); // Single Dụng Thần: hao number (1-6) or null
 
-  // Initialize IndexedDB migrations on app start
+  // Parse URL on load
   useEffect(() => {
-    initializeDataMigrations().catch((error) => {
-      console.error("Failed to initialize data migrations:", error);
-    });
-
-    // Parse URL on load
     const params = new URLSearchParams(window.location.search);
     const type = params.get("t"); // 's' for serial, 'm' for manual
     const query = params.get("q"); // serial or lines
     const movingLineParam = params.get("ml");
     const datetimeParam = params.get("dt");
-    const dungThanParam = params.get("dtu");
+    const dungThanParam = params.get("dtu"); // hao number (1-6) or null
 
     if (type && query) {
       const input = {};
@@ -152,7 +144,10 @@ function App() {
         input.datetime = new Date(datetimeParam);
       }
 
-      handleDivinate(input, dungThanParam, true);
+      // Parse dungThan from URL: hao number (1-6) or null
+      const dungThanHao = dungThanParam ? Number(dungThanParam) : null;
+
+      handleDivinate(input, dungThanHao, true);
     }
   }, []);
 
@@ -160,15 +155,21 @@ function App() {
     try {
       const divinationResult =
         input.type === "serial"
-          ? performDivination(input.serial, undefined, undefined, input.datetime)
+          ? performDivination(
+              input.serial,
+              undefined,
+              undefined,
+              input.datetime
+            )
           : performDivination(
-            undefined,
-            input.lines,
-            input.movingLine,
-            input.datetime
-          );
+              undefined,
+              input.lines,
+              input.movingLine,
+              input.datetime
+            );
       setResult(divinationResult);
-      setDungThan(dungThanValue || null);
+      // Dụng Thần: hao number (1-6) or null
+      setDungThan(dungThanValue);
 
       // Update URL if not from initial load
       if (!isInitialLoad) {
@@ -189,9 +190,8 @@ function App() {
           params.set("dt", input.datetime.toISOString());
         }
 
-        if (dungThanValue) {
-          params.set("dtu", dungThanValue);
-        }
+        // Dụng Thần không được lưu vào URL khi lập quẻ (chỉ được chọn sau khi lập quẻ)
+        // URL sẽ được cập nhật khi user click vào hào để chọn Dụng Thần
 
         window.history.pushState({}, "", `?${params.toString()}`);
       }
@@ -199,6 +199,36 @@ function App() {
       if (!isInitialLoad) throw error;
       console.error("Failed to perform initial divination from URL:", error);
     }
+  };
+
+  const handleLineClick = (haoNumber) => {
+    if (!haoNumber || !result) return;
+
+    // Chọn Dụng Thần: chỉ được chọn DUY NHẤT 1 hào
+    // Nếu click vào hào đã được chọn → bỏ chọn
+    // Nếu click vào hào khác → chọn hào mới (hủy hào cũ)
+    setDungThan((prevDungThanHao) => {
+      const isSelected = prevDungThanHao === haoNumber;
+      const newDungThanHao = isSelected ? null : haoNumber;
+
+      // Update URL
+      const params = new URLSearchParams(window.location.search);
+      if (newDungThanHao) {
+        params.set("dtu", newDungThanHao.toString());
+      } else {
+        params.delete("dtu");
+      }
+      window.history.pushState({}, "", `?${params.toString()}`);
+
+      // Show message
+      if (isSelected) {
+        message.info(`Đã bỏ chọn Dụng Thần (Hào ${haoNumber})`);
+      } else {
+        message.success(`Đã chọn Hào ${haoNumber} làm Dụng Thần`);
+      }
+
+      return newDungThanHao;
+    });
   };
 
   return (
@@ -228,9 +258,15 @@ function App() {
                   {renderCanChiWithNguHanh(result.metadata.dayCanChi)}
                   {(() => {
                     const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const dayDiaChi = getDiaChiFromCanChi(result.metadata.dayCanChi);
+                    const dayDiaChi = getDiaChiFromCanChi(
+                      result.metadata.dayCanChi
+                    );
                     if (dtDiaChi && dayDiaChi && dtDiaChi === dayDiaChi) {
-                      return <span className="ml-2 text-green-700 font-bold">(Nhật lệnh)</span>;
+                      return (
+                        <span className="ml-2 text-green-700 font-bold">
+                          (Nhật lệnh)
+                        </span>
+                      );
                     }
                     return null;
                   })()}
@@ -240,9 +276,15 @@ function App() {
                   {renderCanChiWithNguHanh(result.metadata.monthCanChi)}
                   {(() => {
                     const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const monthDiaChi = getDiaChiFromCanChi(result.metadata.monthCanChi);
+                    const monthDiaChi = getDiaChiFromCanChi(
+                      result.metadata.monthCanChi
+                    );
                     if (dtDiaChi && monthDiaChi && dtDiaChi === monthDiaChi) {
-                      return <span className="ml-2 text-green-700 font-bold">(Nguyệt lệnh)</span>;
+                      return (
+                        <span className="ml-2 text-green-700 font-bold">
+                          (Nguyệt lệnh)
+                        </span>
+                      );
                     }
                     return null;
                   })()}
@@ -252,16 +294,20 @@ function App() {
                   {renderCanChiWithNguHanh(result.metadata.yearCanChi)}
                   {(() => {
                     const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const yearDiaChi = getDiaChiFromCanChi(result.metadata.yearCanChi);
+                    const yearDiaChi = getDiaChiFromCanChi(
+                      result.metadata.yearCanChi
+                    );
                     if (dtDiaChi && yearDiaChi && dtDiaChi === yearDiaChi) {
-                      return <span className="ml-2 text-green-700 font-bold">(Thái tuế)</span>;
+                      return (
+                        <span className="ml-2 text-green-700 font-bold">
+                          (Thái tuế)
+                        </span>
+                      );
                     }
                     return null;
                   })()}
                 </div>
               </div>
-
-
             </Card>
           </div>
         )}
@@ -270,10 +316,9 @@ function App() {
         {result && (
           <div className="mb-8">
             <div
-              className={`grid gap-6 ${result.movingLine
-                ? "grid-cols-1 sm:grid-cols-3"
-                : "grid-cols-1 sm:grid-cols-2"
-                }`}
+              className={`grid gap-6 ${
+                result.movingLine ? "grid-cols-3" : "grid-cols-3"
+              }`}
             >
               {/* Quẻ Gốc (Original Hexagram) */}
               <HexagramColumn
@@ -281,6 +326,7 @@ function App() {
                 title=""
                 movingLine={result.movingLine}
                 dungThan={dungThan}
+                onLineClick={handleLineClick}
               />
 
               {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) - chỉ hiển thị khi có hào động */}

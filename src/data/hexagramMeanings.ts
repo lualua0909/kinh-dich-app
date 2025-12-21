@@ -20,39 +20,20 @@ export const HEXAGRAM_DATA: Record<string, HexagramData> =
 
 // Backward compatibility: export HEXAGRAM_MEANINGS for existing code
 export const HEXAGRAM_MEANINGS: Record<string, string> = Object.fromEntries(
-  Object.entries(HEXAGRAM_DATA).map(([key, data]) => [
-    key,
-    data.meaning || "",
-  ])
+  Object.entries(HEXAGRAM_DATA).map(([key, data]) => [key, data.meaning || ""])
 ) as Record<string, string>;
-
-import { getValue, STORES } from "../utils/indexedDB";
 
 /**
  * Get hexagram meaning by hexagram key ("upper-lower")
- * First tries IndexedDB, falls back to memory if IndexedDB is not available
- * This is the async version - use getHexagramMeaningSync for synchronous access
+ * Uses memory data directly
+ * This is the async version for backward compatibility
  */
 export async function getHexagramMeaning(key: string): Promise<string | null> {
-  try {
-    // Try IndexedDB first
-    const value = await getValue<string>(STORES.HEXAGRAM_MEANINGS, key);
-    if (value) {
-      return value;
-    }
-  } catch (error) {
-    console.warn(
-      "Failed to get from IndexedDB, falling back to memory:",
-      error
-    );
-  }
-
-  // Fallback to memory
   return HEXAGRAM_MEANINGS[key] || null;
 }
 
 /**
- * Synchronous version for backward compatibility
+ * Synchronous version
  * Uses memory data directly
  * Note: For better performance, use the hook useHexagramMeanings() and getHexagramMeaningCached()
  */

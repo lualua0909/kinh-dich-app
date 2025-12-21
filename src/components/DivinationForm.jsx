@@ -5,28 +5,24 @@ import {
   Button,
   Select,
   message,
-  Tooltip,
   Card,
   Radio,
   Switch,
-  Modal,
+  DatePicker,
 } from "antd";
-import { InfoCircleOutlined } from "@ant-design/icons";
-import { getDungThanInfo } from "../data/dungThan";
-import { LunarCalendar } from "@dqcai/vn-lunar";
+import dayjs from "dayjs";
+import { getGanzhiFromDate } from "../utils/ganzhi";
 import { TRIGRAMS } from "../data/trigrams";
-import ReactMarkdown from "react-markdown";
 
 const { Option } = Select;
 
 /**
- * DivinationForm component - input form for serial number OR manual lines and dụng thần
+ * DivinationForm component - input form for serial number OR manual lines
+ * Note: Dụng Thần chỉ được chọn trực tiếp trên quẻ chính, không chọn trong form này
  */
 export default function DivinationForm({ onDivinate }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [selectedDungThan, setSelectedDungThan] = useState(null);
-  const [isDungThanModalVisible, setIsDungThanModalVisible] = useState(false);
   const [mode, setMode] = useState("serial"); // 'serial' | 'manual' | 'datetime'
 
   // Effect to parse URL on mount
@@ -36,7 +32,7 @@ export default function DivinationForm({ onDivinate }) {
     const query = params.get("q");
     const movingLineParam = params.get("ml");
     const datetimeParam = params.get("dt");
-    const dungThanParam = params.get("dtu");
+    const viewDateParam = params.get("vd"); // viewDate parameter
 
     if (type === "s" && query) {
       setMode("serial");
@@ -54,6 +50,13 @@ export default function DivinationForm({ onDivinate }) {
       form.setFieldsValue(formLines);
     }
 
+    // Set view date from URL or default to current date and time
+    if (viewDateParam) {
+      form.setFieldsValue({ viewDate: dayjs(viewDateParam) });
+    } else {
+      form.setFieldsValue({ viewDate: dayjs() }); // Default to current date and time
+    }
+
     if (datetimeParam) {
       const dt = new Date(datetimeParam);
       form.setFieldsValue({
@@ -62,14 +65,10 @@ export default function DivinationForm({ onDivinate }) {
         year: dt.getFullYear(),
         hour: dt.getHours(),
         minute: dt.getMinutes(),
+        viewDate: dayjs(dt), // Also set viewDate for datetime mode (disabled)
       });
     }
-
-    if (dungThanParam) {
-      form.setFieldsValue({ dungThan: dungThanParam });
-      setSelectedDungThan(getDungThanInfo(dungThanParam));
-    }
-  }, [form]); // Added form as dependency
+  }, [form]);
 
   // Effect to handle mode changes
   useEffect(() => {
@@ -86,52 +85,39 @@ export default function DivinationForm({ onDivinate }) {
           year: now.getFullYear(),
           hour: now.getHours(),
           minute: now.getMinutes(),
+          viewDate: dayjs(), // Set viewDate to current time (will be disabled)
         });
+      } else {
+        // Update viewDate from datetimeParam
+        const dt = new Date(datetimeParam);
+        form.setFieldsValue({ viewDate: dayjs(dt) });
+      }
+    } else {
+      // Set default view date to current date and time if not set (for serial/manual mode)
+      const currentViewDate = form.getFieldValue("viewDate");
+      if (!currentViewDate) {
+        form.setFieldsValue({ viewDate: dayjs() }); // Default to current date and time
       }
     }
   }, [mode, form]);
 
-  const dungThanOptions = [
-    { value: "Phụ Mẫu", label: "Phụ Mẫu" },
-    { value: "Huynh Đệ", label: "Huynh Đệ" },
-    { value: "Tử Tôn", label: "Tử Tôn" },
-    { value: "Thê Tài", label: "Thê Tài" },
-    { value: "Quan Quỷ", label: "Quan Quỷ" },
-  ];
-
-  const handleDungThanChange = (value) => {
-    setSelectedDungThan(value ? getDungThanInfo(value) : null);
-  };
-
-  const showDungThanModal = () => {
-    if (selectedDungThan) {
-      setIsDungThanModalVisible(true);
-    } else {
-      message.info("Vui lòng chọn Dụng Thần để xem chi tiết");
+  // Helper function to update viewDate from day/month/year/hour/minute in datetime mode
+  const updateViewDateFromDatetime = () => {
+    if (mode === "datetime") {
+      const { day, month, year, hour, minute } = form.getFieldsValue();
+      if (day && month && year && hour !== undefined && minute !== undefined) {
+        const date = new Date(year, month - 1, day, hour, minute);
+        form.setFieldsValue({ viewDate: dayjs(date) });
+      }
     }
   };
-
-  const renderDungThanModal = () => (
-    <Modal
-      title={selectedDungThan?.label || "Thông tin Dụng Thần"}
-      open={isDungThanModalVisible}
-      onCancel={() => setIsDungThanModalVisible(false)}
-      footer={[
-        <Button key="close" onClick={() => setIsDungThanModalVisible(false)}>
-          Đóng
-        </Button>
-      ]}
-      width={600}
-    >
-      <div className="prose prose-sm prose-amber max-w-none">
-        <ReactMarkdown>{selectedDungThan?.content || ""}</ReactMarkdown>
-      </div>
-    </Modal>
-  );
 
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
+      // Get view date (default to current date and time)
+      const viewDate = values.viewDate ? values.viewDate.toDate() : new Date();
+
       if (mode === "serial") {
         const serial = (values.serial || "").trim();
 
@@ -142,16 +128,27 @@ export default function DivinationForm({ onDivinate }) {
           return;
         }
 
-        await onDivinate({ type: "serial", serial }, values.dungThan);
+        await onDivinate({ type: "serial", serial, datetime: viewDate }, null);
       } else if (mode === "datetime") {
         const { day, month, year, hour, minute } = values;
 
-        // Convert to Lunar
-        const lunarObj = LunarCalendar.fromSolar(day, month, year);
-        const lunarDate = lunarObj.lunarDate;
-        const lunarYear = lunarDate.year;
-        const lunarMonth = lunarDate.month;
-        const lunarDay = lunarDate.day;
+        // Tính Can Chi sử dụng ganzhi.js
+        const ganzhi = getGanzhiFromDate({ year, month, day });
+        
+        // Lấy năm âm lịch từ Can Chi năm (tạm thời dùng năm dương lịch)
+        // Lưu ý: Logic này cần được cải thiện nếu cần chuyển đổi chính xác sang âm lịch
+        // Hiện tại dùng năm dương lịch để tính toán
+        const lunarYear = year;
+        
+        // Tính tháng âm lịch từ Can Chi tháng
+        // Lưu ý: Cần logic chuyển đổi chính xác hơn
+        // Tạm thời dùng tháng dương lịch
+        const lunarMonth = month;
+        
+        // Tính ngày âm lịch từ Can Chi ngày
+        // Lưu ý: Cần logic chuyển đổi chính xác hơn
+        // Tạm thời dùng ngày dương lịch
+        const lunarDay = day;
 
         const yearBranch = ((lunarYear - 4) % 12) + 1;
         const hourBranch = (Math.floor((hour + 1) / 2) % 12) + 1;
@@ -180,6 +177,8 @@ export default function DivinationForm({ onDivinate }) {
         }
 
         const lines = [...lowerTrigram.lines, ...upperTrigram.lines];
+        // In datetime mode, viewDate is automatically synced from day/month/year/hour/minute
+        // Use the date/time from the form inputs
         const selectedDate = new Date(year, month - 1, day, hour, minute);
 
         await onDivinate(
@@ -189,7 +188,7 @@ export default function DivinationForm({ onDivinate }) {
             movingLine: movingRemainder,
             datetime: selectedDate,
           },
-          values.dungThan
+          null
         );
       } else {
         const lines = [];
@@ -223,8 +222,9 @@ export default function DivinationForm({ onDivinate }) {
             type: "manual",
             lines,
             movingLine: movingLine === "none" ? null : Number(movingLine),
+            datetime: viewDate,
           },
-          values.dungThan
+          null
         );
       }
     } catch (error) {
@@ -267,6 +267,7 @@ export default function DivinationForm({ onDivinate }) {
           year: currentDate.getFullYear(),
           hour: currentDate.getHours(),
           minute: currentDate.getMinutes(),
+          viewDate: dayjs(), // Default to current date and time
         }}
       >
         {mode === "serial" && (
@@ -289,32 +290,23 @@ export default function DivinationForm({ onDivinate }) {
             </Form.Item>
 
             <Form.Item
-              name="dungThan"
+              name="viewDate"
               label={
-                <span className="font-semibold text-gray-700 flex items-center gap-2">
-                  Dụng Thần:
-                  <InfoCircleOutlined
-                    className="text-blue-500 cursor-help"
-                    onClick={showDungThanModal}
-                  />
+                <span className="font-semibold text-gray-700">
+                  Ngày giờ xem quẻ:
                 </span>
               }
-              className="min-w-[180px]"
+              className="min-w-[200px]"
             >
-              <Select
-                placeholder="Chọn dụng thần"
+              <DatePicker
                 size="large"
-                allowClear
+                showTime
+                format="DD/MM/YYYY HH:mm"
                 className="w-full"
-                onChange={handleDungThanChange}
-              >
-                {dungThanOptions.map((option) => (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                ))}
-              </Select>
+                placeholder="Chọn ngày giờ"
+              />
             </Form.Item>
+
             <Form.Item>
               <Button
                 type="primary"
@@ -334,7 +326,10 @@ export default function DivinationForm({ onDivinate }) {
               <Form.Item label="Ngày lập quẻ" className="mb-0">
                 <div className="flex gap-2">
                   <Form.Item name="day" noStyle>
-                    <Select className="min-w-[70px]">
+                    <Select 
+                      className="min-w-[70px]"
+                      onChange={updateViewDateFromDatetime}
+                    >
                       {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
                         <Option key={d} value={d}>
                           {d}
@@ -343,7 +338,10 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="month" noStyle>
-                    <Select className="min-w-[70px]">
+                    <Select 
+                      className="min-w-[70px]"
+                      onChange={updateViewDateFromDatetime}
+                    >
                       {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                         <Option key={m} value={m}>
                           {m}
@@ -352,7 +350,10 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="year" noStyle>
-                    <Select className="min-w-[90px]">
+                    <Select 
+                      className="min-w-[90px]"
+                      onChange={updateViewDateFromDatetime}
+                    >
                       {Array.from(
                         { length: 100 },
                         (_, i) => new Date().getFullYear() - 50 + i
@@ -368,7 +369,10 @@ export default function DivinationForm({ onDivinate }) {
               <Form.Item label="Giờ lập quẻ" className="mb-0">
                 <div className="flex gap-2">
                   <Form.Item name="hour" noStyle>
-                    <Select className="min-w-[70px]">
+                    <Select 
+                      className="min-w-[70px]"
+                      onChange={updateViewDateFromDatetime}
+                    >
                       {Array.from({ length: 24 }, (_, i) => i).map((h) => (
                         <Option key={h} value={h}>
                           {h.toString().padStart(2, "0")}
@@ -377,7 +381,10 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="minute" noStyle>
-                    <Select className="min-w-[70px]">
+                    <Select 
+                      className="min-w-[70px]"
+                      onChange={updateViewDateFromDatetime}
+                    >
                       {Array.from({ length: 60 }, (_, i) => i).map((m) => (
                         <Option key={m} value={m}>
                           {m.toString().padStart(2, "0")}
@@ -389,33 +396,27 @@ export default function DivinationForm({ onDivinate }) {
               </Form.Item>
             </div>
 
+            <Form.Item
+              name="viewDate"
+              label={
+                <span className="font-semibold text-gray-700">
+                  Ngày giờ xem quẻ:
+                </span>
+              }
+              className="min-w-[200px]"
+              tooltip="Ngày giờ xem quẻ tự động lấy từ ngày giờ lập quẻ ở trên"
+            >
+              <DatePicker
+                size="large"
+                showTime
+                format="DD/MM/YYYY HH:mm"
+                className="w-full"
+                placeholder="Chọn ngày giờ"
+                disabled
+              />
+            </Form.Item>
+
             <div className="flex flex-wrap items-end gap-4">
-              <Form.Item
-                name="dungThan"
-                label={
-                  <span className="font-semibold text-gray-700 flex items-center gap-2">
-                    Dụng Thần:
-                    <InfoCircleOutlined
-                      className="text-blue-500 cursor-help"
-                      onClick={showDungThanModal}
-                    />
-                  </span>
-                }
-                className="min-w-[180px]"
-              >
-                <Select
-                  placeholder="Chọn dụng thần"
-                  size="large"
-                  allowClear
-                  onChange={handleDungThanChange}
-                >
-                  {dungThanOptions.map((option) => (
-                    <Option key={option.value} value={option.value}>
-                      {option.label}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
               <Form.Item>
                 <Button
                   type="primary"
@@ -514,31 +515,21 @@ export default function DivinationForm({ onDivinate }) {
             </Card>
 
             <Form.Item
-              name="dungThan"
+              name="viewDate"
               label={
-                <span className="font-semibold text-gray-700 flex items-center gap-2">
-                  Dụng Thần:
-                  <InfoCircleOutlined
-                    className="text-blue-500 cursor-help"
-                    onClick={showDungThanModal}
-                  />
+                <span className="font-semibold text-gray-700">
+                  Ngày giờ xem quẻ:
                 </span>
               }
-              className="min-w-[180px]"
+              className="min-w-[200px]"
             >
-              <Select
-                placeholder="Chọn dụng thần"
+              <DatePicker
                 size="large"
-                allowClear
+                showTime
+                format="DD/MM/YYYY HH:mm"
                 className="w-full"
-                onChange={handleDungThanChange}
-              >
-                {dungThanOptions.map((option) => (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                ))}
-              </Select>
+                placeholder="Chọn ngày giờ"
+              />
             </Form.Item>
 
             <Form.Item>
@@ -555,7 +546,6 @@ export default function DivinationForm({ onDivinate }) {
           </>
         )}
       </Form>
-      {renderDungThanModal()}
     </div>
   );
 }

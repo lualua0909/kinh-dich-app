@@ -15,8 +15,9 @@ import { useHexagramLines } from "../hooks/useHexagramLines";
  * @param {Object} hexagram - hexagram data
  * @param {string} title - column title (e.g., "Quẻ Gốc")
  * @param {number} movingLine - which line is moving (1-6), optional
- * @param {string} dungThan - dụng thần selected, optional
+ * @param {number} dungThan - dụng thần: hao number (1-6) or null, optional
  * @param {number} scale - visual scale factor (1 = 100%), optional
+ * @param {Function} onLineClick - callback when a line is clicked, receives hao number (1-6), optional
  */
 export default function HexagramColumn({
   hexagram,
@@ -24,6 +25,7 @@ export default function HexagramColumn({
   movingLine = null,
   dungThan = null,
   scale = 1,
+  onLineClick = null,
 }) {
   if (!hexagram) {
     return (
@@ -115,6 +117,7 @@ export default function HexagramColumn({
                     haoNumber={hao}
                     lineData={lineData}
                     isDungThan={isDungThan}
+                    onLineClick={onLineClick}
                   />
                 </motion.div>
               );

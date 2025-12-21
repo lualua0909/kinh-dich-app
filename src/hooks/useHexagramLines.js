@@ -11,18 +11,24 @@ import {
  *
  * - Dữ liệu gốc:
  *   - `hexagram.lines`: mảng 6 phần tử, lưu từ dưới lên (hào 1 → hào 6)
- *   - `generateLineData(id)`: trả về LineData với `hao` = 1..6 (từ dưới lên)
+ *   - `generateLineData(id, dayCanChi)`: trả về LineData với `hao` = 1..6 (từ dưới lên)
  *
  * - Dữ liệu trả về của hook:
  *   - Mảng 6 phần tử, **đã sắp xếp từ trên xuống** (hào 6 → hào 1)
  *   - Mỗi phần tử: { index, hao, lineType, lineData, isMoving, isDungThan, isNguyenThan, isKyThan, isCuuThan, isTietThan }
+ * 
+ * @param hexagram - Quẻ cần xử lý
+ * @param movingLine - Hào động (1-6) hoặc null
+ * @param dungThan - Hào Dụng Thần (1-6) hoặc null
+ * @param dayCanChi - Can Chi của ngày gieo quẻ (ví dụ: "Giáp Tý") để tính Lục Thú
  */
-export function useHexagramLines(hexagram, movingLine = null, dungThan = null) {
+export function useHexagramLines(hexagram, movingLine = null, dungThan = null, dayCanChi = null) {
   return useMemo(() => {
     if (!hexagram) return [];
 
     // Line data chuẩn (hào 1 → 6, từ dưới lên)
-    const baseLineData = generateLineData(hexagram.id);
+    // dayCanChi dùng để tính Lục Thú dựa trên Thiên Can ngày
+    const baseLineData = generateLineData(hexagram.id, dayCanChi);
 
     // Đổi sang map theo số hào cho dễ tra cứu
     const lineDataByHao = {};
@@ -30,23 +36,16 @@ export function useHexagramLines(hexagram, movingLine = null, dungThan = null) {
       lineDataByHao[ld.hao] = ld;
     });
 
-    const selectedDungThanName = dungThan ? getLucThanName(dungThan) : null;
-
-    // Xác định các hào được coi là Dụng thần:
-    // - Nếu Lục Thân của hào động trùng Dụng thần → chỉ lấy hào động
-    // - Ngược lại, tất cả các hào có Lục Thân trùng Dụng thần đều là Dụng thần
-    let dungThanHaos = [];
-    if (selectedDungThanName) {
-      const matchingHaos = baseLineData
-        .filter((ld) => getLucThanName(ld.lucThan) === selectedDungThanName)
-        .map((ld) => ld.hao);
-
-      if (movingLine && matchingHaos.includes(movingLine)) {
-        dungThanHaos = [movingLine];
-      } else {
-        dungThanHaos = matchingHaos;
-      }
-    }
+    // dungThan: hao number (1-6) or null
+    // Chỉ có 1 hào được chọn làm Dụng Thần
+    const dungThanHao = dungThan ? Number(dungThan) : null;
+    const dungThanHaos = dungThanHao ? [dungThanHao] : [];
+    
+    // Lấy Lục Thân của hào Dụng Thần (nếu có) để tính Nguyên/Kỵ/Cừu/Tiết Thần
+    const dungThanLineData = dungThanHao ? lineDataByHao[dungThanHao] : null;
+    const selectedDungThanName = dungThanLineData && dungThanLineData.lucThan
+      ? getLucThanName(dungThanLineData.lucThan)
+      : null;
 
     // Chuẩn hoá thành mảng từ trên xuống: index 0 = hào 6, index 5 = hào 1
     const result = [];
@@ -99,5 +98,5 @@ export function useHexagramLines(hexagram, movingLine = null, dungThan = null) {
     }
 
     return result;
-  }, [hexagram, movingLine, dungThan]);
+  }, [hexagram, movingLine, dungThan, dayCanChi]);
 }

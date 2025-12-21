@@ -1,59 +1,27 @@
 /**
- * Hook to load hexagram meanings from IndexedDB and cache in memory
+ * Hook to load hexagram meanings from memory and cache
  * Provides synchronous access to cached data
  */
 
 import { useEffect, useState } from "react";
-import { getAllValues, STORES } from "../utils/indexedDB";
 import hexagramMeaningsData from "../data/hexagramMeanings.json";
 import { getHexagramMeaningSync, HexagramData } from "../data/hexagramMeanings";
 
 let globalCache: Record<string, string> | null = null;
-let isLoading = false;
-let loadPromise: Promise<void> | null = null;
 
 /**
- * Load all hexagram meanings from IndexedDB into memory cache
+ * Load all hexagram meanings from memory into cache
  */
-async function loadMeaningsIntoCache(): Promise<void> {
+function loadMeaningsIntoCache(): void {
   if (globalCache) {
     return; // Already loaded
   }
 
-  if (isLoading && loadPromise) {
-    return loadPromise; // Already loading
-  }
-
-  isLoading = true;
-  loadPromise = (async () => {
-    try {
-      const meanings = await getAllValues<string>(STORES.HEXAGRAM_MEANINGS);
-      if (Object.keys(meanings).length > 0) {
-        globalCache = meanings;
-      } else {
-        // Fallback to memory if IndexedDB is empty
-        // Convert new structure to old format for backward compatibility
-        const data = hexagramMeaningsData as Record<string, HexagramData>;
-        globalCache = Object.fromEntries(
-          Object.entries(data).map(([key, value]) => [key, value.meaning || ""])
-        ) as Record<string, string>;
-      }
-    } catch (error) {
-      console.warn(
-        "Failed to load from IndexedDB, using memory fallback:",
-        error
-      );
-      // Convert new structure to old format for backward compatibility
-      const data = hexagramMeaningsData as Record<string, HexagramData>;
-      globalCache = Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [key, value.meaning || ""])
-      ) as Record<string, string>;
-    } finally {
-      isLoading = false;
-    }
-  })();
-
-  return loadPromise;
+  // Convert new structure to old format for backward compatibility
+  const data = hexagramMeaningsData as Record<string, HexagramData>;
+  globalCache = Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [key, value.meaning || ""])
+  ) as Record<string, string>;
 }
 
 /**
@@ -69,9 +37,9 @@ export function useHexagramMeanings(): boolean {
       return;
     }
 
-    loadMeaningsIntoCache().then(() => {
-      setIsReady(true);
-    });
+    // Load synchronously from memory
+    loadMeaningsIntoCache();
+    setIsReady(true);
   }, []);
 
   return isReady;
