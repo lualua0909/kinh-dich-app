@@ -9,6 +9,9 @@ import NguHanhTable from "./components/NguHanhTable";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
 import { DIA_CHI_CODES, DIA_CHI_ICONS } from "./utils/diaChi";
+import { HEAVENLY_STEMS, EARTHLY_BRANCHES } from "./utils/ganzhi";
+import { EditOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { Select, Button } from "antd";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 import nguHanhRelations from "./data/nguHanhRelations.json";
@@ -116,6 +119,8 @@ const getDungThanDiaChi = (result, dungThanHao) => {
 function App() {
   const [result, setResult] = useState(null);
   const [dungThan, setDungThan] = useState(null); // Single Dụng Thần: hao number (1-6) or null
+  const [isEditingCanChi, setIsEditingCanChi] = useState(false);
+  const [editMetadata, setEditMetadata] = useState(null);
 
   // Parse URL on load
   useEffect(() => {
@@ -156,17 +161,17 @@ function App() {
       const divinationResult =
         input.type === "serial"
           ? performDivination(
-              input.serial,
-              undefined,
-              undefined,
-              input.datetime
-            )
+            input.serial,
+            undefined,
+            undefined,
+            input.datetime
+          )
           : performDivination(
-              undefined,
-              input.lines,
-              input.movingLine,
-              input.datetime
-            );
+            undefined,
+            input.lines,
+            input.movingLine,
+            input.datetime
+          );
       setResult(divinationResult);
       // Dụng Thần: hao number (1-6) or null
       setDungThan(dungThanValue);
@@ -231,6 +236,45 @@ function App() {
     });
   };
 
+  const handleStartEdit = () => {
+    if (!result || !result.metadata) return;
+    const { yearCanChi, monthCanChi, dayCanChi } = result.metadata;
+    const [yearCan, yearChi] = yearCanChi.split(" ");
+    const [monthCan, monthChi] = monthCanChi.split(" ");
+    const [dayCan, dayChi] = dayCanChi.split(" ");
+
+    setEditMetadata({
+      yearCan,
+      yearChi,
+      monthCan,
+      monthChi,
+      dayCan,
+      dayChi,
+    });
+    setIsEditingCanChi(true);
+  };
+
+  const handleSaveEdit = () => {
+    if (!editMetadata || !result) return;
+    const newMetadata = {
+      ...result.metadata,
+      yearCanChi: `${editMetadata.yearCan} ${editMetadata.yearChi}`,
+      monthCanChi: `${editMetadata.monthCan} ${editMetadata.monthChi}`,
+      dayCanChi: `${editMetadata.dayCan} ${editMetadata.dayChi}`,
+    };
+    setResult({
+      ...result,
+      metadata: newMetadata,
+    });
+    setIsEditingCanChi(false);
+    message.success("Đã cập nhật Can Chi");
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingCanChi(false);
+    setEditMetadata(null);
+  };
+
   return (
     <div className="min-h-screen bg-parchment-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -242,8 +286,39 @@ function App() {
         {/* Thời gian lập quẻ & Can Chi (Dương lịch + Âm lịch) + Thái tuế / Nguyệt lệnh / Nhật lệnh */}
         {result && result.metadata && (
           <div className="mb-6">
-            <Card className="bg-parchment-50 border-2 border-parchment-300">
-              <div className="text-sm grid grid-cols-1 sm:grid-cols-3 gap-y-1 gap-x-4 flex">
+            <Card className="bg-parchment-50 border-2 border-parchment-300 relative group">
+              <div className="absolute top-2 right-2">
+                {!isEditingCanChi ? (
+                  <Button
+                    icon={<EditOutlined />}
+                    size="small"
+                    onClick={handleStartEdit}
+                    type="ghost"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    Sửa Can Chi
+                  </Button>
+                ) : (
+                  <div className="flex gap-2">
+                    <Button
+                      icon={<CheckOutlined />}
+                      size="small"
+                      type="primary"
+                      onClick={handleSaveEdit}
+                    >
+                      Lưu
+                    </Button>
+                    <Button
+                      icon={<CloseOutlined />}
+                      size="small"
+                      onClick={handleCancelEdit}
+                    >
+                      Hủy
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div className="text-sm grid grid-cols-1 sm:grid-cols-3 gap-y-2 gap-x-4">
                 <div>
                   <span className="font-semibold">Thời gian lập quẻ:</span>{" "}
                   <span>{result.metadata.thoiGianDuong}</span>
@@ -252,60 +327,175 @@ function App() {
                   <span className="font-semibold">Theo Âm Lịch:</span>{" "}
                   <span>{result.metadata.thoiGianAm}</span>
                 </div>
-                <br />
-                <div>
-                  <span className="font-semibold">Ngày:</span>{" "}
-                  {renderCanChiWithNguHanh(result.metadata.dayCanChi)}
-                  {(() => {
-                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const dayDiaChi = getDiaChiFromCanChi(
-                      result.metadata.dayCanChi
-                    );
-                    if (dtDiaChi && dayDiaChi && dtDiaChi === dayDiaChi) {
-                      return (
-                        <span className="ml-2 text-green-700 font-bold">
-                          (Nhật lệnh)
-                        </span>
-                      );
-                    }
-                    return null;
-                  })()}
+                <div className="sm:col-span-1" />
+
+                {/* Ngày */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold shrink-0">Ngày:</span>
+                  {isEditingCanChi ? (
+                    <div className="flex gap-1 items-center">
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.dayCan}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, dayCan: val })
+                        }
+                      >
+                        {HEAVENLY_STEMS.map((s) => (
+                          <Select.Option key={s} value={s}>
+                            {s}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.dayChi}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, dayChi: val })
+                        }
+                      >
+                        {EARTHLY_BRANCHES.map((b) => (
+                          <Select.Option key={b} value={b}>
+                            {b}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                  ) : (
+                    <>
+                      {renderCanChiWithNguHanh(result.metadata.dayCanChi)}
+                      {(() => {
+                        const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                        const dayDiaChi = getDiaChiFromCanChi(
+                          result.metadata.dayCanChi
+                        );
+                        if (dtDiaChi && dayDiaChi && dtDiaChi === dayDiaChi) {
+                          return (
+                            <span className="text-green-700 font-bold">
+                              (Nhật lệnh)
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </>
+                  )}
                 </div>
-                <div>
-                  <span className="font-semibold">Tháng:</span>{" "}
-                  {renderCanChiWithNguHanh(result.metadata.monthCanChi)}
-                  {(() => {
-                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const monthDiaChi = getDiaChiFromCanChi(
-                      result.metadata.monthCanChi
-                    );
-                    if (dtDiaChi && monthDiaChi && dtDiaChi === monthDiaChi) {
-                      return (
-                        <span className="ml-2 text-green-700 font-bold">
-                          (Nguyệt lệnh)
-                        </span>
-                      );
-                    }
-                    return null;
-                  })()}
+
+                {/* Tháng */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold shrink-0">Tháng:</span>
+                  {isEditingCanChi ? (
+                    <div className="flex gap-1 items-center">
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.monthCan}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, monthCan: val })
+                        }
+                      >
+                        {HEAVENLY_STEMS.map((s) => (
+                          <Select.Option key={s} value={s}>
+                            {s}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.monthChi}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, monthChi: val })
+                        }
+                      >
+                        {EARTHLY_BRANCHES.map((b) => (
+                          <Select.Option key={b} value={b}>
+                            {b}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                  ) : (
+                    <>
+                      {renderCanChiWithNguHanh(result.metadata.monthCanChi)}
+                      {(() => {
+                        const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                        const monthDiaChi = getDiaChiFromCanChi(
+                          result.metadata.monthCanChi
+                        );
+                        if (
+                          dtDiaChi &&
+                          monthDiaChi &&
+                          dtDiaChi === monthDiaChi
+                        ) {
+                          return (
+                            <span className="text-green-700 font-bold">
+                              (Nguyệt lệnh)
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </>
+                  )}
                 </div>
-                <div>
-                  <span className="font-semibold">Năm:</span>{" "}
-                  {renderCanChiWithNguHanh(result.metadata.yearCanChi)}
-                  {(() => {
-                    const dtDiaChi = getDungThanDiaChi(result, dungThan);
-                    const yearDiaChi = getDiaChiFromCanChi(
-                      result.metadata.yearCanChi
-                    );
-                    if (dtDiaChi && yearDiaChi && dtDiaChi === yearDiaChi) {
-                      return (
-                        <span className="ml-2 text-green-700 font-bold">
-                          (Thái tuế)
-                        </span>
-                      );
-                    }
-                    return null;
-                  })()}
+
+                {/* Năm */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold shrink-0">Năm:</span>
+                  {isEditingCanChi ? (
+                    <div className="flex gap-1 items-center">
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.yearCan}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, yearCan: val })
+                        }
+                      >
+                        {HEAVENLY_STEMS.map((s) => (
+                          <Select.Option key={s} value={s}>
+                            {s}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                      <Select
+                        size="small"
+                        className="w-20"
+                        value={editMetadata.yearChi}
+                        onChange={(val) =>
+                          setEditMetadata({ ...editMetadata, yearChi: val })
+                        }
+                      >
+                        {EARTHLY_BRANCHES.map((b) => (
+                          <Select.Option key={b} value={b}>
+                            {b}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </div>
+                  ) : (
+                    <>
+                      {renderCanChiWithNguHanh(result.metadata.yearCanChi)}
+                      {(() => {
+                        const dtDiaChi = getDungThanDiaChi(result, dungThan);
+                        const yearDiaChi = getDiaChiFromCanChi(
+                          result.metadata.yearCanChi
+                        );
+                        if (dtDiaChi && yearDiaChi && dtDiaChi === yearDiaChi) {
+                          return (
+                            <span className="text-green-700 font-bold">
+                              (Thái tuế)
+                            </span>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </>
+                  )}
                 </div>
               </div>
             </Card>
@@ -316,9 +506,8 @@ function App() {
         {result && (
           <div className="mb-8">
             <div
-              className={`grid gap-6 ${
-                result.movingLine ? "grid-cols-3" : "grid-cols-3"
-              }`}
+              className={`grid gap-6 ${result.movingLine ? "grid-cols-3" : "grid-cols-3"
+                }`}
             >
               {/* Quẻ Gốc (Original Hexagram) */}
               <HexagramColumn
