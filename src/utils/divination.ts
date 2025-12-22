@@ -11,7 +11,6 @@
 
 import { getTrigramByRemainder } from "../data/trigrams";
 import { getHexagram, Hexagram } from "../data/hexagrams";
-import { getGanzhiFromDate } from "./ganzhi";
 
 export interface DivinationResult {
   originalHexagram: Hexagram | null;
@@ -179,9 +178,11 @@ function createChangedHexagram(
   return getHexagram(upperTrigram, lowerTrigram);
 }
 
+import { LunarCalendar } from "@dqcai/vn-lunar";
+
 /**
  * Get current date/time metadata
- * Sử dụng ganzhi.js để tính Can Chi cho năm, tháng, ngày
+ * Sử dụng @dqcai/vn-lunar để tính âm lịch và Can Chi
  */
 function getMetadata(date?: Date): DivinationResult["metadata"] {
   const now = date || new Date();
@@ -193,32 +194,35 @@ function getMetadata(date?: Date): DivinationResult["metadata"] {
     minute: "2-digit",
   });
 
-  // Lấy ngày, tháng, năm từ Date object
+  // Chuyển đổi sang âm lịch và lấy Can Chi
   const solarDay = now.getDate();
-  const solarMonth = now.getMonth() + 1; // JS months are 0-based
+  const solarMonth = now.getMonth() + 1;
   const solarYear = now.getFullYear();
+  
+  const calendar = LunarCalendar.fromSolar(solarDay, solarMonth, solarYear);
+  const lunar = calendar.lunarDate;
+  
+  // Format âm lịch: Ngày D/M/Y Can Chi Năm, Tháng, Ngày
+  const thoiGianAm = `Ngày ${lunar.day}/${lunar.month}/${lunar.year}${lunar.leap ? " (Nhuận)" : ""} - ${calendar.yearCanChi}, ${calendar.monthCanChi}, ${calendar.dayCanChi}`;
 
-  // Tính Can Chi sử dụng ganzhi.js
-  const ganzhi = getGanzhiFromDate({
-    year: solarYear,
-    month: solarMonth,
-    day: solarDay,
-  });
+  const stemToElement: Record<string, string> = {
+    "Giáp": "Mộc", "Ất": "Mộc",
+    "Bính": "Hỏa", "Đinh": "Hỏa",
+    "Mậu": "Thổ", "Kỷ": "Thổ",
+    "Canh": "Kim", "Tân": "Kim",
+    "Nhâm": "Thủy", "Quý": "Thủy"
+  };
+  const dayStem = calendar.dayCanChi.split(" ")[0];
+  const nhatThan = `${dayStem} ${stemToElement[dayStem] || ""}`.trim();
 
-  // Format âm lịch: hiển thị Can Chi năm, tháng, ngày
-  // Lưu ý: Đây là Can Chi dương lịch, không phải âm lịch thực sự
-  // Để có âm lịch chính xác, cần thêm logic chuyển đổi dương lịch sang âm lịch
-  const thoiGianAm = `Năm ${ganzhi.year}, Tháng ${ganzhi.month}, Ngày ${ganzhi.day}`;
-
-  const tietKhi = "Lập Xuân";
-  const nhatThan = "Mậu Thổ";
+  const tietKhi = "Đang cập nhật";
 
   return {
     thoiGianDuong: dateStr,
     thoiGianAm: thoiGianAm,
-    yearCanChi: ganzhi.year,
-    monthCanChi: ganzhi.month,
-    dayCanChi: ganzhi.day,
+    yearCanChi: calendar.yearCanChi,
+    monthCanChi: calendar.monthCanChi,
+    dayCanChi: calendar.dayCanChi,
     tietKhi,
     nhatThan,
   };

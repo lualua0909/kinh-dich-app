@@ -11,8 +11,8 @@ import {
   DatePicker,
 } from "antd";
 import dayjs from "dayjs";
-import { getGanzhiFromDate } from "../utils/ganzhi";
 import { TRIGRAMS } from "../data/trigrams";
+import { LunarCalendar } from "@dqcai/vn-lunar";
 
 const { Option } = Select;
 
@@ -132,23 +132,13 @@ export default function DivinationForm({ onDivinate }) {
       } else if (mode === "datetime") {
         const { day, month, year, hour, minute } = values;
 
-        // Tính Can Chi sử dụng ganzhi.js
-        const ganzhi = getGanzhiFromDate({ year, month, day });
-        
-        // Lấy năm âm lịch từ Can Chi năm (tạm thời dùng năm dương lịch)
-        // Lưu ý: Logic này cần được cải thiện nếu cần chuyển đổi chính xác sang âm lịch
-        // Hiện tại dùng năm dương lịch để tính toán
-        const lunarYear = year;
-        
-        // Tính tháng âm lịch từ Can Chi tháng
-        // Lưu ý: Cần logic chuyển đổi chính xác hơn
-        // Tạm thời dùng tháng dương lịch
-        const lunarMonth = month;
-        
-        // Tính ngày âm lịch từ Can Chi ngày
-        // Lưu ý: Cần logic chuyển đổi chính xác hơn
-        // Tạm thời dùng ngày dương lịch
-        const lunarDay = day;
+        // Sử dụng @dqcai/vn-lunar để chuyển đổi sang âm lịch
+        const calendar = LunarCalendar.fromSolar(day, month, year);
+        const lunar = calendar.lunarDate;
+
+        const lunarYear = lunar.year;
+        const lunarMonth = lunar.month;
+        const lunarDay = lunar.day;
 
         const yearBranch = ((lunarYear - 4) % 12) + 1;
         const hourBranch = (Math.floor((hour + 1) / 2) % 12) + 1;
@@ -326,7 +316,7 @@ export default function DivinationForm({ onDivinate }) {
               <Form.Item label="Ngày lập quẻ" className="mb-0">
                 <div className="flex gap-2">
                   <Form.Item name="day" noStyle>
-                    <Select 
+                    <Select
                       className="min-w-[70px]"
                       onChange={updateViewDateFromDatetime}
                     >
@@ -338,7 +328,7 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="month" noStyle>
-                    <Select 
+                    <Select
                       className="min-w-[70px]"
                       onChange={updateViewDateFromDatetime}
                     >
@@ -350,7 +340,7 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="year" noStyle>
-                    <Select 
+                    <Select
                       className="min-w-[90px]"
                       onChange={updateViewDateFromDatetime}
                     >
@@ -369,7 +359,7 @@ export default function DivinationForm({ onDivinate }) {
               <Form.Item label="Giờ lập quẻ" className="mb-0">
                 <div className="flex gap-2">
                   <Form.Item name="hour" noStyle>
-                    <Select 
+                    <Select
                       className="min-w-[70px]"
                       onChange={updateViewDateFromDatetime}
                     >
@@ -381,7 +371,7 @@ export default function DivinationForm({ onDivinate }) {
                     </Select>
                   </Form.Item>
                   <Form.Item name="minute" noStyle>
-                    <Select 
+                    <Select
                       className="min-w-[70px]"
                       onChange={updateViewDateFromDatetime}
                     >

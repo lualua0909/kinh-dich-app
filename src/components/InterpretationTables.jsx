@@ -1617,14 +1617,14 @@ export default function InterpretationTables({
 
           // dungThan: hao number (1-6)
           const dungThanHao = Number(dungThan);
-          
+
           // Tìm hào Dụng Thần (chỉ có 1 hào được chọn)
           const dungThanLine = lineData1.find((line) => line.hao === dungThanHao);
           const allDungThanHaos = dungThanLine ? [dungThanLine] : [];
-          
+
           // Lấy Lục Thân của hào Dụng Thần
-          const dungThanName = dungThanLine && dungThanLine.lucThan 
-            ? getLucThanName(dungThanLine.lucThan) 
+          const dungThanName = dungThanLine && dungThanLine.lucThan
+            ? getLucThanName(dungThanLine.lucThan)
             : null;
 
           // Hàm helper để tính điểm cho một hào Dụng Thần
@@ -5108,6 +5108,26 @@ export default function InterpretationTables({
                                         title: "Hào 6 Phụ Mẫu nhị xung Hào Động",
                                         content:
                                           "Có khả năng là mộ phần nứt nẻ hoặc bệnh đau đầu.",
+                                      });
+                                    }
+                                  }
+                                }
+
+                                // Logic: Phong thuỷ nhà (Hào 2 và Hào 5)
+                                const hao2 = lineData1.find((l) => l.hao === 2);
+                                const hao5 = lineData1.find((l) => l.hao === 5);
+                                if (hao2 && hao5) {
+                                  const dc2 = extractDiaChi(hao2.canChi);
+                                  const dc5 = extractDiaChi(hao5.canChi);
+                                  const nh2 = getNguHanhFromDiaChi(dc2)?.name;
+                                  const nh5 = getNguHanhFromDiaChi(dc5)?.name;
+
+                                  if (nh2 && nh5) {
+                                    const rel = getNguHanhRelation(nh2, nh5);
+                                    if (rel === "khac" || rel === "biKhac") {
+                                      results.push({
+                                        title: "Phong thủy nhà ở",
+                                        content: `Hào 2 (Trạch/Nhà) mang hành ${nh2} và Hào 5 (Nhân/Người) mang hành ${nh5} có mối quan hệ tương khắc, kết luận phong thủy nhà không hợp.`,
                                       });
                                     }
                                   }
