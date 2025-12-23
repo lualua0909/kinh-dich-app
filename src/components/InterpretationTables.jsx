@@ -5229,6 +5229,13 @@ export default function InterpretationTables({
                                         "Cần kiểm tra bóng đèn trong nhà, trên bàn thờ hoặc di ảnh.",
                                     });
                                   }
+                                  if (upperName.includes("TỶ")) {
+                                    results.push({
+                                      title: `Quẻ ${name}`,
+                                      content:
+                                        "Người con lớn, người có trách nhiệm, tiếng nói trong gia đình, người lãnh đạo công ty",
+                                    });
+                                  }
                                   if (upperName === "THIÊN LÔI VÔ VỌNG") {
                                     results.push({
                                       title: `Quẻ ${name}`,
