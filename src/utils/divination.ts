@@ -1,22 +1,16 @@
 /**
  * Mai Hoa Dịch Số (Plum Blossom I Ching) Divination Logic
- *
- * Algorithm:
- * 1. Normalize serial: if length is odd, prepend '0'
- * 2. Split serial into two halves (upper and lower trigrams)
- * 3. Sum digits of each half, then mod 8 to get trigram
- * 4. Sum all digits, mod 6 to get moving line (hào động)
- * 5. Create original, mutual, and changed hexagrams
  */
 
 import { getTrigramByRemainder } from "../data/trigrams";
 import { getHexagram, Hexagram } from "../data/hexagrams";
+import { LunarCalendar } from "@dqcai/vn-lunar";
 
 export interface DivinationResult {
   originalHexagram: Hexagram | null;
   mutualHexagram: Hexagram | null;
   changedHexagram: Hexagram | null;
-  movingLine: number; // 1-6
+  movingLines: number[]; // Array of 1-6
   serial: string;
   normalizedSerial: string;
   metadata: {
@@ -32,7 +26,6 @@ export interface DivinationResult {
 
 /**
  * Step 1: Normalize Serial
- * If length is odd, prepend '0'
  */
 function normalizeSerial(serial: string): string {
   if (serial.length % 2 === 1) {
@@ -43,14 +36,12 @@ function normalizeSerial(serial: string): string {
 
 /**
  * Step 2: Split serial into upper and lower halves
- * - Upper trigram (Thượng quái): first half (nửa đầu dãy số)
- * - Lower trigram (Hạ quái): second half (nửa sau dãy số)
  */
 function splitSerial(serial: string): { upper: string; lower: string } {
   const mid = serial.length / 2;
   return {
-    upper: serial.slice(0, mid), // Nửa đầu → Thượng quái
-    lower: serial.slice(mid), // Nửa sau → Hạ quái
+    upper: serial.slice(0, mid),
+    lower: serial.slice(mid),
   };
 }
 
@@ -66,8 +57,6 @@ function getTrigramFromDigits(digits: string): number {
 
 /**
  * Step 4: Get moving line (hào động)
- * Sum all digits, mod 6
- * If remainder = 0, then hào 6
  */
 function getMovingLine(serial: string): number {
   const sum = serial
@@ -75,39 +64,6 @@ function getMovingLine(serial: string): number {
     .reduce((acc, digit) => acc + parseInt(digit, 10), 0);
   const remainder = sum % 6;
   return remainder === 0 ? 6 : remainder;
-}
-
-/**
- * Step 5: Create mutual hexagram (Quẻ Hỗ)
- * The mutual hexagram uses lines 2, 3, 4 as lower trigram
- * and lines 3, 4, 5 as upper trigram
- */
-function createMutualHexagram(originalHexagram: Hexagram): Hexagram | null {
-  const lines = originalHexagram.lines;
-
-  // Lower trigram: lines 2, 3, 4 (indices 1, 2, 3)
-  const lowerTrigramLines: [number, number, number] = [
-    lines[1],
-    lines[2],
-    lines[3],
-  ];
-
-  // Upper trigram: lines 3, 4, 5 (indices 2, 3, 4)
-  const upperTrigramLines: [number, number, number] = [
-    lines[2],
-    lines[3],
-    lines[4],
-  ];
-
-  // Find matching trigrams
-  const lowerTrigram = findTrigramByLines(lowerTrigramLines);
-  const upperTrigram = findTrigramByLines(upperTrigramLines);
-
-  if (lowerTrigram === null || upperTrigram === null) {
-    return null;
-  }
-
-  return getHexagram(upperTrigram, lowerTrigram);
 }
 
 /**
@@ -129,60 +85,48 @@ function findTrigramByLines(lines: [number, number, number]): number | null {
 }
 
 /**
- * Step 6: Create changed hexagram (Quẻ Biến)
- * Flip the moving line: Yang (1) → Yin (0), Yin (0) → Yang (1)
- * Then reconstruct the hexagram from the changed lines
+ * Step 5: Create mutual hexagram (Quẻ Hỗ)
  */
-function createChangedHexagram(
-  originalHexagram: Hexagram,
-  movingLine: number
-): Hexagram | null {
-  const lines = [...originalHexagram.lines] as [
-    number,
-    number,
-    number,
-    number,
-    number,
-    number
-  ];
+function createMutualHexagram(originalHexagram: Hexagram): Hexagram | null {
+  const lines = originalHexagram.lines;
+  const lowerTrigramLines: [number, number, number] = [lines[1], lines[2], lines[3]];
+  const upperTrigramLines: [number, number, number] = [lines[2], lines[3], lines[4]];
 
-  // Flip the moving line (hào động)
-  // movingLine is 1-6, but array index is 0-5
-  // Hào 1 = index 0, Hào 2 = index 1, ..., Hào 6 = index 5
-  const lineIndex = movingLine - 1;
-  lines[lineIndex] = lines[lineIndex] === 1 ? 0 : 1;
-
-  // Split into upper and lower trigrams
-  // Hạ quái: hào 1, 2, 3 (indices 0, 1, 2)
-  // Thượng quái: hào 4, 5, 6 (indices 3, 4, 5)
-  const lowerTrigramLines: [number, number, number] = [
-    lines[0],
-    lines[1],
-    lines[2],
-  ];
-  const upperTrigramLines: [number, number, number] = [
-    lines[3],
-    lines[4],
-    lines[5],
-  ];
-
-  // Find matching trigrams by comparing lines
   const lowerTrigram = findTrigramByLines(lowerTrigramLines);
   const upperTrigram = findTrigramByLines(upperTrigramLines);
 
-  if (lowerTrigram === null || upperTrigram === null) {
-    return null;
-  }
-
-  // Create hexagram: upper trigram (thượng quái) - lower trigram (hạ quái)
+  if (lowerTrigram === null || upperTrigram === null) return null;
   return getHexagram(upperTrigram, lowerTrigram);
 }
 
-import { LunarCalendar } from "@dqcai/vn-lunar";
+/**
+ * Step 6: Create changed hexagram (Quẻ Biến)
+ */
+function createChangedHexagram(
+  originalHexagram: Hexagram,
+  movingLines: number[]
+): Hexagram | null {
+  const lines = [...originalHexagram.lines] as [number, number, number, number, number, number];
+
+  movingLines.forEach((ml) => {
+    if (ml >= 1 && ml <= 6) {
+      const lineIndex = ml - 1;
+      lines[lineIndex] = lines[lineIndex] === 1 ? 0 : 1;
+    }
+  });
+
+  const lowerTrigramLines: [number, number, number] = [lines[0], lines[1], lines[2]];
+  const upperTrigramLines: [number, number, number] = [lines[3], lines[4], lines[5]];
+
+  const lowerTrigram = findTrigramByLines(lowerTrigramLines);
+  const upperTrigram = findTrigramByLines(upperTrigramLines);
+
+  if (lowerTrigram === null || upperTrigram === null) return null;
+  return getHexagram(upperTrigram, lowerTrigram);
+}
 
 /**
  * Get current date/time metadata
- * Sử dụng @dqcai/vn-lunar để tính âm lịch và Can Chi
  */
 function getMetadata(date?: Date): DivinationResult["metadata"] {
   const now = date || new Date();
@@ -194,7 +138,6 @@ function getMetadata(date?: Date): DivinationResult["metadata"] {
     minute: "2-digit",
   });
 
-  // Chuyển đổi sang âm lịch và lấy Can Chi
   const solarDay = now.getDate();
   const solarMonth = now.getMonth() + 1;
   const solarYear = now.getFullYear();
@@ -202,20 +145,14 @@ function getMetadata(date?: Date): DivinationResult["metadata"] {
   const calendar = LunarCalendar.fromSolar(solarDay, solarMonth, solarYear);
   const lunar = calendar.lunarDate;
   
-  // Format âm lịch: Ngày D/M/Y Can Chi Năm, Tháng, Ngày
   const thoiGianAm = `Ngày ${lunar.day}/${lunar.month}/${lunar.year}${lunar.leap ? " (Nhuận)" : ""} - ${calendar.yearCanChi}, ${calendar.monthCanChi}, ${calendar.dayCanChi}`;
 
   const stemToElement: Record<string, string> = {
-    "Giáp": "Mộc", "Ất": "Mộc",
-    "Bính": "Hỏa", "Đinh": "Hỏa",
-    "Mậu": "Thổ", "Kỷ": "Thổ",
-    "Canh": "Kim", "Tân": "Kim",
-    "Nhâm": "Thủy", "Quý": "Thủy"
+    "Giáp": "Mộc", "Ất": "Mộc", "Bính": "Hỏa", "Đinh": "Hỏa", "Mậu": "Thổ",
+    "Kỷ": "Thổ", "Canh": "Kim", "Tân": "Kim", "Nhâm": "Thủy", "Quý": "Thủy"
   };
   const dayStem = calendar.dayCanChi.split(" ")[0];
   const nhatThan = `${dayStem} ${stemToElement[dayStem] || ""}`.trim();
-
-  const tietKhi = "Đang cập nhật";
 
   return {
     thoiGianDuong: dateStr,
@@ -223,40 +160,30 @@ function getMetadata(date?: Date): DivinationResult["metadata"] {
     yearCanChi: calendar.yearCanChi,
     monthCanChi: calendar.monthCanChi,
     dayCanChi: calendar.dayCanChi,
-    tietKhi,
+    tietKhi: "Đang cập nhật",
     nhatThan,
   };
 }
 
 /**
  * Main divination function
- * Performs Mai Hoa Dịch Số calculation
  */
 export function performDivination(
   serial?: string,
   manualLines?: [number, number, number, number, number, number],
-  manualMovingLine?: number | null,
+  manualMovingLines?: number[] | number | null,
   datetime?: Date
 ): DivinationResult {
   let originalHexagram: Hexagram | null = null;
   let mutualHexagram: Hexagram | null = null;
   let changedHexagram: Hexagram | null = null;
-  let movingLine: number;
+  let movingLines: number[] = [];
   let usedSerial = serial ?? "";
   let normalizedSerial = serial ?? "";
 
   if (manualLines && manualLines.length === 6) {
-    // Manual hexagram: build from lines directly
-    const lowerTrigramLines: [number, number, number] = [
-      manualLines[0],
-      manualLines[1],
-      manualLines[2],
-    ];
-    const upperTrigramLines: [number, number, number] = [
-      manualLines[3],
-      manualLines[4],
-      manualLines[5],
-    ];
+    const lowerTrigramLines: [number, number, number] = [manualLines[0], manualLines[1], manualLines[2]];
+    const upperTrigramLines: [number, number, number] = [manualLines[3], manualLines[4], manualLines[5]];
 
     const lowerTrigram = findTrigramByLines(lowerTrigramLines);
     const upperTrigram = findTrigramByLines(upperTrigramLines);
@@ -266,35 +193,25 @@ export function performDivination(
     }
 
     originalHexagram = getHexagram(upperTrigram, lowerTrigram);
-    movingLine = manualMovingLine ?? 0;
+    
+    if (Array.isArray(manualMovingLines)) {
+      movingLines = manualMovingLines;
+    } else if (typeof manualMovingLines === 'number') {
+      movingLines = [manualMovingLines];
+    } else {
+      movingLines = [];
+    }
   } else {
-    if (!serial) {
-      throw new Error("Không tìm được quẻ");
-    }
+    if (!serial) throw new Error("Không tìm được quẻ");
+    if (!/^\d+$/.test(serial)) throw new Error("Chỉ được chứa số");
+    if (serial.length === 0) throw new Error("Không tìm được quẻ");
 
-    // Validate: only numeric
-    if (!/^\d+$/.test(serial)) {
-      throw new Error("Chỉ được chứa số");
-    }
-
-    if (serial.length === 0) {
-      throw new Error("Không tìm được quẻ");
-    }
-
-    // Step 1: Normalize
     normalizedSerial = normalizeSerial(serial);
-
-    // Step 2: Split
     const { upper, lower } = splitSerial(normalizedSerial);
-
-    // Step 3: Get trigrams
     const upperTrigramRemainder = getTrigramFromDigits(upper);
     const lowerTrigramRemainder = getTrigramFromDigits(lower);
+    movingLines = [getMovingLine(normalizedSerial)];
 
-    // Step 4: Get moving line
-    movingLine = getMovingLine(normalizedSerial);
-
-    // Step 5: Get original hexagram
     originalHexagram = getHexagram(
       upperTrigramRemainder === 0 ? 0 : upperTrigramRemainder,
       lowerTrigramRemainder === 0 ? 0 : lowerTrigramRemainder
@@ -302,35 +219,26 @@ export function performDivination(
     usedSerial = serial;
   }
 
-  // Step 6: Get mutual hexagram (chỉ khi có hào động, movingLine > 0)
-  mutualHexagram =
-    originalHexagram && movingLine > 0
-      ? createMutualHexagram(originalHexagram)
-      : null;
+  mutualHexagram = originalHexagram && movingLines.length > 0
+    ? createMutualHexagram(originalHexagram)
+    : null;
 
-  // Step 7: Get changed hexagram
-  // Nếu không có hào động (movingLine = 0 hoặc null), quẻ biến giống quẻ chính
   if (originalHexagram) {
-    if (movingLine > 0) {
-      const changed = createChangedHexagram(originalHexagram, movingLine);
-      // Nếu tạo quẻ biến thành công, dùng nó; nếu không, dùng quẻ chính
+    if (movingLines.length > 0) {
+      const changed = createChangedHexagram(originalHexagram, movingLines);
       changedHexagram = changed || originalHexagram;
     } else {
-      // Không có hào động, quẻ biến = quẻ chính
       changedHexagram = originalHexagram;
     }
-  } else {
-    changedHexagram = null;
   }
 
-  // Get metadata
   const metadata = getMetadata(datetime);
 
   return {
     originalHexagram,
     mutualHexagram,
     changedHexagram,
-    movingLine,
+    movingLines,
     serial: usedSerial,
     normalizedSerial,
     metadata,

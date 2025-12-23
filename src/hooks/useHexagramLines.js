@@ -20,14 +20,18 @@ import { getNguHanhFromDiaChi, getNguHanhRelation } from "../utils/nguHanh";
  *   - Mỗi phần tử: { index, hao, lineType, lineData, isMoving, isDungThan, isNguyenThan, isKyThan, isCuuThan, isTietThan, isAmDong }
  * 
  * @param hexagram - Quẻ cần xử lý
- * @param movingLine - Hào động (1-6) hoặc null
+ * @param movingLines - Danh sách hào động (1-6) hoặc null
  * @param dungThan - Hào Dụng Thần (1-6) hoặc null
  * @param dayCanChi - Can Chi của ngày gieo quẻ (ví dụ: "Giáp Tý")
  * @param monthCanChi - Can Chi của tháng gieo quẻ
+ * @param checkAmDong - Có tính hào ám động không (mặc định true)
  */
-export function useHexagramLines(hexagram, movingLine = null, dungThan = null, dayCanChi = null, monthCanChi = null) {
+export function useHexagramLines(hexagram, movingLines = [], dungThan = null, dayCanChi = null, monthCanChi = null, checkAmDong = true) {
   return useMemo(() => {
     if (!hexagram) return [];
+
+    // Đảm bảo movingLines luôn là mảng
+    const movingLinesArr = Array.isArray(movingLines) ? movingLines : (movingLines ? [movingLines] : []);
 
     // Line data chuẩn (hào 1 → 6, từ dưới lên)
     const baseLineData = generateLineData(hexagram.id, dayCanChi);
@@ -54,9 +58,12 @@ export function useHexagramLines(hexagram, movingLine = null, dungThan = null, d
     const monthElement = monthChi ? getNguHanhFromDiaChi(monthChi)?.name : null;
 
     // Hào động (nếu có) để tính Rule 1 Ám Động
-    const movingHaoRecord = movingLine ? lineDataByHao[movingLine] : null;
-    const movingHaoChi = movingHaoRecord ? extractDiaChi(movingHaoRecord.canChi) : null;
-    const movingHaoElement = movingHaoChi ? getNguHanhFromDiaChi(movingHaoChi)?.name : null;
+    // Lấy tất cả các hào động để check quan hệ sinh khắc
+    const movingHaoElements = movingLinesArr.map(ml => {
+      const record = lineDataByHao[ml];
+      const chi = record ? extractDiaChi(record.canChi) : null;
+      return chi ? getNguHanhFromDiaChi(chi)?.name : null;
+    }).filter(Boolean);
 
     // Chuẩn hoá thành mảng từ trên xuống: index 0 = hào 6, index 5 = hào 1
     const result = [];
@@ -68,16 +75,18 @@ export function useHexagramLines(hexagram, movingLine = null, dungThan = null, d
       const lineChi = lineData ? extractDiaChi(lineData.canChi) : null;
       const lineElement = lineChi ? getNguHanhFromDiaChi(lineChi)?.name : null;
 
-      const isMoving = movingLine === hao;
+      const isMoving = movingLinesArr.includes(hao);
       const isDungThan = dungThanHaos.includes(hao);
       
       // Ám Động Logic
       let isAmDong = false;
-      if (!isMoving && lineChi) {
+      if (checkAmDong && !isMoving && lineChi) {
         // Quy tắc 1
+        const isSupportedByMoving = movingHaoElements.some(me => getNguHanhRelation(me, lineElement) === "sinh");
+        
         const rule1 = 
           dayChi && isNhiXungDiaChi(lineChi, dayChi) &&
-          movingHaoElement && getNguHanhRelation(movingHaoElement, lineElement) === "sinh" &&
+          isSupportedByMoving &&
           (lineChi === monthChi || (monthElement && getNguHanhRelation(monthElement, lineElement) === "sinh"));
 
         // Quy tắc 2
@@ -127,5 +136,5 @@ export function useHexagramLines(hexagram, movingLine = null, dungThan = null, d
     }
 
     return result;
-  }, [hexagram, movingLine, dungThan, dayCanChi, monthCanChi]);
+  }, [hexagram, movingLines, dungThan, dayCanChi, monthCanChi, checkAmDong]);
 }

@@ -142,7 +142,7 @@ function App() {
       }
 
       if (movingLineParam) {
-        input.movingLine = Number(movingLineParam);
+        input.movingLines = movingLineParam.split(",").map(Number);
       }
 
       if (datetimeParam) {
@@ -169,7 +169,7 @@ function App() {
           : performDivination(
             undefined,
             input.lines,
-            input.movingLine,
+            input.movingLines,
             input.datetime
           );
       setResult(divinationResult);
@@ -187,8 +187,8 @@ function App() {
           params.set("q", input.lines.join(""));
         }
 
-        if (input.movingLine) {
-          params.set("ml", input.movingLine);
+        if (input.movingLines && input.movingLines.length > 0) {
+          params.set("ml", input.movingLines.join(","));
         }
 
         if (input.datetime) {
@@ -506,26 +506,26 @@ function App() {
         {result && (
           <div className="mb-8">
             <div
-              className={`grid gap-6 ${result.movingLine ? "grid-cols-3" : "grid-cols-3"
-                }`}
+              className={`grid grid-cols-3 gap-6`}
             >
               {/* Quẻ Gốc (Original Hexagram) */}
               <HexagramColumn
                 hexagram={result.originalHexagram}
                 title=""
-                movingLine={result.movingLine}
+                movingLines={result.movingLines}
                 dungThan={dungThan}
                 onLineClick={handleLineClick}
                 metadata={result.metadata}
               />
 
-              {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) - chỉ hiển thị khi có hào động */}
-              {result.movingLine > 0 ? (
+              {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) - chỉ hiển thị khi có ít nhất 1 hào động */}
+              {result.movingLines.length > 0 ? (
                 <HexagramColumn
                   hexagram={result.mutualHexagram}
                   title=""
                   scale={0.8}
                   metadata={result.metadata}
+                  checkAmDong={false}
                 />
               ) : null}
 
@@ -535,6 +535,7 @@ function App() {
                   hexagram={result.changedHexagram}
                   title=""
                   metadata={result.metadata}
+                  checkAmDong={false}
                 />
               )}
             </div>
@@ -546,7 +547,7 @@ function App() {
           <InterpretationTables
             originalHexagram={result.originalHexagram}
             changedHexagram={result.changedHexagram}
-            movingLine={result.movingLine}
+            movingLines={result.movingLines}
             dungThan={dungThan}
             metadata={result.metadata}
           />

@@ -45,25 +45,17 @@ import {
   DIA_CHI_ICONS,
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
+  extractDiaChi,
 } from "../utils/diaChi";
+import nguHanhRelations from "../data/nguHanhRelations.json";
 import { anVongTruongSinh, anVongTruongSinhByCan } from "../utils/truongSinh";
 
-// Helper: Extract địa chi từ canChi
-export const extractDiaChi = (canChi) => {
-  if (!canChi) return null;
-  if (canChi.includes("-")) {
-    const parts = canChi.split("-");
-    return parts[0];
-  } else {
-    const parts = canChi.split(" ");
-    return parts[parts.length - 1];
-  }
-};
+// Helper: Extract địa chi từ canChi (moved to utils/diaChi.ts)
 
 export default function InterpretationTables({
   originalHexagram,
   changedHexagram,
-  movingLine,
+  movingLines = [],
   dungThan = null,
   metadata = null,
 }) {
@@ -80,7 +72,7 @@ export default function InterpretationTables({
   const monthCanChi = metadata?.monthCanChi;
   const normalizedLines1 = useHexagramLines(
     originalHexagram,
-    movingLine,
+    movingLines,
     dungThan,
     dayCanChi,
     monthCanChi
@@ -107,7 +99,7 @@ export default function InterpretationTables({
   );
 
 
-  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan, dayCanChi, monthCanChi);
+  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan, dayCanChi, monthCanChi, false);
   const lineData2 = normalizedLines2.map((l) => l.lineData);
   const lines2 = normalizedLines2.map((l) => l.lineType);
   const dungThanHaos2 = new Set(
@@ -305,10 +297,11 @@ export default function InterpretationTables({
     isNguyenThan = false,
     isKyThan = false,
     isCuuThan = false,
-    isTietThan = false
+    isTietThan = false,
+    isAmDong = false
   ) => {
     const isYang = lineType === 1;
-    const lineColor = isMoving ? "bg-red-600" : "bg-gray-800";
+    const lineColor = isMoving ? "bg-red-600" : isAmDong ? "bg-purple-600" : "bg-gray-800";
 
     return (
       <div className="flex flex-col items-center justify-center gap-1">
@@ -933,13 +926,13 @@ export default function InterpretationTables({
   };
 
   const renderHoa = (index) => {
-    if (!movingLine) return "";
+    if (!movingLines || movingLines.length === 0) return "";
 
     const record1 = lineData1[index];
     const record2 = lineData2[index];
 
     if (!record1 || !record2) return "";
-    if (record1.hao !== movingLine) return "";
+    if (!movingLines.includes(record1.hao)) return "";
 
     const diaChi1 = extractDiaChi(record1.canChi);
     const nguHanh1 = getNguHanhFromDiaChi(diaChi1);
@@ -1009,12 +1002,13 @@ export default function InterpretationTables({
         const info = normalizedLines1[index];
         const realHao = info ? info.hao : hao;
         const lineType = info ? info.lineType : lines1[index];
-        const isMoving = info ? info.isMoving : movingLine === realHao;
+        const isMoving = info ? info.isMoving : movingLines.includes(realHao);
         const isDungThanHao = dungThanHaos1.has(realHao);
         const isNguyenThanHao = nguyenThanHaos1.has(realHao);
         const isKyThanHao = kyThanHaos1.has(realHao);
         const isCuuThanHao = cuuThanHaos1.has(realHao);
         const isTietThanHao = tietThanHaos1.has(realHao);
+        const isAmDongHao = amDongHaos1.has(realHao);
         return renderHaoLine(
           realHao,
           lineType,
@@ -1023,7 +1017,8 @@ export default function InterpretationTables({
           isNguyenThanHao,
           isKyThanHao,
           isCuuThanHao,
-          isTietThanHao
+          isTietThanHao,
+          isAmDongHao
         );
       },
     },
@@ -1544,9 +1539,6 @@ export default function InterpretationTables({
               if (dungThan && dungThanHaos1.has(record.hao)) {
                 return "bg-green-50 hover:bg-green-100";
               }
-              if (amDongHaos1.has(record.hao)) {
-                return "bg-purple-50 hover:bg-purple-100";
-              }
               return "";
             }}
           />
@@ -1587,9 +1579,6 @@ export default function InterpretationTables({
             rowClassName={(record) => {
               if (dungThan && dungThanHaos2.has(record.hao)) {
                 return "bg-green-50 hover:bg-green-100";
-              }
-              if (amDongHaos2.has(record.hao)) {
-                return "bg-purple-50 hover:bg-purple-100";
               }
               return "";
             }}
@@ -2565,7 +2554,7 @@ export default function InterpretationTables({
                       // Bước 8: Ứng kỳ
                       let buoc8Item = null;
                       if (dungThanLineData && dungThanDiaChi) {
-                        const isDong = dungThanLineData.hao === movingLine;
+                        const isDong = movingLines.includes(dungThanLineData.hao);
                         const isQuaVuong = (dungThanDiaChi === monthDiaChi) && (dungThanDiaChi === dayDiaChi);
 
                         const dungThanNguHanh = getNguHanhFromDiaChi(dungThanDiaChi);
@@ -3534,6 +3523,150 @@ export default function InterpretationTables({
                                               {correlation.nhRel === "trung" && (
                                                 <p className="m-0">
                                                   • Ngũ hành: Hào động và Dụng Thần
+                                                  cùng hành {correlation.nh1}
+                                                </p>
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ),
+                        });
+                      }
+
+                      // Bước 7.1: Lực của hào ám động và mối tương quan với Dụng Thần
+                      const amDongHaosAnalysis = normalizedLines1.filter((l) => l.isAmDong);
+                      if (amDongHaosAnalysis.length > 0) {
+                        collapseItems.push({
+                          key: "7.1",
+                          label: "Bước 7.1: Lực của hào ám động và mối tương quan với Dụng Thần",
+                          children: (
+                            <div className="space-y-4">
+                              {amDongHaosAnalysis.map((aHao, idx) => {
+                                const aDiaChi = extractDiaChi(aHao.lineData.canChi);
+                                const force = calculateDiaChiForce(
+                                  aDiaChi,
+                                  yearDiaChi,
+                                  monthDiaChi,
+                                  dayDiaChi
+                                );
+
+                                let correlation = null;
+                                if (force.totalScore > 0 && dungThanDiaChi) {
+                                  const isHop = isNhiHopDiaChi(
+                                    aDiaChi,
+                                    dungThanDiaChi
+                                  );
+                                  const isXung = isNhiXungDiaChi(
+                                    aDiaChi,
+                                    dungThanDiaChi
+                                  );
+                                  const nh1 = getNguHanhFromDiaChi(aDiaChi)?.name;
+                                  const nh2 =
+                                    getNguHanhFromDiaChi(dungThanDiaChi)?.name;
+                                  const nhRel = getNguHanhRelation(nh1, nh2);
+                                  correlation = { isHop, isXung, nhRel, nh1, nh2 };
+                                }
+
+                                return (
+                                  <div
+                                    key={idx}
+                                    className="bg-white p-4 rounded-lg border border-purple-200"
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <div className="flex-shrink-0 w-8 h-8 bg-purple-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        7.1
+                                      </div>
+                                      <div className="flex-1 space-y-3 prose prose-sm max-w-none text-gray-700">
+                                        <p className="font-semibold mb-0">
+                                          Hào Ám Động: Hào {aHao.hao} (
+                                          {aHao.lineData.canChi})
+                                        </p>
+
+                                        <div className="p-3 bg-purple-50 rounded border-l-4 border-purple-400">
+                                          <p className="font-semibold mb-2 text-sm">
+                                            7.1.2: Xét lực của hào ám động (Tổng điểm:{" "}
+                                            {force.totalScore.toFixed(2)})
+                                          </p>
+                                          <div className="space-y-1">
+                                            {force.details.map((d, i) => (
+                                              <p
+                                                key={i}
+                                                className={`text-xs m-0 ${d.color}`}
+                                              >
+                                                • {d.name}: {d.diem > 0 ? "+" : ""}
+                                                {d.diem} ({d.description})
+                                              </p>
+                                            ))}
+                                          </div>
+                                          <p
+                                            className={`font-bold mt-2 mb-0 ${force.totalScore > 0
+                                              ? "text-green-600"
+                                              : "text-gray-500"
+                                              }`}
+                                          >
+                                            →{" "}
+                                            {force.totalScore > 0
+                                              ? "Hào có Lực (Vượng)"
+                                              : "Hào hưu tù (Không có lực)"}
+                                          </p>
+                                        </div>
+
+                                        {correlation && (
+                                          <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                                            <p className="font-semibold mb-2 text-sm">
+                                              7.1.3: Tương quan với Dụng Thần (
+                                              {dungThanDiaChi})
+                                            </p>
+                                            <div className="space-y-1 text-xs text-gray-700">
+                                              {correlation.isHop && (
+                                                <p className="text-blue-600 font-semibold m-0">
+                                                  • Nhị Hợp với Dụng Thần
+                                                </p>
+                                              )}
+                                              {correlation.isXung && (
+                                                <p className="text-red-600 font-semibold m-0">
+                                                  • Nhị Xung với Dụng Thần
+                                                </p>
+                                              )}
+                                              {correlation.nhRel === "sinh" && (
+                                                <p className="m-0">
+                                                  • Ngũ hành: Hào ám động (
+                                                  {correlation.nh1}) sinh Dụng Thần
+                                                  ({correlation.nh2})
+                                                </p>
+                                              )}
+                                              {correlation.nhRel ===
+                                                "duocSinh" && (
+                                                  <p className="text-green-600 font-semibold m-0">
+                                                    • Ngũ hành: Hào ám động (
+                                                    {correlation.nh1}) được Dụng Thần
+                                                    ({correlation.nh2}) sinh
+                                                  </p>
+                                                )}
+                                              {correlation.nhRel === "khac" && (
+                                                <p className="text-red-600 font-semibold m-0">
+                                                  • Ngũ hành: Hào ám động (
+                                                  {correlation.nh1}) khắc Dụng Thần
+                                                  ({correlation.nh2})
+                                                </p>
+                                              )}
+                                              {correlation.nhRel ===
+                                                "biKhac" && (
+                                                  <p className="m-0">
+                                                    • Ngũ hành: Hào ám động (
+                                                    {correlation.nh1}) bị Dụng Thần
+                                                    ({correlation.nh2}) khắc
+                                                  </p>
+                                                )}
+                                              {correlation.nhRel === "trung" && (
+                                                <p className="m-0">
+                                                  • Ngũ hành: Hào ám động và Dụng Thần
                                                   cùng hành {correlation.nh1}
                                                 </p>
                                               )}
@@ -5077,10 +5210,10 @@ export default function InterpretationTables({
                                 hexNames.forEach(checkLogic);
 
                                 // Logic: Hào 6 Phụ Mẫu nhị xung hào động
-                                if (movingLine) {
-                                  const hao6 = lineData1[0]; // Hào 6 (vì lineData1 được sắp xếp từ hào 6 đến 1)
+                                movingLines.forEach((ml) => {
+                                  const hao6 = lineData1[0]; // Hào 6
                                   const movingHaoRecord = lineData1.find(
-                                    (l) => l.hao === movingLine
+                                    (l) => l.hao === ml
                                   );
 
                                   if (hao6 && movingHaoRecord) {
@@ -5094,13 +5227,13 @@ export default function InterpretationTables({
                                       isNhiXungDiaChi(diaChi6, diaChiMoving)
                                     ) {
                                       results.push({
-                                        title: "Hào 6 Phụ Mẫu nhị xung Hào Động",
+                                        title: `Hào 6 Phụ Mẫu nhị xung Hào Động (${ml})`,
                                         content:
                                           "Có khả năng là mộ phần nứt nẻ hoặc bệnh đau đầu.",
                                       });
                                     }
                                   }
-                                }
+                                });
 
                                 // Logic: Phong thuỷ nhà (Hào 2 và Hào 5)
                                 const hao2 = lineData1.find((l) => l.hao === 2);

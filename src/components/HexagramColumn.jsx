@@ -22,11 +22,12 @@ import { useHexagramLines } from "../hooks/useHexagramLines";
 export default function HexagramColumn({
   hexagram,
   title,
-  movingLine = null,
+  movingLines = [],
   dungThan = null,
   scale = 1,
   onLineClick = null,
   metadata = null,
+  checkAmDong = true,
 }) {
   if (!hexagram) {
     return (
@@ -43,7 +44,8 @@ export default function HexagramColumn({
   }
 
   // Chuẩn hoá dữ liệu hào: mảng từ trên xuống (hào 6 → hào 1)
-  const normalizedLines = useHexagramLines(hexagram, movingLine, dungThan, metadata?.dayCanChi, metadata?.monthCanChi);
+  const normalizedLines = useHexagramLines(hexagram, movingLines, dungThan, metadata?.dayCanChi, metadata?.monthCanChi, checkAmDong);
+
   // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
   const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
   const omen = getHexagramOmen(hexagramKey);

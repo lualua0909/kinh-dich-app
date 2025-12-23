@@ -420,3 +420,18 @@ export function hasFullTamHinhGroup(diaChiArray: (DiaChi | string)[]): {
     groupMembers: null
   };
 }
+
+/**
+ * Trích xuất Địa Chi từ chuỗi Can Chi
+ * Ví dụ: "Giáp-Tý" -> "Tý", "Nhâm Thân" -> "Thân"
+ */
+export const extractDiaChi = (canChi: string | null): string | null => {
+  if (!canChi) return null;
+  if (canChi.includes("-")) {
+    const parts = canChi.split("-");
+    return parts[parts.length - 1].trim();
+  } else {
+    const parts = canChi.split(" ");
+    return parts[parts.length - 1].trim();
+  }
+};

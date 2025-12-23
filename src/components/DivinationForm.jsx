@@ -45,7 +45,9 @@ export default function DivinationForm({ onDivinate }) {
         formLines[`line${index + 1}`] = Number(line);
       });
       if (movingLineParam) {
-        formLines[`moving${movingLineParam}`] = true;
+        movingLineParam.split(",").forEach((ml) => {
+          formLines[`moving${ml}`] = true;
+        });
       }
       form.setFieldsValue(formLines);
     }
@@ -175,7 +177,7 @@ export default function DivinationForm({ onDivinate }) {
           {
             type: "manual",
             lines,
-            movingLine: movingRemainder,
+            movingLines: [movingRemainder],
             datetime: selectedDate,
           },
           null
@@ -199,19 +201,11 @@ export default function DivinationForm({ onDivinate }) {
           }
         }
 
-        if (movingLines.length > 1) {
-          message.error("Chỉ được chọn tối đa một hào động");
-          setLoading(false);
-          return;
-        }
-
-        const movingLine = movingLines.length === 1 ? movingLines[0] : null;
-
         await onDivinate(
           {
             type: "manual",
             lines,
-            movingLine: movingLine === "none" ? null : Number(movingLine),
+            movingLines: movingLines,
             datetime: viewDate,
           },
           null
