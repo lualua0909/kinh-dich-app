@@ -121,6 +121,20 @@ const TUAN_KHONG_TABLE: TuanKhongColumn[] = [
   }
 ];
 
+
+/**
+ * Helper: Chuẩn hóa chuỗi Can Chi để so sánh
+ */
+function normalizeCanChi(text: string): string {
+  if (!text) return "";
+  let normalized = text.trim().replace(/\s+/g, " ");
+  // Chuyển về Tý (thay vì Tí)
+  normalized = normalized.replace(/\bTí\b/g, "Tý");
+  // Chuyển về Kỷ (thay vì Kỉ)
+  normalized = normalized.replace(/\bKỉ\b/g, "Kỷ");
+  return normalized.toLowerCase();
+}
+
 /**
  * Tìm cột Tuần Không dựa trên ngày Can Chi
  *
@@ -130,20 +144,19 @@ const TUAN_KHONG_TABLE: TuanKhongColumn[] = [
 function findTuanKhongColumn(dayGanzhi: string): TuanKhongColumn | null {
   if (!dayGanzhi) return null;
 
-  // Chuẩn hóa dayGanzhi: loại bỏ khoảng trắng thừa và chuẩn hóa khoảng trắng
-  const normalizedDayGanzhi = dayGanzhi.trim().replace(/\s+/g, " ");
+  const normalizedInput = normalizeCanChi(dayGanzhi);
 
   // Tìm cột chứa dayGanzhi (so sánh không phân biệt hoa thường và khoảng trắng)
   for (const column of TUAN_KHONG_TABLE) {
     for (const ganzhi of column.dayGanzhiList) {
-      // So sánh sau khi chuẩn hóa
-      if (normalizedDayGanzhi === ganzhi.trim()) {
+      // So sánh sau khi chuẩn hóa cả 2 bên (đề phòng dữ liệu cứng cũng có thể lệch chuẩn nếu sửa đổi sau này)
+      if (normalizedInput === normalizeCanChi(ganzhi)) {
         return column;
       }
     }
   }
 
-  return null;
+  return null; // Explicitly return null if not found
 }
 
 /**
@@ -158,13 +171,23 @@ function extractDiaChiFromCanChi(canChi: string): DiaChi | null {
 
   // Tách chuỗi theo khoảng trắng hoặc dấu gạch ngang
   const parts = canChi.split(/[\s-]/);
-  if (parts.length < 2) return null;
-
+  
   // Địa Chi là phần cuối cùng
-  const diaChiName = parts[parts.length - 1].trim();
+  let diaChiName = parts[parts.length - 1].trim();
+  
+  // Normalization for robust lookup
+  if (diaChiName === "Tí") diaChiName = "Tý";
+  if (diaChiName === "Kỉ") diaChiName = "Kỷ";
 
   // Chuyển đổi tên Địa Chi sang code
-  return DIA_CHI_CODES[diaChiName] || null;
+  // Try exact match first
+  if (DIA_CHI_CODES[diaChiName]) return DIA_CHI_CODES[diaChiName];
+
+  // Try capitalized match if input is lowercase
+  const capitalized = diaChiName.charAt(0).toUpperCase() + diaChiName.slice(1).toLowerCase();
+  if (DIA_CHI_CODES[capitalized]) return DIA_CHI_CODES[capitalized];
+
+  return null;
 }
 
 /**
