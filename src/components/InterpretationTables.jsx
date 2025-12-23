@@ -46,6 +46,7 @@ import {
   isNhiXungDiaChi,
   hasFullTamHinhGroup,
   extractDiaChi,
+  TAM_HINH_GROUPS,
 } from "../utils/diaChi";
 import nguHanhRelations from "../data/nguHanhRelations.json";
 import { anVongTruongSinh, anVongTruongSinhByCan } from "../utils/truongSinh";
@@ -3950,9 +3951,40 @@ export default function InterpretationTables({
                                   tuTonDiaChi,
                                 ];
 
-                                // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình không
-                                const tamHinhCheck =
-                                  hasFullTamHinhGroup(diaChiArrayWithTuTon);
+                                // Chuyển địa chi Tử Tôn sang Code để so sánh
+                                const tuTonDiaChiCode =
+                                  DIA_CHI_CODES[tuTonDiaChi] || tuTonDiaChi;
+
+                                // Điều kiện 1: Kiểm tra có tạo thành nhóm tam hình chứa hào Tử Tôn không
+                                const codesSet = new Set(
+                                  diaChiArrayWithTuTon
+                                    .map((c) => DIA_CHI_CODES[c] || c)
+                                    .filter((c) => c)
+                                );
+
+                                let tuTonVapTamHinh = false;
+                                let foundTamHinhGroup = null;
+
+                                // Duyệt qua các nhóm tam hình để tìm nhóm chứa Tử Tôn và đủ bộ
+                                for (const [groupType, members] of Object.entries(
+                                  TAM_HINH_GROUPS
+                                )) {
+                                  // Chỉ xét các nhóm chứa địa chi của hào Tử Tôn
+                                  if (members.includes(tuTonDiaChiCode)) {
+                                    // Kiểm tra xem tất cả thành viên trong nhóm có xuất hiện trong quẻ/ngày/tháng không
+                                    const allMembersPresent = members.every(
+                                      (m) => codesSet.has(m)
+                                    );
+                                    if (allMembersPresent) {
+                                      tuTonVapTamHinh = true;
+                                      foundTamHinhGroup = {
+                                        type: groupType,
+                                        members: members,
+                                      };
+                                      break;
+                                    }
+                                  }
+                                }
 
                                 // Điều kiện 2: Kiểm tra không vong hoặc suy/nhập mộ
                                 const isKhongVong =
@@ -4025,8 +4057,7 @@ export default function InterpretationTables({
                                 const dieuKien2 = isKhongVong || isSuyNhapMo;
 
                                 // Kết luận: Cần cả 2 điều kiện đều thỏa mãn
-                                const coNguyCo =
-                                  tamHinhCheck.hasFullGroup && dieuKien2;
+                                const coNguyCo = tuTonVapTamHinh && dieuKien2;
 
                                 // Kiểm tra xem có phải con của người hỏi không
                                 // Người hỏi tương ứng với hào Thế
@@ -4079,26 +4110,26 @@ export default function InterpretationTables({
 
                                     <div className="space-y-2">
                                       <div
-                                        className={`p-3 rounded border-l-4 ${tamHinhCheck.hasFullGroup
+                                        className={`p-3 rounded border-l-4 ${tuTonVapTamHinh
                                           ? "bg-red-50 border-red-500"
                                           : "bg-green-50 border-green-500"
                                           }`}
                                       >
                                         <p className="font-semibold mb-1">
-                                          Điều kiện 1: Kiểm tra Tam Hình
+                                          Điều kiện 1: Kiểm tra Tam Hình chứa hào Tử Tôn
                                         </p>
-                                        {tamHinhCheck.hasFullGroup ? (
+                                        {tuTonVapTamHinh ? (
                                           <div>
                                             <p className="text-red-700 font-bold">
                                               ⚠ Có nguy cơ: Tìm thấy nhóm Tam
-                                              Hình đầy đủ
+                                              Hình đầy đủ chứa hào Tử Tôn
                                             </p>
                                             <p className="text-sm text-gray-600 mt-1">
-                                              Nhóm: {tamHinhCheck.groupType}
+                                              Nhóm: {foundTamHinhGroup.type}
                                             </p>
                                             <p className="text-sm text-gray-600">
                                               Các địa chi:{" "}
-                                              {tamHinhCheck.groupMembers?.join(
+                                              {foundTamHinhGroup.members?.join(
                                                 ", "
                                               )}
                                             </p>
@@ -4106,7 +4137,7 @@ export default function InterpretationTables({
                                         ) : (
                                           <p className="text-green-700">
                                             ✓ Không tìm thấy nhóm Tam Hình đầy
-                                            đủ
+                                            đủ có chứa hào Tử Tôn
                                           </p>
                                         )}
                                       </div>

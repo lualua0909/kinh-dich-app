@@ -1799,6 +1799,36 @@
       "ung": 6
     }
   },
+  "4-0": {
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "HD",
+      "TT",
+      "TTi"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "PM-Tý"
+    ],
+    "theUng": {
+      "the": 4,
+      "ung": 1
+    }
+  },
   "4-1": {
     "lucThan": [
       "HD",
