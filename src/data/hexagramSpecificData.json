@@ -1,575 +1,1919 @@
 {
   "1-1": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "TT"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"],
-    "phucThan": ["PM-Tý", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "TT"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "PM-Tý",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "1-5": {
-    "lucThan": ["PM", "HD", "QQ", "HD", "TT", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "HD",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "1-7": {
-    "lucThan": ["PM", "HD", "QQ", "HD", "QQ", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "1-0": {
-    "lucThan": ["PM", "HD", "QQ", "TTi", "QQ", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "TTi",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "5-0": {
-    "lucThan": ["TTi", "QQ", "PM", "TTi", "QQ", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "7-0": {
-    "lucThan": ["TTi", "QQ", "PM", "TTi", "QQ", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "3-0": {
-    "lucThan": ["QQ", "PM", "HD", "TTi", "QQ", "PM"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "HD",
+      "TTi",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "3-1": {
-    "lucThan": ["QQ", "PM", "HD", "PM", "TTi", "TT"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "HD",
+      "PM",
+      "TTi",
+      "TT"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 3
     }
   },
   "2-2": {
-    "lucThan": ["PM", "HD", "TT", "PM", "TTi", "QQ"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "TT",
+      "PM",
+      "TTi",
+      "QQ"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "2-6": {
-    "lucThan": ["PM", "HD", "TT", "QQ", "PM", "TTi"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "TT",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "2-0": {
-    "lucThan": ["PM", "HD", "HD", "TTi", "QQ", "PM"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "HD",
+      "TTi",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "2-7": {
-    "lucThan": ["PM", "HD", "TT", "HD", "QQ", "PM"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "TT",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-7": {
-    "lucThan": ["TT", "PM", "HD", "HD", "QQ", "PM"],
-    "canChi": ["Tý", "Tuất", "Thân", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "PM",
+      "HD",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "0-7": {
-    "lucThan": ["HD", "TT", "PM", "HD", "QQ", "PM"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "PM",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "4-7": {
-    "lucThan": ["PM", "HD", "QQ", "HD", "QQ", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "4-2": {
-    "lucThan": ["PM", "HD", "QQ", "PM", "TTi", "QQ"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "QQ"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "3-3": {
-    "lucThan": ["HD", "TT", "TTi", "QQ", "TT", "PM"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "QQ",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "3-7": {
-    "lucThan": ["HD", "TT", "TTi", "TTi", "HD", "TT"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "TTi",
+      "HD",
+      "TT"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "3-5": {
-    "lucThan": ["HD", "PM", "TTi", "TTi", "QQ", "TT"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "PM",
+      "TTi",
+      "TTi",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "3-6": {
-    "lucThan": ["HD", "TT", "TTi", "HD", "TT", "PM"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "HD",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "7-6": {
-    "lucThan": ["PM", "QQ", "TT", "HD", "TT", "PM"],
-    "canChi": ["Dần", "Tý", "Tuất", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "QQ",
+      "TT",
+      "HD",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 1
     }
   },
   "5-6": {
-    "lucThan": ["PM", "HD", "TT", "HD", "TT", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "TT",
+      "HD",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "1-6": {
-    "lucThan": ["TT", "TTi", "HD", "HD", "TT", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "HD",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "1-3": {
-    "lucThan": ["TT", "TTi", "HD", "QQ", "TT", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "QQ",
+      "TT",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "4-4": {
-    "lucThan": ["TTi", "QQ", "TT", "TTi", "HD", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
-      "the": 1,
-      "ung": 4
+      "the": 6,
+      "ung": 3
     }
   },
   "4-2": {
-    "lucThan": ["TTi", "QQ", "TT", "HD", "TT", "TTi"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "HD",
+      "TT",
+      "TTi"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "4-6": {
-    "lucThan": ["TTi", "QQ", "TT", "TT", "TTi", "HD"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "TT",
+      "TTi",
+      "HD"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "4-5": {
-    "lucThan": ["TTi", "QQ", "TT", "QQ", "PM", "TTi"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 6
     }
   },
   "2-5": {
-    "lucThan": ["QQ", "PM", "TTi", "QQ", "PM", "TTi"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 1
     }
   },
   "6-5": {
-    "lucThan": ["PM", "TTi", "QQ", "QQ", "PM", "TTi"],
-    "canChi": ["Tý", "Tuất", "Thân", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "TTi",
+      "QQ",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "7-5": {
-    "lucThan": ["TTi", "QQ", "PM", "QQ", "PM", "TTi"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "PM",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "7-4": {
-    "lucThan": ["TTi", "QQ", "PM", "TTi", "HD", "PM"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "5-5": {
-    "lucThan": ["HD", "TT", "TTi", "QQ", "PM", "TTi"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "5-1": {
-    "lucThan": ["HD", "TT", "TTi", "TTi", "HD", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "5-3": {
-    "lucThan": ["HD", "TT", "TTi", "PM", "TTi", "HD"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "PM",
+      "TTi",
+      "HD"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "5-4": {
-    "lucThan": ["HD", "TT", "TTi", "TTi", "HD", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 6
     }
   },
   "1-4": {
-    "lucThan": ["TTi", "QQ", "TT", "TTi", "HD", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "QQ",
+      "TT",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 1
     }
   },
   "3-4": {
-    "lucThan": ["TT", "TTi", "QQ", "TTi", "HD", "PM"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "QQ",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "7-4": {
-    "lucThan": ["HD", "PM", "TTi", "TTi", "HD", "PM"],
-    "canChi": ["Dần", "Tý", "Tuất", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "PM",
+      "TTi",
+      "TTi",
+      "HD",
+      "PM"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "7-5": {
-    "lucThan": ["HD", "PM", "TTi", "QQ", "PM", "TTi"],
-    "canChi": ["Dần", "Tý", "Tuất", "Dậu", "Hợi", "Sửu"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "PM",
+      "TTi",
+      "QQ",
+      "PM",
+      "TTi"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Dậu",
+      "Hợi",
+      "Sửu"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-6": {
-    "lucThan": ["HD", "QQ", "PM", "TTi", "QQ", "TT"],
-    "canChi": ["Tý", "Tuất", "Thân", "Ngọ", "Thìn", "Dần"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "QQ",
+      "PM",
+      "TTi",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn",
+      "Dần"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "6-2": {
-    "lucThan": ["HD", "QQ", "PM", "QQ", "TT", "TTi"],
-    "canChi": ["Tý", "Tuất", "Thân", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "QQ",
+      "PM",
+      "QQ",
+      "TT",
+      "TTi"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "6-4": {
-    "lucThan": ["HD", "QQ", "PM", "QQ", "TT", "HD"],
-    "canChi": ["Tý", "Tuất", "Thân", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "QQ",
+      "PM",
+      "QQ",
+      "TT",
+      "HD"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "6-3": {
-    "lucThan": ["HD", "QQ", "PM", "HD", "QQ", "TT"],
-    "canChi": ["Tý", "Tuất", "Thân", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "QQ",
+      "PM",
+      "HD",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "2-3": {
-    "lucThan": ["QQ", "PM", "HD", "HD", "QQ", "TT"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "HD",
+      "HD",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "4-3": {
-    "lucThan": ["QQ", "PM", "TTi", "HD", "QQ", "TT"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "TTi",
+      "HD",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "0-3": {
-    "lucThan": ["PM", "HD", "QQ", "HD", "QQ", "TT"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "HD",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "0-6": {
-    "lucThan": ["PM", "HD", "QQ", "TTi", "QQ", "TT"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Ngọ", "Thìn", "Thân"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "QQ",
+      "TTi",
+      "QQ",
+      "TT"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Ngọ",
+      "Thìn",
+      "Thân"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "7-7": {
-    "lucThan": ["QQ", "TTi", "HD", "TT", "PM", "HD"],
-    "canChi": ["Dần", "Tý", "Tuất", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "TTi",
+      "HD",
+      "TT",
+      "PM",
+      "HD"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "7-3": {
-    "lucThan": ["QQ", "TTi", "HD", "TTi", "HD", "QQ"],
-    "canChi": ["Dần", "Tý", "Tuất", "Hợi", "Sửu", "Mão"],
-    "phucThan": ["", "", "", "TT-Thân", "PM-Ngọ", ""],
+    "lucThan": [
+      "QQ",
+      "TTi",
+      "HD",
+      "TTi",
+      "HD",
+      "QQ"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Hợi",
+      "Sửu",
+      "Mão"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "TT-Thân",
+      "PM-Ngọ",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "7-1": {
-    "lucThan": ["QQ", "TTi", "HD", "HD", "QQ", "TTi"],
-    "canChi": ["Dần", "Tý", "Tuất", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "TTi",
+      "HD",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "7-2": {
-    "lucThan": ["QQ", "TTi", "HD", "HD", "QQ", "PM"],
-    "canChi": ["Dần", "Tý", "Tuất", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "TTi",
+      "HD",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Dần",
+      "Tý",
+      "Tuất",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 6
     }
   },
   "3-2": {
-    "lucThan": ["PM", "HD", "TT", "HD", "QQ", "PM"],
-    "canChi": ["Tỵ", "Mùi", "Dậu", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "PM",
+      "HD",
+      "TT",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tỵ",
+      "Mùi",
+      "Dậu",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "1-2": {
-    "lucThan": ["HD", "TT", "PM", "HD", "QQ", "PM"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "PM",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "5-2": {
-    "lucThan": ["QQ", "PM", "HD", "HD", "QQ", "PM"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "HD",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "5-7": {
-    "lucThan": ["QQ", "PM", "HD", "TT", "PM", "HD"],
-    "canChi": ["Mão", "Tỵ", "Mùi", "Thân", "Ngọ", "Thìn"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "QQ",
+      "PM",
+      "HD",
+      "TT",
+      "PM",
+      "HD"
+    ],
+    "canChi": [
+      "Mão",
+      "Tỵ",
+      "Mùi",
+      "Thân",
+      "Ngọ",
+      "Thìn"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "0-0": {
-    "lucThan": ["TT", "TTi", "HD", "QQ", "PM", "HD"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "QQ",
+      "PM",
+      "HD"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 6,
       "ung": 3
     }
   },
   "0-4": {
-    "lucThan": ["TT", "TTi", "HD", "HD", "QQ", "TTi"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 1,
       "ung": 4
     }
   },
   "0-2": {
-    "lucThan": ["TT", "TTi", "HD", "HD", "QQ", "PM"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Sửu", "Mão", "Tỵ"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "HD",
+      "QQ",
+      "PM"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Sửu",
+      "Mão",
+      "Tỵ"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 2,
       "ung": 5
     }
   },
   "0-1": {
-    "lucThan": ["TT", "TTi", "HD", "HD", "QQ", "TTi"],
-    "canChi": ["Dậu", "Hợi", "Sửu", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TT",
+      "TTi",
+      "HD",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Dậu",
+      "Hợi",
+      "Sửu",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "4-1": {
-    "lucThan": ["HD", "TT", "PM", "HD", "QQ", "TTi"],
-    "canChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "PM",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Tuất",
+      "Thân",
+      "Ngọ",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
     }
   },
   "2-1": {
-    "lucThan": ["HD", "TT", "TTi", "HD", "QQ", "TTi"],
-    "canChi": ["Mùi", "Dậu", "Hợi", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "HD",
+      "TT",
+      "TTi",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Mùi",
+      "Dậu",
+      "Hợi",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 5,
       "ung": 2
     }
   },
   "6-1": {
-    "lucThan": ["TTi", "HD", "TT", "HD", "QQ", "TTi"],
-    "canChi": ["Tý", "Tuất", "Thân", "Thìn", "Dần", "Tý"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "HD",
+      "TT",
+      "HD",
+      "QQ",
+      "TTi"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Thìn",
+      "Dần",
+      "Tý"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 3,
       "ung": 6
     }
   },
   "6-0": {
-    "lucThan": ["TTi", "HD", "TT", "QQ", "PM", "HD"],
-    "canChi": ["Tý", "Tuất", "Thân", "Mão", "Tỵ", "Mùi"],
-    "phucThan": ["", "", "", "", "", ""],
+    "lucThan": [
+      "TTi",
+      "HD",
+      "TT",
+      "QQ",
+      "PM",
+      "HD"
+    ],
+    "canChi": [
+      "Tý",
+      "Tuất",
+      "Thân",
+      "Mão",
+      "Tỵ",
+      "Mùi"
+    ],
+    "phucThan": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "theUng": {
       "the": 4,
       "ung": 1
