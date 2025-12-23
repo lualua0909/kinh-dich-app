@@ -516,6 +516,7 @@ function App() {
                 movingLine={result.movingLine}
                 dungThan={dungThan}
                 onLineClick={handleLineClick}
+                metadata={result.metadata}
               />
 
               {/* Quẻ Hỗ / Đại Quá (Mutual Hexagram) - chỉ hiển thị khi có hào động */}
@@ -524,12 +525,17 @@ function App() {
                   hexagram={result.mutualHexagram}
                   title=""
                   scale={0.8}
+                  metadata={result.metadata}
                 />
               ) : null}
 
               {/* Quẻ Biến (Changed Hexagram) */}
               {result.changedHexagram && (
-                <HexagramColumn hexagram={result.changedHexagram} title="" />
+                <HexagramColumn
+                  hexagram={result.changedHexagram}
+                  title=""
+                  metadata={result.metadata}
+                />
               )}
             </div>
           </div>

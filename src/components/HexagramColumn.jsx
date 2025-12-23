@@ -26,6 +26,7 @@ export default function HexagramColumn({
   dungThan = null,
   scale = 1,
   onLineClick = null,
+  metadata = null,
 }) {
   if (!hexagram) {
     return (
@@ -42,7 +43,7 @@ export default function HexagramColumn({
   }
 
   // Chuẩn hoá dữ liệu hào: mảng từ trên xuống (hào 6 → hào 1)
-  const normalizedLines = useHexagramLines(hexagram, movingLine, dungThan);
+  const normalizedLines = useHexagramLines(hexagram, movingLine, dungThan, metadata?.dayCanChi, metadata?.monthCanChi);
   // Key dạng "upper-lower" giống trong HEXAGRAMS / hexagramNames
   const hexagramKey = `${hexagram.upperTrigram}-${hexagram.lowerTrigram}`;
   const omen = getHexagramOmen(hexagramKey);
@@ -114,6 +115,7 @@ export default function HexagramColumn({
                   <Line
                     type={lineType}
                     isMoving={isMoving}
+                    isAmDong={info.isAmDong}
                     haoNumber={hao}
                     lineData={lineData}
                     isDungThan={isDungThan}

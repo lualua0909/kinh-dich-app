@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Table, Card, Tooltip, Drawer, Modal, Collapse, Button } from "antd";
 import ReactMarkdown from "react-markdown";
-import nguHanhRelations from "../data/nguHanhRelations.json";
+import { getNguHanhFromDiaChi, getNguHanhRelation } from "../utils/nguHanh";
 import { getDungThanInfo } from "../data/dungThan";
 import {
   thanhLongLucThanInfo,
@@ -82,12 +82,16 @@ export default function InterpretationTables({
     originalHexagram,
     movingLine,
     dungThan,
-    dayCanChi
+    dayCanChi,
+    monthCanChi
   );
   const lineData1 = normalizedLines1.map((l) => l.lineData);
   const lines1 = normalizedLines1.map((l) => l.lineType);
   const dungThanHaos1 = new Set(
     normalizedLines1.filter((l) => l.isDungThan).map((l) => l.hao)
+  );
+  const amDongHaos1 = new Set(
+    normalizedLines1.filter((l) => l.isAmDong).map((l) => l.hao)
   );
   const nguyenThanHaos1 = new Set(
     normalizedLines1.filter((l) => l.isNguyenThan).map((l) => l.hao)
@@ -103,31 +107,18 @@ export default function InterpretationTables({
   );
 
 
-  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan, dayCanChi);
+  const normalizedLines2 = useHexagramLines(changedHexagram, null, dungThan, dayCanChi, monthCanChi);
   const lineData2 = normalizedLines2.map((l) => l.lineData);
   const lines2 = normalizedLines2.map((l) => l.lineType);
   const dungThanHaos2 = new Set(
     normalizedLines2.filter((l) => l.isDungThan).map((l) => l.hao)
   );
+  const amDongHaos2 = new Set(
+    normalizedLines2.filter((l) => l.isAmDong).map((l) => l.hao)
+  );
 
   // Function to get Ngũ Hành from Địa Chi (cần định nghĩa trước khi sử dụng)
-  const getNguHanhFromDiaChi = (diaChi) => {
-    const nguHanhMap = {
-      Dần: { name: "Mộc", color: "text-green-600 bg-green-50" },
-      Mão: { name: "Mộc", color: "text-green-600 bg-green-50" },
-      Tỵ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-      Ngọ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-      Thìn: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Tuất: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Sửu: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Mùi: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-      Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-      Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-      Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-      Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-    };
-    return nguHanhMap[diaChi] || null;
-  };
+  // Đã di chuyển ra utility nguHanh.js
 
   // Tính Trường Sinh cho cột Ngày (dựa trên dayCanChi)
   let truongSinhNgay1 = [];
@@ -380,15 +371,7 @@ export default function InterpretationTables({
     const nguHanh2 = getNguHanhFromDiaChi(chi2);
     if (!nguHanh1 || !nguHanh2) return null;
 
-    // nguHanhRelations imported globally
-
-    const rel1 = nguHanhRelations[nguHanh1.name];
-    if (rel1.sinh === nguHanh2.name) return "sinh"; // chi1 sinh chi2
-    if (rel1.duocSinh === nguHanh2.name) return "duocSinh"; // chi2 sinh chi1
-    if (rel1.khac === nguHanh2.name) return "khac"; // chi1 khắc chi2
-    if (rel1.biKhac === nguHanh2.name) return "biKhac"; // chi2 khắc chi1
-
-    return null;
+    return getNguHanhRelation(nguHanh1.name, nguHanh2.name);
   };
 
   // Helper: Lấy địa chi của năm từ metadata
@@ -1561,6 +1544,9 @@ export default function InterpretationTables({
               if (dungThan && dungThanHaos1.has(record.hao)) {
                 return "bg-green-50 hover:bg-green-100";
               }
+              if (amDongHaos1.has(record.hao)) {
+                return "bg-purple-50 hover:bg-purple-100";
+              }
               return "";
             }}
           />
@@ -1601,6 +1587,9 @@ export default function InterpretationTables({
             rowClassName={(record) => {
               if (dungThan && dungThanHaos2.has(record.hao)) {
                 return "bg-green-50 hover:bg-green-100";
+              }
+              if (amDongHaos2.has(record.hao)) {
+                return "bg-purple-50 hover:bg-purple-100";
               }
               return "";
             }}
