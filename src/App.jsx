@@ -6,6 +6,7 @@ import DivinationForm from "./components/DivinationForm";
 import HexagramColumn from "./components/HexagramColumn";
 import InterpretationTables from "./components/InterpretationTables";
 import NguHanhTable from "./components/NguHanhTable";
+import AIInterpretation from "./components/AIInterpretation";
 import "./App.css";
 import { LUC_THAN_CODES } from "./data/lucThuInfo";
 import { DIA_CHI_CODES, DIA_CHI_ICONS } from "./utils/diaChi";
@@ -172,7 +173,7 @@ function App() {
             input.movingLines,
             input.datetime
           );
-      setResult(divinationResult);
+      setResult({ ...divinationResult, question: input.question });
       // Dụng Thần: hao number (1-6) or null
       setDungThan(dungThanValue);
 
@@ -544,13 +545,29 @@ function App() {
 
         {/* Interpretation Tables */}
         {result && result.originalHexagram && (
-          <InterpretationTables
-            originalHexagram={result.originalHexagram}
-            changedHexagram={result.changedHexagram}
-            movingLines={result.movingLines}
-            dungThan={dungThan}
-            metadata={result.metadata}
-          />
+          <>
+            <InterpretationTables
+              originalHexagram={result.originalHexagram}
+              changedHexagram={result.changedHexagram}
+              movingLines={result.movingLines}
+              dungThan={dungThan}
+              metadata={result.metadata}
+              question={result.question}
+              onSelectDungThan={handleLineClick}
+            />
+            
+            <AIInterpretation 
+              divinationData={{
+                originalHexagram: result.originalHexagram,
+                mutualHexagram: result.mutualHexagram,
+                changedHexagram: result.changedHexagram,
+                movingLines: result.movingLines,
+                metadata: result.metadata,
+                dungThan: dungThan,
+                question: result.question
+              }}
+            />
+          </>
         )}
 
         {/* Ngũ Hành Table */}

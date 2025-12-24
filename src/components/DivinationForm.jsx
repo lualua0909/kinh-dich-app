@@ -130,7 +130,7 @@ export default function DivinationForm({ onDivinate }) {
           return;
         }
 
-        await onDivinate({ type: "serial", serial, datetime: viewDate }, null);
+        await onDivinate({ type: "serial", serial, datetime: viewDate, question: values.question }, null);
       } else if (mode === "datetime") {
         const { day, month, year, hour, minute } = values;
 
@@ -179,6 +179,7 @@ export default function DivinationForm({ onDivinate }) {
             lines,
             movingLines: [movingRemainder],
             datetime: selectedDate,
+            question: values.question,
           },
           null
         );
@@ -207,6 +208,7 @@ export default function DivinationForm({ onDivinate }) {
             lines,
             movingLines: movingLines,
             datetime: viewDate,
+            question: values.question,
           },
           null
         );
@@ -240,6 +242,7 @@ export default function DivinationForm({ onDivinate }) {
         layout="vertical"
         onFinish={handleSubmit}
         initialValues={{
+          question: "",
           line1: 1,
           line2: 1,
           line3: 1,
@@ -254,6 +257,18 @@ export default function DivinationForm({ onDivinate }) {
           viewDate: dayjs(), // Default to current date and time
         }}
       >
+        <Form.Item
+          name="question"
+          label={<span className="font-semibold text-gray-700">Câu hỏi / Sự việc cần xem:</span>}
+          className="mb-4"
+        >
+          <Input.TextArea
+            placeholder="Ví dụ: Xem về tài vận tháng này, Tìm đồ vật bị mất, Xem về sức khỏe người thân..."
+            autoSize={{ minRows: 2, maxRows: 4 }}
+            className="rounded-md"
+          />
+        </Form.Item>
+
         {mode === "serial" && (
           <div className="flex flex-wrap items-end gap-4">
             <Form.Item

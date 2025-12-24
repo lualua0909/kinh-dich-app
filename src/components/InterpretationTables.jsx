@@ -29,7 +29,8 @@ import {
   getHexagramMeaningCached,
   useHexagramMeanings,
 } from "../hooks/useHexagramMeanings";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, QuestionCircleOutlined, BulbOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { suggestDungThan } from "../utils/openaiService";
 import lucTuInfo from "../data/lucTuInfo.json";
 import { useHexagramLines } from "../hooks/useHexagramLines";
 import {
@@ -59,10 +60,28 @@ export default function InterpretationTables({
   movingLines = [],
   dungThan = null,
   metadata = null,
+  question = "",
+  onSelectDungThan,
 }) {
   if (!originalHexagram) {
     return null;
   }
+  const [suggestionLoading, setSuggestionLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState(null);
+
+  const handleSuggestDungThan = async () => {
+    if (!question) return;
+    setSuggestionLoading(true);
+    try {
+      const suggestion = await suggestDungThan(question, { originalHexagram, metadata });
+      setAiSuggestion(suggestion);
+    } catch (error) {
+      console.error(error);
+      message.error("Không thể lấy gợi ý Dụng Thần.");
+    } finally {
+      setSuggestionLoading(false);
+    }
+  };
 
   // Load hexagram meanings
   const meaningsReady = useHexagramMeanings();
@@ -1505,6 +1524,76 @@ export default function InterpretationTables({
             : null}
         </div>
       </Modal>
+
+      {/* Phân tích câu hỏi & Gợi ý Dụng Thần */}
+      {question && (
+        <Card 
+          className="border-2 border-emerald-200 bg-emerald-50 rounded-xl shadow-sm mb-6"
+          title={
+            <div className="flex items-center gap-2 text-emerald-800">
+              <QuestionCircleOutlined />
+              <span>Phân tích Sự việc & Dụng Thần</span>
+            </div>
+          }
+        >
+          <div className="space-y-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 block mb-1">Câu hỏi của bạn:</span>
+              <p className="text-lg font-medium text-emerald-900 bg-white/50 p-3 rounded-lg border border-emerald-100 italic">
+                "{question}"
+              </p>
+            </div>
+
+            {!aiSuggestion ? (
+              <Button 
+                type="primary" 
+                icon={<BulbOutlined />} 
+                onClick={handleSuggestDungThan}
+                loading={suggestionLoading}
+                className="bg-emerald-600 hover:bg-emerald-700 border-none"
+              >
+                Gợi ý Dụng Thần bằng AI
+              </Button>
+            ) : (
+              <div className="bg-white p-4 rounded-lg border border-emerald-200 animate-in fade-in slide-in-from-top-2 duration-500">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="flex items-center gap-2 text-emerald-700 font-bold text-base">
+                    <CheckCircleOutlined />
+                    <span>Dụng Thần gợi ý: <span className="text-emerald-900 underline decoration-emerald-300 decoration-4 underline-offset-4">{aiSuggestion.lucThan}</span></span>
+                  </div>
+                  <Button 
+                    size="small" 
+                    icon={<BulbOutlined />} 
+                    onClick={handleSuggestDungThan}
+                    loading={suggestionLoading}
+                  >
+                    Gợi ý lại
+                  </Button>
+                </div>
+                
+                <p className="text-gray-700 mb-3 leading-relaxed">
+                  <span className="font-semibold">Lý do:</span> {aiSuggestion.reason}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-sm text-gray-500 self-center">Áp dụng chọn Hào:</span>
+                  {aiSuggestion.hao.map(h => (
+                    <Button 
+                      key={h} 
+                      size="small" 
+                      type={dungThan === h ? "primary" : "default"}
+                      onClick={() => onSelectDungThan(h)}
+                      className={dungThan === h ? "bg-emerald-600 border-emerald-600" : ""}
+                    >
+                      Hào {h}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
         {/* TỨC ĐIỀU PHÁN SÀO */}
