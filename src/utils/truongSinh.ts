@@ -19,23 +19,6 @@ import { extractThienCan, ThienCan } from "./lucTu";
 export type NguHanh = "Kim" | "Mộc" | "Thủy" | "Hỏa" | "Thổ";
 
 /**
- * 12 trạng thái Trường Sinh (theo thứ tự)
- */
-export type TruongSinhTrangThai =
-  | "Trường Sinh"
-  | "Mộc Dục"
-  | "Quan Đới"
-  | "Lâm Quan"
-  | "Đế Vượng"
-  | "Suy"
-  | "Bệnh"
-  | "Tử"
-  | "Mộ"
-  | "Tuyệt"
-  | "Thai"
-  | "Dưỡng";
-
-/**
  * Thứ tự 12 Địa Chi (thuận chiều kim đồng hồ)
  */
 const DIA_CHI_ORDER: DiaChi[] = [
@@ -56,7 +39,7 @@ const DIA_CHI_ORDER: DiaChi[] = [
 /**
  * Thứ tự 12 trạng thái Trường Sinh
  */
-const TRUONG_SINH_ORDER: TruongSinhTrangThai[] = [
+const TRUONG_SINH_ORDER = [
   "Trường Sinh",
   "Mộc Dục",
   "Quan Đới",
@@ -106,7 +89,7 @@ export interface TruongSinhResult {
   /** Ngũ hành của hào */
   nguHanh: string;
   /** Trạng thái Trường Sinh */
-  trangThai: TruongSinhTrangThai;
+  trangThai: string;
 }
 
 /**
@@ -143,7 +126,7 @@ function calculateChiDistance(startChi: DiaChi, endChi: DiaChi): number {
 function getTruongSinhTrangThai(
   diaChi: DiaChi,
   nguHanhQue: NguHanh
-): TruongSinhTrangThai {
+) {
   // Lấy Địa Chi khởi điểm Trường Sinh theo Ngũ hành quẻ
   const startChi = TRUONG_SINH_START[nguHanhQue];
 

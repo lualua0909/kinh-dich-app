@@ -1,21 +1,39 @@
 import nguHanhRelations from "../data/nguHanhRelations.json";
 
+export const nguHanhFromDiaChi = {
+  DN: { name: "Mộc", color: "text-green-600 bg-green-50" },
+  MA: { name: "Mộc", color: "text-green-600 bg-green-50" },
+  TI: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+  NG: { name: "Hỏa", color: "text-red-600 bg-red-50" },
+  TH: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  TU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  SU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  MU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
+  TN: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+  DA: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
+  HO: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+  TY: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
+};
+
+// Map with both codes and Vietnamese names as keys for maximum compatibility
 export const NGU_HANH_MAP = {
-  Dần: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  Mão: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  Tỵ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  Ngọ: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  Thìn: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Tuất: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Sửu: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Mùi: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  Thân: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  Dậu: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  Hợi: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  Tý: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
+  "Dần": nguHanhFromDiaChi.DN,
+  "Mão": nguHanhFromDiaChi.MA,
+  "Tỵ": nguHanhFromDiaChi.TI,
+  "Ngọ": nguHanhFromDiaChi.NG,
+  "Thìn": nguHanhFromDiaChi.TH,
+  "Tuất": nguHanhFromDiaChi.TU,
+  "Sửu": nguHanhFromDiaChi.SU,
+  "Mùi": nguHanhFromDiaChi.MU,
+  "Thân": nguHanhFromDiaChi.TN,
+  "Dậu": nguHanhFromDiaChi.DA,
+  "Hợi": nguHanhFromDiaChi.HO,
+  "Tý": nguHanhFromDiaChi.TY,
 };
 
 export const getNguHanhFromDiaChi = (diaChi) => {
+  console.log(diaChi);
+  if (!diaChi) return null;
   return NGU_HANH_MAP[diaChi] || null;
 };
 

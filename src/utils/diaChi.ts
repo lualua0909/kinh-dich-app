@@ -87,7 +87,11 @@ export const NHI_HOP_DIA_CHI_MAP: Record<DiaChi, DiaChi> = {
 };
 
 // Helper: Chuyển đổi input (Tên hoặc Code) sang Code chuẩn
-function toDiaChiCode(val: string | DiaChi): DiaChi | null {
+/**
+ * Chuyển đổi input (Tên hoặc Code) sang Code chuẩn
+ */
+export function toDiaChiCode(val: string | DiaChi): DiaChi | null {
+
   if (!val) return null;
   // Nếu là name ("Tý") -> trả về code ("TY")
   if (DIA_CHI_CODES[val]) return DIA_CHI_CODES[val];

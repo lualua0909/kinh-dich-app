@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Tooltip, message } from "antd";
+import { Card, Tooltip, message, FloatButton, Select, Button } from "antd";
 import { performDivination } from "./utils/divination";
 import { generateLineData } from "./data/lines";
 import DivinationForm from "./components/DivinationForm";
@@ -12,7 +12,7 @@ import { LUC_THAN_CODES } from "./data/lucThuInfo";
 import { DIA_CHI_CODES, DIA_CHI_ICONS } from "./utils/diaChi";
 import { HEAVENLY_STEMS, EARTHLY_BRANCHES } from "./utils/ganzhi";
 import { EditOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { Select, Button } from "antd";
+import { getNguHanhFromDiaChi } from "./utils/nguHanh";
 
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 import nguHanhRelations from "./data/nguHanhRelations.json";
@@ -20,20 +20,7 @@ import nguHanhRelations from "./data/nguHanhRelations.json";
 // Ngũ hành theo Địa Chi (dùng cho tooltip)
 // const nguHanhRelations = { ... } (moved to json)
 
-const nguHanhFromDiaChi = {
-  DN: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  MA: { name: "Mộc", color: "text-green-600 bg-green-50" },
-  TI: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  NG: { name: "Hỏa", color: "text-red-600 bg-red-50" },
-  TH: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  TU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  SU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  MU: { name: "Thổ", color: "text-amber-800 bg-amber-50" },
-  TN: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  DA: { name: "Kim", color: "text-yellow-600 bg-yellow-50" },
-  HO: { name: "Thủy", color: "text-blue-600 bg-blue-50" },
-  TY: { name: "Thủy", color: "text-blue-600 bg-blue-50" }
-};
+
 
 const renderNguHanhTooltip = (nguHanhName) => {
   const rel = nguHanhRelations[nguHanhName];
@@ -73,10 +60,9 @@ const renderNguHanhTooltip = (nguHanhName) => {
 
 const renderCanChiWithNguHanh = (canChi) => {
   if (!canChi) return "-";
-  const parts = canChi.split(" ");
-  const diaChi = parts[parts.length - 1];
+  const diaChi = getDiaChiFromCanChi(canChi);
   const diaChiCode = DIA_CHI_CODES[diaChi];
-  const nguHanh = nguHanhFromDiaChi[diaChiCode];
+  const nguHanh = getNguHanhFromDiaChi(diaChi);
 
   return (
     <>
@@ -572,6 +558,7 @@ function App() {
 
         {/* Ngũ Hành Table */}
         {/* <NguHanhTable /> */}
+      <FloatButton.BackTop />
       </div>
     </div>
   );
