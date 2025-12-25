@@ -46,12 +46,9 @@ export const useSpecialInterpretations = ({
   }, [lineData1, lineData2, dayDiaChi, monthDiaChi]);
 
   // Logic: Vợ/Chồng Đã Từng Kết Hôn
-  const voDaTungKetHon = useMemo(() => {
-    // Check both Thê Tài (Wife) and Quan Quỷ (Husband)
-    const targetLucThans = ["Thê Tài", "Quan Quỷ"];
-    
-    for (const lucThanName of targetLucThans) {
-      const targetLines = lineData1.filter(l => getLucThanName(l.lucThan) === lucThanName);
+  const { voDaTungKetHon, chongDaTungKetHon } = useMemo(() => {
+    const checkPreviousMarriage = (targetLucThan) => {
+      const targetLines = lineData1.filter(l => getLucThanName(l.lucThan) === targetLucThan);
       for (const tLine of targetLines) {
         const isUpper = tLine.hao >= 4;
         const phuMauLines = lineData1.filter(l => {
@@ -72,8 +69,8 @@ export const useSpecialInterpretations = ({
             if (lucTuCode === "CT") {
               return {
                 matched: true,
-                type: lucThanName,
-                description: `Hào Phụ Mẫu cùng quái với ${lucThanName} biến không Tuần Không, và ${lucThanName} biến lâm Chu Tước. Cho thấy có khả năng người này đã từng kết hôn trước đây.`,
+                type: targetLucThan,
+                description: `Hào Phụ Mẫu cùng quái với ${targetLucThan} biến không Tuần Không, và ${targetLucThan} biến lâm Chu Tước. Cho thấy có khả năng người này đã từng kết hôn hoặc có mối tình sâu đậm trước đây.`,
                 targetHao: tLine.hao,
                 phuMauHao: pmLine.hao
               };
@@ -81,8 +78,13 @@ export const useSpecialInterpretations = ({
           }
         }
       }
-    }
-    return null;
+      return null;
+    };
+
+    return {
+      voDaTungKetHon: checkPreviousMarriage("Thê Tài"),
+      chongDaTungKetHon: checkPreviousMarriage("Quan Quỷ")
+    };
   }, [lineData1, lineData2]);
 
   // Logic: Phong Thủy Nhà
@@ -187,6 +189,7 @@ export const useSpecialInterpretations = ({
   return {
     sayBoCon,
     voDaTungKetHon,
+    chongDaTungKetHon,
     phongThuyNha,
     khacResults,
     cayTruocNha

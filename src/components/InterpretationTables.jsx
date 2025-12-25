@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Table, Card, Drawer, Modal, Button, Tooltip, message, Collapse } from "antd";
 import ReactMarkdown from "react-markdown";
 import { getNguHanhFromDiaChi } from "../utils/nguHanh";
-import { 
-  getNguHanhRelation, 
-  getDiaChiRelation, 
-  calculateDiaChiForce 
+import {
+  getNguHanhRelation,
+  getDiaChiRelation,
+  calculateDiaChiForce
 } from "../utils/divinationScoring";
 import { getDungThanInfo } from "../data/dungThan";
 import {
@@ -46,7 +46,7 @@ import { useDivinationData } from "../hooks/useDivinationData";
 import { useSpecialInterpretations } from "../hooks/useSpecialInterpretations";
 
 const HouseWithTree = ({ viTri, loaiCay, caySize, cayColor }) => {
-  const svgSize = 140; 
+  const svgSize = 140;
   const houseSize = 32;
   const houseX = svgSize / 2 - houseSize / 2;
   const houseY = svgSize / 2 - houseSize / 2;
@@ -142,10 +142,11 @@ export default function InterpretationTables({
   const monthDiaChi = metadata?.monthCanChi?.split(" ").pop();
   const yearDiaChi = metadata?.yearCanChi?.split(" ").pop();
 
-  const { 
-    sayBoCon, 
-    voDaTungKetHon, 
-    phongThuyNha, 
+  const {
+    sayBoCon,
+    voDaTungKetHon,
+    chongDaTungKetHon,
+    phongThuyNha,
     khacResults,
     cayTruocNha
   } = useSpecialInterpretations({
@@ -705,7 +706,7 @@ export default function InterpretationTables({
 
       {/* Phân tích câu hỏi & Gợi ý Dụng Thần */}
       {question && (
-        <Card 
+        <Card
           className="border-2 border-emerald-200 bg-emerald-50 rounded-xl shadow-sm mb-6"
           title={
             <div className="flex items-center gap-2 text-emerald-800">
@@ -723,9 +724,9 @@ export default function InterpretationTables({
             </div>
 
             {!aiSuggestion ? (
-              <Button 
-                type="primary" 
-                icon={<BulbOutlined />} 
+              <Button
+                type="primary"
+                icon={<BulbOutlined />}
                 onClick={handleSuggestDungThan}
                 loading={suggestionLoading}
                 className="bg-emerald-600 hover:bg-emerald-700 border-none"
@@ -739,16 +740,16 @@ export default function InterpretationTables({
                     <CheckCircleOutlined />
                     <span>Dụng Thần gợi ý: <span className="text-emerald-900 underline decoration-emerald-300 decoration-4 underline-offset-4">{aiSuggestion.lucThan}</span></span>
                   </div>
-                  <Button 
-                    size="small" 
-                    icon={<BulbOutlined />} 
+                  <Button
+                    size="small"
+                    icon={<BulbOutlined />}
                     onClick={handleSuggestDungThan}
                     loading={suggestionLoading}
                   >
                     Gợi ý lại
                   </Button>
                 </div>
-                
+
                 <p className="text-gray-700 mb-3 leading-relaxed">
                   <span className="font-semibold">Lý do:</span> {aiSuggestion.reason}
                 </p>
@@ -756,9 +757,9 @@ export default function InterpretationTables({
                 <div className="flex flex-wrap gap-2">
                   <span className="text-sm text-gray-500 self-center">Áp dụng chọn Hào:</span>
                   {aiSuggestion.hao.map(h => (
-                    <Button 
-                      key={h} 
-                      size="small" 
+                    <Button
+                      key={h}
+                      size="small"
                       type={dungThan === h ? "primary" : "default"}
                       onClick={() => onSelectDungThan(h)}
                       className={dungThan === h ? "bg-emerald-600 border-emerald-600" : ""}
@@ -927,49 +928,8 @@ export default function InterpretationTables({
                   {/* Các bước giải quẻ */}
                   <div>
                     {(() => {
-                      // Logic: Luận Vợ Đã Từng Kết Hôn
-                      let voDaTungKetHonResult = null;
-                      // 1. Tìm hào Thê Tài trong quẻ chính
-                      const theTaiLines = lineData1.filter(l => getLucThanName(l.lucThan) === "Thê Tài");
+                      // Logic: Luận Vợ Đã Từng Kết Hôn (Removed inline calculation in favor of hook)
 
-                      for (const ttLine of theTaiLines) {
-                        const isUpper = ttLine.hao >= 4; // Hào 4, 5, 6 là thượng quái
-                        // 2. Tìm hào Phụ Mẫu cùng quái với hào Thê Tài
-                        const phuMauLines = lineData1.filter(l => {
-                          const isLUpper = l.hao >= 4;
-                          return getLucThanName(l.lucThan) === "Phụ Mẫu" && isLUpper === isUpper;
-                        });
-
-                        for (const pmLine of phuMauLines) {
-                          // 3. Kiểm tra hào tương ứng vị trí với hào Phụ Mẫu trong quẻ biến
-                          const pmIndex = lineData1.findIndex(l => l.hao === pmLine.hao);
-                          const pmChangedLine = lineData2[pmIndex];
-
-                          // Tuần không KHÔNG ĐƯỢC bằng "K" (theo yêu cầu: must not be "K")
-                          if (pmChangedLine && pmChangedLine.tuanKhong !== "K") {
-
-                            // 4. Kiểm tra hào tương ứng vị trí với hào Thê Tài trong quẻ biến
-                            const ttIndex = lineData1.findIndex(l => l.hao === ttLine.hao);
-                            const ttChangedLine = lineData2[ttIndex];
-
-                            // Lục thú bằng Chu Tước
-                            const lucTuVal = ttChangedLine.lucTu;
-                            const lucTuName = getLucTuName(lucTuVal);
-                            const lucTuCode = LUC_TU_CODES[lucTuName] || lucTuVal;
-
-                            if (lucTuCode === "CT") {
-                              voDaTungKetHonResult = {
-                                matched: true,
-                                description: "Thỏa mãn các điều kiện: Hào Phụ Mẫu cùng quái với Thê Tài biến không Tuần Không, và Thê Tài biến lâm Chu Tước.",
-                                theTaiHao: ttLine.hao,
-                                phuMauHao: pmLine.hao
-                              };
-                              break;
-                            }
-                          }
-                        }
-                        if (voDaTungKetHonResult) break;
-                      }
 
                       // Bước 8: Ứng kỳ
                       let buoc8Item = null;
@@ -2103,7 +2063,7 @@ export default function InterpretationTables({
                         });
                       }
 
-                      if (voDaTungKetHonResult) {
+                      if (voDaTungKetHon) {
                         collapseItems.push({
                           key: "vo-da-tung-ket-hon",
                           label: "Luận giải bổ sung: Luận Vợ Đã Từng Kết Hôn",
@@ -2119,9 +2079,37 @@ export default function InterpretationTables({
                                     <p className="font-semibold text-blue-700 mb-1">
                                       Kết luận: Khả năng cao vợ đã từng kết hôn hoặc có người yêu sâu đậm trước đó
                                     </p>
-                                    <p className="text-sm text-gray-600">{voDaTungKetHonResult.description}</p>
+                                    <p className="text-sm text-gray-600">{voDaTungKetHon.description}</p>
                                     <p className="text-xs text-gray-500 mt-2 italic">
-                                      (Hào Thê Tài {voDaTungKetHonResult.theTaiHao} và Phụ Mẫu {voDaTungKetHonResult.phuMauHao} cùng quái, Phụ Mẫu biến không Tuần Không, Thê Tài biến lâm Chu Tước)
+                                      (Hào Thê Tài {voDaTungKetHon.targetHao} và Phụ Mẫu {voDaTungKetHon.phuMauHao} cùng quái, Phụ Mẫu biến không Tuần Không, Thê Tài biến lâm Chu Tước)
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        });
+                      }
+
+                      if (chongDaTungKetHon) {
+                        collapseItems.push({
+                          key: "chong-da-tung-ket-hon",
+                          label: "Luận giải bổ sung: Luận Chồng Đã Từng Kết Hôn",
+                          children: (
+                            <div className="bg-white p-4 rounded-lg border border-parchment-200">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 w-8 h-8 bg-parchment-400 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                  +
+                                </div>
+                                <div className="flex-1 prose prose-sm max-w-none text-gray-700">
+                                  <p className="font-semibold mb-2">Luận đoán Quan Quỷ biến Chu Tước</p>
+                                  <div className="p-3 bg-blue-50 rounded border-l-4 border-blue-500">
+                                    <p className="font-semibold text-blue-700 mb-1">
+                                      Kết luận: Khả năng cao chồng đã từng kết hôn hoặc có người yêu sâu đậm trước đó
+                                    </p>
+                                    <p className="text-sm text-gray-600">{chongDaTungKetHon.description}</p>
+                                    <p className="text-xs text-gray-500 mt-2 italic">
+                                      (Hào Quan Quỷ {chongDaTungKetHon.targetHao} và Phụ Mẫu {chongDaTungKetHon.phuMauHao} cùng quái, Phụ Mẫu biến không Tuần Không, Quan Quỷ biến lâm Chu Tước)
                                     </p>
                                   </div>
                                 </div>
@@ -2143,9 +2131,6 @@ export default function InterpretationTables({
                   {dungThanDiaChi && (
                     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border-2 border-blue-300 shadow-lg">
                       <div className="text-center">
-                        <p className="font-bold text-lg text-gray-800 mb-4">
-                          Tổng Điểm Giải Quẻ - Dụng Thần
-                        </p>
                         {(() => {
                           // Tính tổng điểm cho Dụng Thần (bước 3 + 4)
                           const tongDiemDungThan =
@@ -2170,21 +2155,10 @@ export default function InterpretationTables({
 
                           return (
                             <div className="space-y-3">
-                              <div className="flex justify-center items-baseline gap-2">
-                                <span className="text-sm text-gray-600">
-                                  Tổng điểm:
-                                </span>
-                                <span className="text-3xl font-bold text-gray-800">
-                                  {tongDiemDungThan > 0 ? "+" : ""}
-                                  {tongDiemDungThan.toFixed(2)}
-                                </span>
-                                <span className="text-sm text-gray-600">
-                                  điểm
-                                </span>
-                              </div>
-                              <div className="mt-4">
-                                <span
-                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${tongDiemDungThan > 0
+                              <p className="font-bold text-lg text-gray-800 mb-4">
+                                Tổng Điểm Dụng Thần {tongDiemDungThan > 0 ? "+" : ""}
+                                {tongDiemDungThan.toFixed(2)}  <span
+                                  className={`px-2 rounded-full font-bold text-lg ${ketLuanColorDungThan} border-2 ${tongDiemDungThan > 0
                                     ? "border-green-500"
                                     : tongDiemDungThan === 0
                                       ? "border-blue-500"
@@ -2193,11 +2167,8 @@ export default function InterpretationTables({
                                 >
                                   {ketLuanDungThan}
                                 </span>
-                              </div>
+                              </p>
                               <div className="mt-4 text-sm text-gray-600 space-y-1">
-                                <p>
-                                  <strong>Chi tiết:</strong>
-                                </p>
                                 <div className="flex justify-center gap-4 text-xs">
                                   <span>
                                     Thái Tuế/Tuế Phá:{" "}
@@ -2225,9 +2196,7 @@ export default function InterpretationTables({
                   {theDiaChi && (
                     <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border-2 border-purple-300 shadow-lg">
                       <div className="text-center">
-                        <p className="font-bold text-lg text-gray-800 mb-4">
-                          Tổng Điểm Giải Quẻ - Hào Thế
-                        </p>
+
                         {(() => {
                           // Tính tổng điểm cho Hào Thế (bước 5 + 6)
                           const tongDiemHaoThe =
@@ -2251,21 +2220,10 @@ export default function InterpretationTables({
 
                           return (
                             <div className="space-y-3">
-                              <div className="flex justify-center items-baseline gap-2">
-                                <span className="text-sm text-gray-600">
-                                  Tổng điểm:
-                                </span>
-                                <span className="text-3xl font-bold text-gray-800">
-                                  {tongDiemHaoThe > 0 ? "+" : ""}
-                                  {tongDiemHaoThe.toFixed(2)}
-                                </span>
-                                <span className="text-sm text-gray-600">
-                                  điểm
-                                </span>
-                              </div>
-                              <div className="mt-4">
-                                <span
-                                  className={`px-6 py-3 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${tongDiemHaoThe > 0
+                              <p className="font-bold text-lg text-gray-800 mb-4">
+                                Tổng Điểm Hào Thế  {tongDiemHaoThe > 0 ? "+" : ""}
+                                {tongDiemHaoThe.toFixed(2)}   <span
+                                  className={`px-2 rounded-full font-bold text-lg ${ketLuanColorHaoThe} border-2 ${tongDiemHaoThe > 0
                                     ? "border-green-500"
                                     : tongDiemHaoThe === 0
                                       ? "border-blue-500"
@@ -2274,11 +2232,8 @@ export default function InterpretationTables({
                                 >
                                   {ketLuanHaoThe}
                                 </span>
-                              </div>
+                              </p>
                               <div className="mt-4 text-sm text-gray-600 space-y-1">
-                                <p>
-                                  <strong>Chi tiết:</strong>
-                                </p>
                                 <div className="flex justify-center gap-4 text-xs">
                                   <span>
                                     Thái Tuế/Tuế Phá:{" "}
@@ -2310,7 +2265,7 @@ export default function InterpretationTables({
                           key: "1",
                           label: "Luận Sảy Bỏ Con",
                           children: (
-                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                            <>
                               {sayBoCon ? (
                                 <div className="space-y-3">
                                   <p className="font-semibold mb-2">
@@ -2328,33 +2283,52 @@ export default function InterpretationTables({
                               ) : (
                                 <p className="text-gray-500 italic">Không tìm thấy hào Tử Tôn trong quẻ</p>
                               )}
-                            </div>
+                            </>
                           ),
                         },
                         {
                           key: "2",
-                          label: "Luận Vợ/Chồng Đã Từng Kết Hôn",
+                          label: "Luận Vợ Đã Từng Kết Hôn (Thê Tài)",
                           children: (
-                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                            <>
                               {voDaTungKetHon ? (
                                 <div className="space-y-3">
-                                  <p className="font-semibold">{voDaTungKetHon.type}: Hào {voDaTungKetHon.targetHao}</p>
+                                  <p className="font-semibold">Thê Tài: Hào {voDaTungKetHon.targetHao}</p>
                                   <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
                                     <p className="font-bold text-lg mb-2 text-blue-800">⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN TRƯỚC ĐÂY</p>
                                     <p className="text-sm text-blue-700">{voDaTungKetHon.description}</p>
                                   </div>
                                 </div>
                               ) : (
-                                <p className="text-gray-500 italic">Không đủ điều kiện để kết luận đã từng kết hôn trước đây.</p>
+                                <p className="text-gray-500 italic">Không đủ điều kiện để kết luận vợ đã từng kết hôn trước đây.</p>
                               )}
-                            </div>
+                            </>
+                          ),
+                        },
+                        {
+                          key: "2b",
+                          label: "Luận Chồng Đã Từng Kết Hôn (Quan Quỷ)",
+                          children: (
+                            <>
+                              {chongDaTungKetHon ? (
+                                <div className="space-y-3">
+                                  <p className="font-semibold">Quan Quỷ: Hào {chongDaTungKetHon.targetHao}</p>
+                                  <div className="p-4 rounded-lg border-2 bg-blue-100 border-blue-400">
+                                    <p className="font-bold text-lg mb-2 text-blue-800">⚠ CÓ KHẢ NĂNG ĐÃ TỪNG KẾT HÔN TRƯỚC ĐÂY</p>
+                                    <p className="text-sm text-blue-700">{chongDaTungKetHon.description}</p>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-gray-500 italic">Không đủ điều kiện để kết luận chồng đã từng kết hôn trước đây.</p>
+                              )}
+                            </>
                           ),
                         },
                         {
                           key: "3",
                           label: "Luận Cây Trước Nhà",
                           children: (
-                            <div className="bg-white p-4 rounded-lg border border-amber-200">
+                            <>
                               {cayTruocNha && cayTruocNha.length > 0 ? (
                                 <div className="space-y-4">
                                   {cayTruocNha.map((cay, idx) => (
@@ -2373,14 +2347,14 @@ export default function InterpretationTables({
                               ) : (
                                 <p className="text-gray-500 italic">Không tìm thấy cây trong quẻ</p>
                               )}
-                            </div>
+                            </>
                           ),
                         },
                         {
                           key: "4",
                           label: "Khác",
                           children: (
-                            <div className="bg-white p-4 rounded-lg border border-amber-200 space-y-4">
+                            <>
                               {phongThuyNha && (
                                 <div className="p-3 bg-red-50 rounded border-l-4 border-red-500">
                                   <p className="font-semibold text-red-800 mb-1">Phong thủy nhà ở</p>
@@ -2397,7 +2371,7 @@ export default function InterpretationTables({
                               ) : !phongThuyNha ? (
                                 <p className="text-gray-500 italic">Không có thông tin bổ sung cho quẻ này.</p>
                               ) : null}
-                            </div>
+                            </>
                           ),
                         },
                       ]}
